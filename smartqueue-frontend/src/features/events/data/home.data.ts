@@ -1,11 +1,11 @@
 import type { Movie } from '@/features/events/models/movie.model';
 
 export const HOME_MOVIES: Movie[] = [
-  { id: 'horizonte', title: 'Horizonte', genre: 'Ciencia ficción · Drama', duration: '2h 12m', rating: '+13', releaseTag: 'Recomendado', palette: 'from-[#071016] via-[#16333f] to-[#8fc9dc]', poster: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=88' },
-  { id: 'odyssey', title: 'La Odisea', genre: 'Aventura · Drama', duration: '2h 16m', rating: 'APT', releaseTag: 'Estreno', palette: 'from-[#061a2a] via-[#315366] to-[#b2cbd3]', poster: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=88' },
-  { id: 'zero', title: 'Zona Cero', genre: 'Suspenso · Acción', duration: '1h 57m', rating: '+14', palette: 'from-[#0b0b0d] via-[#3d4249] to-[#aeb8c3]', poster: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd4298?auto=format&fit=crop&w=900&q=88' },
-  { id: 'heart', title: 'La última luz', genre: 'Drama · Misterio', duration: '2h 04m', rating: 'APT', palette: 'from-[#091319] via-[#3d5d6b] to-[#c6d9dc]', poster: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=900&q=88' },
-  { id: 'family', title: 'Ecos del mar', genre: 'Aventura · Familiar', duration: '1h 44m', rating: 'APT', palette: 'from-[#0b1720] via-[#34687e] to-[#c7e8ef]', poster: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=88' },
+  { id: 'avengers-doomsday-current', title: 'Avengers: Doomsday', genre: 'Acción · Ciencia ficción', duration: '17 dic', rating: 'TBC', format: 'IV · 3D', releaseTag: 'Preventa', palette: 'from-[#07100a] via-[#1e3825] to-[#99c49a]', poster: 'https://image.tmdb.org/t/p/original/jzPwsojjFStf5lR5Nm07w2hH56G.jpg' },
+  { id: 'spider-man-brand-new-day', title: 'Spider-Man: Un nuevo día', genre: 'Acción · Aventura', duration: '2h 25m', rating: '+13', format: '2D · XD', releaseTag: 'En cartelera', palette: 'from-[#100a0b] via-[#61232b] to-[#b8cbd8]', poster: 'https://www.impawards.com/2026/posters/spiderman_brand_new_day_ver17_xlg.jpg' },
+  { id: 'blue-lock', title: 'Blue Lock', genre: 'Anime · Deporte', duration: '2h 08m', rating: '+14', format: '2D', releaseTag: 'Estreno', palette: 'from-[#06121e] via-[#124a75] to-[#75c8f5]', poster: 'https://m.media-amazon.com/images/M/MV5BZDJlNTFkNmItMmM5Zi00YWYxLTg3ODgtYWNkNWJhYWNlYjdjXkEyXkFqcGc%40._V1_.jpg' },
+  { id: 'cars-20', title: 'Cars: 20 aniversario', genre: 'Animación · Familiar', duration: '1h 57m', rating: 'APT', format: '2D', releaseTag: 'Evento', palette: 'from-[#100808] via-[#6a1d1d] to-[#e5a340]', poster: 'https://media-cine.entradas.com/images/film/cars-20-aniversario-109127.v17895696256000.jpg' },
+  { id: 'magic-tree', title: 'El Árbol Mágico', genre: 'Aventura · Familiar', duration: '1h 50m', rating: 'APT', format: '2D', palette: 'from-[#0e1008] via-[#4a5226] to-[#d2b36b]', poster: 'https://cdn.cinemark.cl/content/posters/HO00015188.jpg' },
 ];
 
 export const UPCOMING_MOVIES: Movie[] = [

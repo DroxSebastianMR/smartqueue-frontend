@@ -4,6 +4,7 @@ export interface Movie {
   genre: string;
   duration: string;
   rating: string;
+  format?: string;
   releaseTag?: string;
   palette: string;
   poster: string;

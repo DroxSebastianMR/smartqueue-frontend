@@ -28,7 +28,7 @@ export function MovieCard({ movie, compact = false }: { movie: Movie; compact?: 
             <span className="shrink-0 rounded-lg border border-white/10 bg-white/[.08] px-2.5 py-1.5 text-[11px] font-semibold text-zinc-200">{movie.rating}</span>
           </div>
           <p className="relative mt-2 truncate text-sm text-zinc-500">{movie.genre}</p>
-          <div className="relative mt-auto flex items-center gap-3 pt-5 text-xs font-medium text-zinc-500"><span className="rounded-md border border-sky-200/10 bg-sky-200/[.05] px-2 py-1 text-sky-100/70">2D</span><span className="flex items-center gap-1"><Clock3 className="size-3.5" /> {movie.duration}</span></div>
+          <div className="relative mt-auto flex items-center gap-3 pt-5 text-xs font-medium text-zinc-500"><span className="rounded-md border border-sky-200/10 bg-sky-200/[.05] px-2 py-1 text-sky-100/70">{movie.format ?? '2D'}</span><span className="flex items-center gap-1"><Clock3 className="size-3.5" /> {movie.duration}</span></div>
         </div>
       </Card>
     </article>

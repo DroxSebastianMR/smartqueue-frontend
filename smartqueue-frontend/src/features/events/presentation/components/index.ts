@@ -1,4 +1,5 @@
 export * from '@/features/events/presentation/components/cinema-finder';
+export * from '@/features/events/presentation/components/avengers-doomsday-logo';
 export * from '@/features/events/presentation/components/home-hero';
 export * from '@/features/events/presentation/components/hero-content';
 export * from '@/features/events/presentation/components/hero-controls';
