@@ -1,0 +1,17 @@
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules/
+**/dist/
+**/coverage/
+**/.vite/
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
+**/.venv/
+**/*.pyc
+smartqueue-ai/artifacts/*.joblib
+smartqueue-ai/artifacts/*.json
+smartqueue-ai/data/generated/
+tmp/
+
