@@ -73,12 +73,12 @@ export function HeroMedia({ media, muted = true }: { media: HeroMediaSource; mut
       <div className="absolute inset-0 overflow-hidden bg-[#08090c]">
         <MediaFallback poster={media.poster} />
         {playerMounted && (
-          <div className={`absolute inset-0 transition-opacity duration-700 [mask-image:linear-gradient(to_right,transparent_0%,transparent_14%,black_48%)] ${playerVisible ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`absolute inset-0 overflow-hidden transition-opacity duration-700 ${playerVisible ? 'opacity-100' : 'opacity-0'}`}>
             <iframe
               ref={youtubeFrameRef}
               key={playerSession}
               aria-hidden="true"
-              className="pointer-events-none absolute left-[108%] top-1/2 h-[63vw] min-h-[112%] w-[199vh] min-w-[160%] -translate-x-1/2 -translate-y-1/2 border-0"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[63vw] min-h-[112%] w-[199vh] min-w-[112%] -translate-x-1/2 -translate-y-1/2 border-0"
               src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1`}
               title="Avance destacado de Cinetrux"
               allow="autoplay; encrypted-media; picture-in-picture"
