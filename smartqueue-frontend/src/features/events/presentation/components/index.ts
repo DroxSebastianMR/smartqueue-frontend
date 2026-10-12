@@ -7,3 +7,5 @@ export * from '@/features/events/presentation/components/movie-card';
 export * from '@/features/events/presentation/components/movies-section';
 export * from '@/features/events/presentation/components/project-notice';
 export * from '@/features/events/presentation/components/queue-experience-section';
+export * from '@/features/events/presentation/components/snack-promo-section';
+export * from '@/features/events/presentation/components/upcoming-movies-section';

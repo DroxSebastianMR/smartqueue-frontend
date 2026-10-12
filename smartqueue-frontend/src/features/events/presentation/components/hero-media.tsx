@@ -31,6 +31,7 @@ export function HeroMedia({ media, muted = true }: { media: HeroMediaSource; mut
         muted={muted}
         playsInline
         poster={media.poster}
+        style={{ filter: 'saturate(.55) grayscale(.25) contrast(1.08)' }}
       >
         <source src={media.src} />
       </video>

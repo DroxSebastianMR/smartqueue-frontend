@@ -6,4 +6,5 @@ export interface Movie {
   rating: string;
   releaseTag?: string;
   palette: string;
+  poster: string;
 }
