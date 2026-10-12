@@ -1,4 +1,5 @@
 from app.domain.prediction import RiskClass, SaturationPrediction
+from app.infrastructure.sklearn_predictor import ModelUnavailableError
 from app.main import create_app
 
 
@@ -9,18 +10,27 @@ class FakePredictor:
         return SaturationPrediction(0.81, RiskClass.SATURATION, 30, "test-v1")
 
 
+class MissingPredictor:
+    available = False
+
+    def predict(self, _features):
+        raise ModelUnavailableError("No trained model artifact is available")
+
+
 def valid_payload():
     return {
         "schema_version": "1.0",
         "window_end": "2026-10-11T15:00:00Z",
-        "arrival_rate": 12,
-        "arrival_trend": 3,
-        "queue_length": 90,
-        "active_buyers": 15,
-        "admission_limit": 20,
-        "latency_p95_ms": 850,
-        "error_rate": 0.04,
-        "completion_rate": 1.5,
+        "features": {
+            "arrival_rate": 12,
+            "arrival_trend": 3,
+            "queue_length": 90,
+            "active_buyers": 15,
+            "admission_limit": 20,
+            "latency_p95_ms": 850,
+            "error_rate": 0.04,
+            "completion_rate": 1.5,
+        },
     }
 
 
@@ -33,12 +43,20 @@ def test_predict_contract():
         "model_version": "test-v1",
         "risk_class": "SATURATION",
         "risk_score": 0.81,
+        "schema_version": "1.0",
     }
 
 
 def test_rejects_out_of_range_error_rate():
     payload = valid_payload()
-    payload["error_rate"] = 1.2
+    payload["features"]["error_rate"] = 1.2
     client = create_app({"TESTING": True, "PREDICTOR": FakePredictor()}).test_client()
     response = client.post("/predict", json=payload)
     assert response.status_code == 400
+
+
+def test_reports_model_unavailable_without_silent_heuristic():
+    client = create_app({"TESTING": True, "PREDICTOR": MissingPredictor()}).test_client()
+    response = client.post("/predict", json=valid_payload())
+    assert response.status_code == 503
+    assert response.get_json()["error"] == "MODEL_UNAVAILABLE"

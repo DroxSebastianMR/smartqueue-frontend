@@ -24,10 +24,13 @@ class SklearnSaturationPredictor:
             self._pipeline = joblib.load(model_file)
         if metadata_file.exists():
             metadata = json.loads(metadata_file.read_text(encoding="utf-8"))
+            if metadata.get("schema_version") != "1.0":
+                raise ValueError("The model schema_version is not supported")
             stored_features = tuple(metadata.get("features", []))
             if stored_features and stored_features != FEATURE_NAMES:
                 raise ValueError("The model feature contract does not match schema v1")
             self._model_version = str(metadata.get("model_version", "unknown"))
+            self._threshold = float(metadata.get("selected_threshold", threshold))
 
     @property
     def available(self) -> bool:
