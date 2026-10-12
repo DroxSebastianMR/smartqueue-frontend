@@ -12,7 +12,7 @@ export function UpcomingMoviesSection() {
           <div><p className="text-[11px] font-semibold uppercase tracking-[.3em] text-sky-200/70">Lo que viene</p><h2 className="mt-2 text-3xl font-semibold tracking-[-.035em] text-white sm:text-4xl">Próximos estrenos</h2></div>
           <Button variant="ghost" className="text-zinc-400">Explorar próximos <ArrowRight className="size-4" /></Button>
         </div>
-        <div className="mt-9 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 lg:gap-6">{UPCOMING_MOVIES.map((movie) => <MovieCard key={movie.id} movie={movie} compact />)}</div>
+        <div className="mt-9 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">{UPCOMING_MOVIES.map((movie) => <MovieCard key={movie.id} movie={movie} compact />)}</div>
       </div>
     </section>
   );

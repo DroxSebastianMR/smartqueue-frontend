@@ -9,6 +9,7 @@ export const HOME_MOVIES: Movie[] = [
 ];
 
 export const UPCOMING_MOVIES: Movie[] = [
+  { id: 'avengers-doomsday', title: 'Avengers: Doomsday', genre: 'Acción · Ciencia ficción', duration: 'Próximamente', rating: '+14', releaseTag: 'Muy pronto', palette: 'from-[#07100a] via-[#1e3825] to-[#99c49a]', poster: 'https://image.tmdb.org/t/p/original/jzPwsojjFStf5lR5Nm07w2hH56G.jpg' },
   { id: 'signal', title: 'La señal', genre: 'Ciencia ficción', duration: 'Próximamente', rating: '+13', releaseTag: 'Octubre', palette: 'from-[#071014] via-[#21434c] to-[#9ce7ef]', poster: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=900&q=88' },
   { id: 'north', title: 'Norte', genre: 'Aventura', duration: 'Próximamente', rating: 'APT', releaseTag: 'Noviembre', palette: 'from-[#0b1116] via-[#405661] to-[#d0e2e8]', poster: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=88' },
   { id: 'neon', title: 'Neón', genre: 'Suspenso', duration: 'Próximamente', rating: '+14', releaseTag: 'Diciembre', palette: 'from-[#09090c] via-[#29343e] to-[#8fc7e8]', poster: 'https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=88' },
