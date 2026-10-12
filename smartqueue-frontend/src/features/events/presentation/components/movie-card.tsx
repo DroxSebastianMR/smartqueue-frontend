@@ -11,7 +11,7 @@ export function MovieCard({ movie, compact = false }: { movie: Movie; compact?: 
   return (
     <article className="group min-w-0">
       <Card className={`relative overflow-hidden border-white/[.08] bg-zinc-900 ${compact ? 'aspect-[5/7]' : 'aspect-[2/3]'} shadow-[0_22px_50px_rgba(0,0,0,.28)] transition duration-500 group-hover:-translate-y-1 group-hover:border-sky-200/25`}>
-        <img src={movie.poster} alt={`Arte promocional de ${movie.title}`} loading="lazy" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-[1.04]" />
+        <img src={movie.poster} alt={`Arte promocional de ${movie.title}`} loading="lazy" referrerPolicy="no-referrer" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-[1.04]" />
         <div className={`absolute inset-0 bg-gradient-to-t ${movie.palette} opacity-45 mix-blend-multiply`} />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/10" />
         {movie.releaseTag && <Badge className="absolute left-3 top-3 border-white/15 bg-black/55 text-white backdrop-blur-md">{movie.releaseTag}</Badge>}
