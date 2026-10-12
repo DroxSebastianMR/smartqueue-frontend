@@ -11,7 +11,7 @@ export function HeroControls({ muted, onToggleSound, showSoundControl = true }: 
         <span className="size-1.5 rounded-full bg-white/35" />
       </div>
       <div className="pointer-events-auto flex items-center gap-2">
-        {showSoundControl && <Button type="button" variant="ghost" size="icon" className="rounded-full border border-white/10 bg-black/20 text-white backdrop-blur-md" aria-label={muted ? 'Activar sonido' : 'Silenciar video'} onClick={onToggleSound}>{muted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}</Button>}
+        {showSoundControl && <Button type="button" variant="ghost" size="icon" className="rounded-full border border-white/10 bg-black/35 text-white backdrop-blur-md hover:bg-black/55" aria-label={muted ? 'Activar sonido a volumen moderado' : 'Silenciar video'} title={muted ? 'Activar sonido' : 'Silenciar'} onClick={onToggleSound}>{muted ? <VolumeX className="size-4" /> : <Volume2 className="size-4" />}</Button>}
         <Button type="button" variant="ghost" size="icon" className="rounded-full border border-white/10 bg-black/20 text-white backdrop-blur-md" aria-label="Contenido anterior" disabled><ChevronLeft className="size-5" /></Button>
         <Button type="button" variant="ghost" size="icon" className="rounded-full border border-white/10 bg-black/20 text-white backdrop-blur-md" aria-label="Contenido siguiente" disabled><ChevronRight className="size-5" /></Button>
       </div>

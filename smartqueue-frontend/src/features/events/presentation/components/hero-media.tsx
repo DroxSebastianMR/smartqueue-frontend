@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export type HeroMediaSource = {
   type: 'video' | 'youtube' | 'image';
@@ -7,6 +7,7 @@ export type HeroMediaSource = {
 };
 
 export function HeroMedia({ media, muted = true }: { media: HeroMediaSource; muted?: boolean }) {
+  const youtubeFrameRef = useRef<HTMLIFrameElement>(null);
   const [playerMounted, setPlayerMounted] = useState(media.type !== 'youtube');
   const [playerVisible, setPlayerVisible] = useState(media.type !== 'youtube');
   const [playerSession, setPlayerSession] = useState(0);
@@ -45,6 +46,25 @@ export function HeroMedia({ media, muted = true }: { media: HeroMediaSource; mut
     };
   }, [media.src, media.type]);
 
+  useEffect(() => {
+    if (media.type !== 'youtube' || !playerMounted) return undefined;
+
+    const syncAudio = () => {
+      const player = youtubeFrameRef.current?.contentWindow;
+      if (!player) return;
+
+      player.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [muted ? 0 : 28] }), '*');
+      player.postMessage(JSON.stringify({ event: 'command', func: muted ? 'mute' : 'unMute', args: [] }), '*');
+    };
+
+    const firstAttempt = setTimeout(syncAudio, 80);
+    const secondAttempt = setTimeout(syncAudio, 450);
+    return () => {
+      clearTimeout(firstAttempt);
+      clearTimeout(secondAttempt);
+    };
+  }, [media.type, muted, playerMounted, playerSession]);
+
   if (media.type === 'youtube') {
     const videoId = getYoutubeVideoId(media.src);
     if (!videoId) return <MediaFallback poster={media.poster} />;
@@ -55,10 +75,11 @@ export function HeroMedia({ media, muted = true }: { media: HeroMediaSource; mut
         {playerMounted && (
           <div className={`absolute inset-0 transition-opacity duration-700 [mask-image:linear-gradient(to_right,transparent_0%,transparent_14%,black_48%)] ${playerVisible ? 'opacity-100' : 'opacity-0'}`}>
             <iframe
+              ref={youtubeFrameRef}
               key={playerSession}
               aria-hidden="true"
               className="pointer-events-none absolute left-[108%] top-1/2 h-[63vw] min-h-[112%] w-[199vh] min-w-[160%] -translate-x-1/2 -translate-y-1/2 border-0"
-              src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=0`}
+              src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1`}
               title="Avance destacado de Cinetrux"
               allow="autoplay; encrypted-media; picture-in-picture"
               tabIndex={-1}
