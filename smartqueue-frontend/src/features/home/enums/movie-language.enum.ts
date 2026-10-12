@@ -1,0 +1,4 @@
+export enum MovieLanguage {
+  LATIN_SPANISH = 'LATIN_SPANISH',
+  ORIGINAL_SUBTITLED = 'ORIGINAL_SUBTITLED',
+}

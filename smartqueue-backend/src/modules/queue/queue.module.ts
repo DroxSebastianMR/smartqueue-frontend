@@ -1,18 +1,22 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
 
-import { GetQueueStatusUseCase } from '@/modules/queue/application/use-cases/get-queue-status.use-case';
-import { JoinQueueUseCase } from '@/modules/queue/application/use-cases/join-queue.use-case';
-import { QUEUE_REPOSITORY } from '@/modules/queue/domain/repositories/queue.repository';
-import { PrismaQueueRepository } from '@/modules/queue/infrastructure/repositories/prisma-queue.repository';
-import { QueueController } from '@/modules/queue/presentation/controllers/queue.controller';
+import { GetQueueStatusService } from "@/modules/queue/services/get-queue-status.service";
+import { JoinQueueService } from "@/modules/queue/services/join-queue.service";
+import { QueueCacheService } from "@/modules/queue/services/queue-cache.service";
+import { QUEUE_REPOSITORY } from "@/modules/queue/repositories/queue.repository";
+import { PrismaQueueRepository } from "@/modules/queue/repositories/prisma-queue.repository";
+import { QueueController } from "@/modules/queue/controllers/queue.controller";
+import { AuthModule } from "@/modules/auth/auth.module";
 
 @Module({
+  imports: [AuthModule],
   controllers: [QueueController],
   providers: [
-    JoinQueueUseCase,
-    GetQueueStatusUseCase,
+    JoinQueueService,
+    GetQueueStatusService,
+    QueueCacheService,
     { provide: QUEUE_REPOSITORY, useClass: PrismaQueueRepository },
   ],
+  exports: [QueueCacheService],
 })
 export class QueueModule {}
-

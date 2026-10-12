@@ -1,9 +1,14 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
 
-import { ConfirmPurchaseUseCase } from '@/modules/sales/application/use-cases/confirm-purchase.use-case';
-import { ReserveTicketsUseCase } from '@/modules/sales/application/use-cases/reserve-tickets.use-case';
-import { SalesController } from '@/modules/sales/presentation/controllers/sales.controller';
+import { ConfirmPurchaseService } from "@/modules/sales/services/confirm-purchase.service";
+import { ReserveTicketsService } from "@/modules/sales/services/reserve-tickets.service";
+import { SalesController } from "@/modules/sales/controllers/sales.controller";
+import { AuthModule } from "@/modules/auth/auth.module";
+import { QueueModule } from "@/modules/queue/queue.module";
 
-@Module({ controllers: [SalesController], providers: [ReserveTicketsUseCase, ConfirmPurchaseUseCase] })
+@Module({
+  imports: [AuthModule, QueueModule],
+  controllers: [SalesController],
+  providers: [ReserveTicketsService, ConfirmPurchaseService],
+})
 export class SalesModule {}
-

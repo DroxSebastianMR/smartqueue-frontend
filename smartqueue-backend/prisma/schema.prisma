@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum QueueStatus {
@@ -29,35 +30,547 @@ enum ControlMode {
   PREDICTIVE
 }
 
+enum UserStatus {
+  ACTIVE
+  DISABLED
+  LOCKED
+}
+
+enum UserRole {
+  CUSTOMER
+  BOX_OFFICE
+  USHER
+  CINEMA_MANAGER
+  OPERATIONS_ANALYST
+  ADMIN
+}
+
+enum CinemaStatus {
+  ACTIVE
+  CLOSED
+  MAINTENANCE
+}
+
+enum AuditoriumStatus {
+  ACTIVE
+  MAINTENANCE
+  CLOSED
+}
+
+enum SeatType {
+  STANDARD
+  PREMIUM
+  ACCESSIBLE
+  COMPANION
+}
+
+enum MovieReleaseStatus {
+  ANNOUNCED
+  PRESALE
+  RELEASED
+  ENDED
+}
+
+enum ShowtimeStatus {
+  SCHEDULED
+  ON_SALE
+  SOLD_OUT
+  CANCELLED
+  FINISHED
+}
+
+enum SeatStatus {
+  AVAILABLE
+  BLOCKED
+  MAINTENANCE
+}
+
+enum TicketStatus {
+  RESERVED
+  PAID
+  USED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  REFUNDED
+}
+
+enum BookingOrderStatus {
+  PENDING_PAYMENT
+  PAID
+  CANCELLED
+  EXPIRED
+  REFUNDED
+}
+
+enum PaymentMethodCode {
+  CARD
+  PREPAID_CARD
+  YAPE
+  PAGOEFECTIVO
+  BANK_TRANSFER
+  CASH
+  CARD_TERMINAL
+}
+
+enum FiscalDocumentType {
+  BOLETA
+  FACTURA
+}
+
+enum FiscalDocumentStatus {
+  REQUESTED
+  ISSUED
+  REJECTED
+  VOIDED
+}
+
+enum MoviePublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum CatalogSection {
+  NOW_PLAYING
+  UPCOMING
+}
+
+enum MovieAssetKind {
+  POSTER
+  BACKDROP
+  LOGO
+  STILL
+  TRAILER
+  TEASER
+}
+
+enum MediaProvider {
+  EXTERNAL
+  YOUTUBE
+  LOCAL
+}
+
+enum ProjectionFormat {
+  TWO_D
+  THREE_D
+  INFINITY_VISION
+}
+
+enum ContentStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum AdvertisementPlacement {
+  HOME
+  CHECKOUT
+}
+
+model User {
+  id             String                 @id @default(uuid())
+  email          String                 @unique
+  passwordHash   String
+  status         UserStatus             @default(ACTIVE)
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  roles          UserRoleAssignment[]
+  sessions       AuthSession[]
+  passwordResets PasswordResetRequest[]
+  tickets        Ticket[]
+  bookingOrders  BookingOrder[]
+}
+
+model UserRoleAssignment {
+  id        String   @id @default(uuid())
+  userId    String
+  role      UserRole
+  cinemaId  String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cinema    Cinema?  @relation(fields: [cinemaId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role, cinemaId])
+  @@index([cinemaId, role])
+}
+
+model AuthSession {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+}
+
+model PasswordResetRequest {
+  id         String    @id @default(uuid())
+  userId     String
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+}
+
+model Cinema {
+  id              String               @id @default(uuid())
+  slug            String               @unique
+  name            String
+  city            String
+  countryCode     String               @default("PE") @db.VarChar(2)
+  region          String?
+  district        String?
+  address         String
+  timeZone        String               @default("America/Lima")
+  latitude        Decimal?             @db.Decimal(9, 6)
+  longitude       Decimal?             @db.Decimal(9, 6)
+  status          CinemaStatus         @default(ACTIVE)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  auditoriums     Auditorium[]
+  roleAssignments UserRoleAssignment[]
+
+  @@index([countryCode, city, status])
+  @@index([city, district])
+}
+
+model Auditorium {
+  id                   String             @id @default(uuid())
+  cinemaId             String
+  name                 String
+  capacity             Int
+  status               AuditoriumStatus   @default(ACTIVE)
+  supportedFormats     ProjectionFormat[] @default([TWO_D])
+  cleanupBufferMinutes Int                @default(15)
+  cinema               Cinema             @relation(fields: [cinemaId], references: [id])
+  seats                Seat[]
+  showtimes            Showtime[]
+
+  @@unique([cinemaId, name])
+}
+
+model Seat {
+  id           String     @id @default(uuid())
+  auditoriumId String
+  row          String
+  number       Int
+  type         SeatType   @default(STANDARD)
+  status       SeatStatus @default(AVAILABLE)
+  auditorium   Auditorium @relation(fields: [auditoriumId], references: [id])
+  tickets      Ticket[]
+
+  @@unique([auditoriumId, row, number])
+}
+
+model Movie {
+  id                   String                  @id @default(uuid())
+  slug                 String                  @unique
+  title                String
+  synopsis             String?
+  durationMin          Int?
+  posterUrl            String?
+  backdropUrl          String?
+  originalLanguageCode String?
+  releaseDate          DateTime?               @db.Date
+  ageRating            String?
+  publicationStatus    MoviePublicationStatus  @default(DRAFT)
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+  localizations        MovieLocalization[]
+  genres               MovieGenre[]
+  assets               MovieAsset[]
+  versions             MovieVersion[]
+  placements           MovieCatalogPlacement[]
+  releases             MovieRelease[]
+  banners              Banner[]
+
+  @@index([publicationStatus, releaseDate])
+}
+
+model MovieRelease {
+  id              String             @id @default(uuid())
+  movieId         String
+  countryCode     String             @db.VarChar(2)
+  releaseDate     DateTime           @db.Date
+  presaleStartsAt DateTime?
+  status          MovieReleaseStatus @default(ANNOUNCED)
+  movie           Movie              @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([movieId, countryCode])
+  @@index([countryCode, status, releaseDate])
+}
+
+model MovieLocalization {
+  id       String  @id @default(uuid())
+  movieId  String
+  locale   String
+  title    String
+  synopsis String?
+  movie    Movie   @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([movieId, locale])
+}
+
+model Genre {
+  id     String       @id @default(uuid())
+  slug   String       @unique
+  name   String
+  movies MovieGenre[]
+}
+
+model MovieGenre {
+  movieId String
+  genreId String
+  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  genre   Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([movieId, genreId])
+  @@index([genreId])
+}
+
+model MovieAsset {
+  id        String         @id @default(uuid())
+  movieId   String
+  kind      MovieAssetKind
+  provider  MediaProvider  @default(EXTERNAL)
+  url       String
+  locale    String?
+  sortOrder Int            @default(0)
+  isPrimary Boolean        @default(false)
+  movie     Movie          @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@index([movieId, kind, sortOrder])
+}
+
+model MovieVersion {
+  id                   String           @id @default(uuid())
+  movieId              String
+  format               ProjectionFormat
+  audioLanguageCode    String
+  subtitleLanguageCode String?
+  label                String?
+  movie                Movie            @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  showtimes            Showtime[]
+
+  @@index([movieId, format, audioLanguageCode])
+}
+
+model MovieCatalogPlacement {
+  id       String         @id @default(uuid())
+  movieId  String
+  section  CatalogSection
+  priority Int            @default(0)
+  startsAt DateTime?
+  endsAt   DateTime?
+  movie    Movie          @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([movieId, section])
+  @@index([section, priority])
+}
+
+model Banner {
+  id            String         @id @default(uuid())
+  movieId       String?
+  title         String
+  logoUrl       String?
+  backdropUrl   String
+  videoUrl      String?
+  videoProvider MediaProvider?
+  ctaLabel      String
+  ctaHref       String
+  status        ContentStatus  @default(DRAFT)
+  priority      Int            @default(0)
+  startsAt      DateTime?
+  endsAt        DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  movie         Movie?         @relation(fields: [movieId], references: [id], onDelete: SetNull)
+
+  @@index([status, priority])
+  @@index([movieId])
+}
+
+model Advertisement {
+  id          String                 @id @default(uuid())
+  title       String
+  description String
+  imageUrl    String?
+  ctaLabel    String
+  ctaHref     String
+  placement   AdvertisementPlacement @default(HOME)
+  status      ContentStatus          @default(DRAFT)
+  priority    Int                    @default(0)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+
+  @@index([placement, status, priority])
+}
+
+model Promotion {
+  id          String        @id @default(uuid())
+  title       String
+  description String
+  imageUrl    String?
+  ctaLabel    String
+  ctaHref     String
+  status      ContentStatus @default(DRAFT)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  terms       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, startsAt, endsAt])
+}
+
+model Showtime {
+  id             String         @id @default(uuid())
+  auditoriumId   String
+  startsAt       DateTime
+  endsAt         DateTime
+  status         ShowtimeStatus @default(SCHEDULED)
+  movieVersionId String
+  basePriceCents Int
+  currency       String         @default("PEN") @db.VarChar(3)
+  bookingOpensAt DateTime?
+  movieVersion   MovieVersion   @relation(fields: [movieVersionId], references: [id])
+  auditorium     Auditorium     @relation(fields: [auditoriumId], references: [id])
+  tickets        Ticket[]
+  bookingOrders  BookingOrder[]
+
+  @@index([auditoriumId, startsAt])
+  @@index([movieVersionId, startsAt])
+  @@index([status, startsAt])
+}
+
+model Ticket {
+  id          String        @id @default(uuid())
+  userId      String
+  showtimeId  String
+  seatId      String
+  code        String        @unique
+  status      TicketStatus  @default(RESERVED)
+  amountCents Int
+  orderId     String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id])
+  showtime    Showtime      @relation(fields: [showtimeId], references: [id])
+  seat        Seat          @relation(fields: [seatId], references: [id])
+  order       BookingOrder? @relation(fields: [orderId], references: [id])
+
+  // Active-seat uniqueness must be enforced transactionally (or with a partial SQL index).
+  @@index([showtimeId, seatId, status])
+  @@index([userId, status])
+  @@index([orderId])
+}
+
+model BookingOrder {
+  id         String             @id @default(uuid())
+  userId     String
+  showtimeId String
+  status     BookingOrderStatus @default(PENDING_PAYMENT)
+  totalCents Int
+  currency   String             @default("PEN") @db.VarChar(3)
+  expiresAt  DateTime
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  user       User               @relation(fields: [userId], references: [id])
+  showtime   Showtime           @relation(fields: [showtimeId], references: [id])
+  tickets    Ticket[]
+  payments   PaymentAttempt[]
+  receipt    FiscalReceipt?
+
+  @@index([userId, status])
+  @@index([showtimeId, status, expiresAt])
+}
+
+model PaymentAttempt {
+  id             String            @id @default(uuid())
+  orderId        String
+  method         PaymentMethodCode
+  status         PaymentStatus     @default(PENDING)
+  amountCents    Int
+  currency       String            @default("PEN") @db.VarChar(3)
+  provider       String?
+  providerRef    String?           @unique
+  idempotencyKey String            @unique
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  order          BookingOrder      @relation(fields: [orderId], references: [id])
+
+  @@index([orderId, status])
+}
+
+model FiscalReceipt {
+  id                  String               @id @default(uuid())
+  orderId             String               @unique
+  type                FiscalDocumentType
+  status              FiscalDocumentStatus @default(REQUESTED)
+  buyerName           String
+  buyerDocumentNumber String?
+  buyerEmail          String
+  issuerRuc           String?              @db.VarChar(11)
+  documentNumber      String?              @unique
+  externalReference   String?              @unique
+  subtotalCents       Int?
+  taxCents            Int?
+  totalCents          Int?
+  currency            String               @default("PEN") @db.VarChar(3)
+  acceptanceCode      String?
+  xmlUrl              String?
+  pdfUrl              String?
+  issuedAt            DateTime?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  order               BookingOrder         @relation(fields: [orderId], references: [id])
+}
+
 model Event {
-  id            String   @id @default(uuid())
-  slug          String   @unique
-  name          String
-  description   String
-  startsAt      DateTime
-  capacity      Int
+  id             String                @id @default(uuid())
+  slug           String                @unique
+  name           String
+  description    String
+  startsAt       DateTime
+  capacity       Int
   availableStock Int
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  queueEntries  QueueEntry[]
-  reservations  PurchaseReservation[]
-  purchases     Purchase[]
+  isActive       Boolean               @default(true)
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  queueEntries   QueueEntry[]
+  reservations   PurchaseReservation[]
+  purchases      Purchase[]
 }
 
 model QueueEntry {
-  id             String      @id @default(uuid())
-  eventId        String
+  id               String               @id @default(uuid())
+  eventId          String
   participantToken String
-  turnNumber     BigInt
-  status         QueueStatus @default(WAITING)
-  admittedAt     DateTime?
-  accessExpiresAt DateTime?
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  event          Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  reservation    PurchaseReservation?
-  purchase       Purchase?
+  turnNumber       BigInt
+  status           QueueStatus          @default(WAITING)
+  admittedAt       DateTime?
+  accessExpiresAt  DateTime?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  event            Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  reservation      PurchaseReservation?
+  purchase         Purchase?
 
   @@unique([eventId, participantToken])
   @@unique([eventId, turnNumber])
@@ -79,31 +592,31 @@ model PurchaseReservation {
 }
 
 model Purchase {
-  id            String              @id @default(uuid())
-  eventId       String
-  queueEntryId  String              @unique
-  reservationId String              @unique
-  quantity      Int
-  confirmationCode String           @unique
-  createdAt     DateTime            @default(now())
-  event         Event               @relation(fields: [eventId], references: [id])
-  queueEntry    QueueEntry          @relation(fields: [queueEntryId], references: [id])
-  reservation   PurchaseReservation @relation(fields: [reservationId], references: [id])
+  id               String              @id @default(uuid())
+  eventId          String
+  queueEntryId     String              @unique
+  reservationId    String              @unique
+  quantity         Int
+  confirmationCode String              @unique
+  createdAt        DateTime            @default(now())
+  event            Event               @relation(fields: [eventId], references: [id])
+  queueEntry       QueueEntry          @relation(fields: [queueEntryId], references: [id])
+  reservation      PurchaseReservation @relation(fields: [reservationId], references: [id])
 }
 
 model ExperimentRun {
-  id             String       @id @default(uuid())
-  scenario       String
-  seed           Int
+  id               String         @id @default(uuid())
+  scenario         String
+  seed             Int
   generatorVersion String
-  controlMode    ControlMode
-  startedAt      DateTime     @default(now())
-  finishedAt     DateTime?
-  metricWindows  MetricWindow[]
+  controlMode      ControlMode
+  startedAt        DateTime       @default(now())
+  finishedAt       DateTime?
+  metricWindows    MetricWindow[]
 }
 
 model MetricWindow {
-  id              String   @id @default(uuid())
+  id              String         @id @default(uuid())
   runId           String
   windowEnd       DateTime
   arrivalRate     Float
@@ -114,27 +627,26 @@ model MetricWindow {
   latencyP95Ms    Float
   errorRate       Float
   completionRate  Float
-  evaluable       Boolean  @default(true)
+  evaluable       Boolean        @default(true)
   saturationLabel Boolean?
-  run             ExperimentRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  run             ExperimentRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
   prediction      PredictionLog?
 
   @@unique([runId, windowEnd])
 }
 
 model PredictionLog {
-  id               String   @id @default(uuid())
-  metricWindowId   String   @unique
-  riskScore        Float?
-  riskClass        String?
-  horizonSeconds   Int?
-  modelVersion     String?
-  requestedAt      DateTime @default(now())
-  responseMs       Int?
-  fallbackUsed     Boolean  @default(false)
-  appliedMode      ControlMode
-  appliedLimit     Int
-  failureReason    String?
-  metricWindow     MetricWindow @relation(fields: [metricWindowId], references: [id], onDelete: Cascade)
+  id             String       @id @default(uuid())
+  metricWindowId String       @unique
+  riskScore      Float?
+  riskClass      String?
+  horizonSeconds Int?
+  modelVersion   String?
+  requestedAt    DateTime     @default(now())
+  responseMs     Int?
+  fallbackUsed   Boolean      @default(false)
+  appliedMode    ControlMode
+  appliedLimit   Int
+  failureReason  String?
+  metricWindow   MetricWindow @relation(fields: [metricWindowId], references: [id], onDelete: Cascade)
 }
-

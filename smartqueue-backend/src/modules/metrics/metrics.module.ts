@@ -1,8 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
 
-import { GetDashboardUseCase } from '@/modules/metrics/application/use-cases/get-dashboard.use-case';
-import { MetricsController } from '@/modules/metrics/presentation/controllers/metrics.controller';
+import { GetDashboardService } from "@/modules/metrics/services/get-dashboard.service";
+import { MetricsController } from "@/modules/metrics/controllers/metrics.controller";
+import { AuthModule } from "@/modules/auth/auth.module";
 
-@Module({ controllers: [MetricsController], providers: [GetDashboardUseCase] })
+@Module({
+  imports: [AuthModule],
+  controllers: [MetricsController],
+  providers: [GetDashboardService],
+})
 export class MetricsModule {}
-

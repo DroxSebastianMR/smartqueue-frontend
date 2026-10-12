@@ -1,15 +1,14 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
 
-import { CalculateAdmissionUseCase } from '@/modules/admission/application/use-cases/calculate-admission.use-case';
-import { RunAdmissionUseCase } from '@/modules/admission/application/use-cases/run-admission.use-case';
-import { AdmissionController } from '@/modules/admission/presentation/controllers/admission.controller';
-import { MlClientModule } from '@/modules/ml-client/ml-client.module';
+import { RunAdmissionService } from "@/modules/admission/services/run-admission.service";
+import { AdmissionController } from "@/modules/admission/controllers/admission.controller";
+import { MlClientModule } from "@/modules/ml-client/ml-client.module";
+import { AuthModule } from "@/modules/auth/auth.module";
+import { QueueModule } from "@/modules/queue/queue.module";
 
 @Module({
-  imports: [MlClientModule],
+  imports: [MlClientModule, AuthModule, QueueModule],
   controllers: [AdmissionController],
-  providers: [CalculateAdmissionUseCase, RunAdmissionUseCase],
-  exports: [CalculateAdmissionUseCase],
+  providers: [RunAdmissionService],
 })
 export class AdmissionModule {}
-

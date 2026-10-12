@@ -1,26 +1,21 @@
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api/v1';
+import axios from 'axios';
 
-export class ApiError extends Error {
-  constructor(public readonly status: number, message: string) {
-    super(message);
-  }
+import { env } from '@/app/config/env';
+
+export const apiClient = axios.create({
+  baseURL: env.apiUrl,
+  timeout: 10_000,
+  headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+});
+
+export async function apiGet<T>(path: string): Promise<T> {
+  const { data } = await apiClient.get<T>(path);
+  return data;
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, {
-    ...init,
-    headers: { 'Content-Type': 'application/json', ...init?.headers },
-  });
-  if (!response.ok) {
-    const payload = await response.json().catch(() => null) as { message?: string } | null;
-    throw new ApiError(response.status, payload?.message ?? 'No se pudo completar la solicitud');
-  }
-  return response.json() as Promise<T>;
+export async function apiPost<T>(path: string, body?: unknown): Promise<T> {
+  const { data } = await apiClient.post<T>(path, body);
+  return data;
 }
 
-export function apiGet<T>(path: string) { return request<T>(path); }
-export function apiPost<T>(path: string, body?: unknown) {
-  return request<T>(path, { method: 'POST', body: body === undefined ? undefined : JSON.stringify(body) });
-}
-
-export const useMocks = import.meta.env.VITE_USE_MOCKS === 'true';
+export const useMocks = env.useMocks;

@@ -1,6 +1,5 @@
 export enum ControlMode {
-  FIXED = 'FIXED',
-  REACTIVE = 'REACTIVE',
-  PREDICTIVE = 'PREDICTIVE',
+  FIXED = "FIXED",
+  REACTIVE = "REACTIVE",
+  PREDICTIVE = "PREDICTIVE",
 }
-
