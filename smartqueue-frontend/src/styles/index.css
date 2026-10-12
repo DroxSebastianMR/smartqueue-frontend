@@ -12,5 +12,5 @@ html { background: #080b12; }
 body { margin: 0; min-width: 320px; min-height: 100vh; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
-::selection { background: rgba(220, 38, 38, .45); color: white; }
+::selection { background: rgba(125, 190, 255, .38); color: white; }
 

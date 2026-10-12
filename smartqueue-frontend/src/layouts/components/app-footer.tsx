@@ -11,10 +11,10 @@ export function AppFooter() {
         <FooterGroup title="Proyecto" links={['Laboratorio ML', 'Arquitectura', 'Métricas']} />
         <div><p className="font-bold text-white">Síguenos</p><div className="mt-4 flex gap-2"><SocialIcon label="GitHub"><Github /></SocialIcon><SocialIcon label="Instagram"><Instagram /></SocialIcon><SocialIcon label="YouTube"><Youtube /></SocialIcon></div></div>
       </div>
-      <div className="border-t border-white/8"><div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3 px-5 py-5 text-xs text-slate-500 lg:px-8"><span>SmartQueue ML · 2026</span><span>Demostración universitaria · Datos sintéticos</span></div></div>
+      <div className="border-t border-white/8"><div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3 px-5 py-5 text-xs text-slate-500 lg:px-8"><span>Cinetrux · 2026</span><span>Demostración universitaria · Datos sintéticos</span></div></div>
     </footer>
   );
 }
 
 function FooterGroup({ title, links }: { title: string; links: string[] }) { return <div><p className="font-bold text-white">{title}</p><ul className="mt-4 space-y-3 text-sm text-slate-400">{links.map((link) => <li key={link}><a href="#" className="hover:text-white">{link}</a></li>)}</ul></div>; }
-function SocialIcon({ label, children }: { label: string; children: React.ReactNode }) { return <button type="button" aria-label={label} className="grid size-10 place-items-center rounded-full bg-white/8 transition hover:bg-[#e40046] [&>svg]:size-4">{children}</button>; }
+function SocialIcon({ label, children }: { label: string; children: React.ReactNode }) { return <button type="button" aria-label={label} className="grid size-10 place-items-center rounded-full bg-white/8 transition hover:bg-white/15 [&>svg]:size-4">{children}</button>; }
