@@ -15,6 +15,7 @@ import { PaymentsModule } from "@/modules/payments/payments.module";
 import { AdmissionModule } from "@/modules/admission/admission.module";
 import { EventsModule } from "@/modules/events/events.module";
 import { HealthModule } from "@/modules/health/health.module";
+import { ExperimentsModule } from "@/modules/experiments/experiments.module";
 import { MetricsModule } from "@/modules/metrics/metrics.module";
 import { QueueModule } from "@/modules/queue/queue.module";
 import { SalesModule } from "@/modules/sales/sales.module";
@@ -38,6 +39,7 @@ import { SalesModule } from "@/modules/sales/sales.module";
     MetricsModule,
     AdmissionModule,
     HealthModule,
+    ExperimentsModule,
   ],
 })
 export class AppModule {}

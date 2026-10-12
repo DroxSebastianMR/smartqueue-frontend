@@ -7,9 +7,10 @@ import { QUEUE_REPOSITORY } from "@/modules/queue/repositories/queue.repository"
 import { PrismaQueueRepository } from "@/modules/queue/repositories/prisma-queue.repository";
 import { QueueController } from "@/modules/queue/controllers/queue.controller";
 import { AuthModule } from "@/modules/auth/auth.module";
+import { MetricsModule } from "@/modules/metrics/metrics.module";
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, MetricsModule],
   controllers: [QueueController],
   providers: [
     JoinQueueService,

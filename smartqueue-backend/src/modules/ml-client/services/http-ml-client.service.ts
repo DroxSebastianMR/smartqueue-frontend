@@ -27,7 +27,10 @@ export class HttpMlClientService {
     if (
       result.risk_score < 0 ||
       result.risk_score > 1 ||
-      result.horizon_seconds !== 30
+      result.horizon_seconds !== 30 ||
+      result.schema_version !== "1.0" ||
+      !["HEALTHY", "SATURATION"].includes(result.risk_class) ||
+      !result.model_version
     ) {
       throw new Error("ML response violates the v1 contract");
     }

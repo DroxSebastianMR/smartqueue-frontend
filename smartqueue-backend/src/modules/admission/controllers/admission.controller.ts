@@ -17,6 +17,8 @@ import { Permission } from "@/modules/auth/enums/permission.enum";
 import { Permissions } from "@/modules/auth/decorators/permissions.decorator";
 import { AccessTokenGuard } from "@/modules/auth/guards/access-token.guard";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions.guard";
+import { AdmissionOrchestratorService } from "@/modules/admission/services/admission-orchestrator.service";
+import { CloseWindowDto } from "@/modules/admission/dto/close-window.dto";
 
 @ApiTags("admission")
 @ApiBearerAuth("access-token")
@@ -24,7 +26,22 @@ import { PermissionsGuard } from "@/modules/auth/guards/permissions.guard";
 @Permissions(Permission.QUEUE_CONTROL)
 @Controller("admission")
 export class AdmissionController {
-  constructor(private readonly runAdmission: RunAdmissionService) {}
+  constructor(
+    private readonly runAdmission: RunAdmissionService,
+    private readonly orchestrator: AdmissionOrchestratorService,
+  ) {}
+
+  @Post("runs/:runId/windows/close")
+  @ApiOperation({
+    summary: "Cerrar ventana, predecir, aplicar fallback y admitir en FIFO",
+  })
+  @ApiParam({ name: "runId", format: "uuid" })
+  closeWindow(@Param("runId") runId: string, @Body() dto: CloseWindowDto) {
+    return this.orchestrator.execute(
+      runId,
+      dto.windowEnd ? new Date(dto.windowEnd) : undefined,
+    );
+  }
 
   @Post("events/:eventId/run")
   @ApiOperation({ summary: "Admitir participantes de la cola según cupos" })

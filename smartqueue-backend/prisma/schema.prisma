@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -28,6 +28,37 @@ enum ControlMode {
   FIXED
   REACTIVE
   PREDICTIVE
+}
+
+enum ExperimentScenario {
+  NORMAL
+  BURST
+  SUSTAINED_PEAK
+  STEPPED
+}
+
+enum ExperimentStatus {
+  RUNNING
+  COMPLETED
+  CANCELLED
+  FAILED
+}
+
+enum TelemetryRequestType {
+  QUEUE_JOIN
+  RESERVATION_CREATE
+  PURCHASE_CONFIRM
+}
+
+enum TelemetryResult {
+  SUCCESS
+  TECHNICAL_ERROR
+  TIMEOUT
+  SERVER_ERROR
+  VALIDATION_REJECTION
+  STOCK_REJECTION
+  ACCESS_EXPIRED
+  BUSINESS_REJECTION
 }
 
 enum UserStatus {
@@ -543,19 +574,21 @@ model FiscalReceipt {
 }
 
 model Event {
-  id             String                @id @default(uuid())
-  slug           String                @unique
+  id             String                  @id @default(uuid())
+  slug           String                  @unique
   name           String
   description    String
   startsAt       DateTime
   capacity       Int
   availableStock Int
-  isActive       Boolean               @default(true)
-  createdAt      DateTime              @default(now())
-  updatedAt      DateTime              @updatedAt
+  isActive       Boolean                 @default(true)
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
   queueEntries   QueueEntry[]
   reservations   PurchaseReservation[]
   purchases      Purchase[]
+  experimentRuns ExperimentRun[]
+  telemetry      OperationalRequestLog[]
 }
 
 model QueueEntry {
@@ -605,48 +638,105 @@ model Purchase {
 }
 
 model ExperimentRun {
-  id               String         @id @default(uuid())
-  scenario         String
-  seed             Int
-  generatorVersion String
-  controlMode      ControlMode
-  startedAt        DateTime       @default(now())
-  finishedAt       DateTime?
-  metricWindows    MetricWindow[]
+  id                  String                  @id @default(uuid())
+  eventId             String
+  scenario            ExperimentScenario
+  seed                Int
+  generatorVersion    String
+  controlMode         ControlMode
+  status              ExperimentStatus        @default(RUNNING)
+  schemaVersion       String                  @default("1.0")
+  windowSeconds       Int                     @default(10)
+  horizonSeconds      Int                     @default(30)
+  durationSeconds     Int
+  minLimit            Int
+  maxLimit            Int
+  currentLimit        Int
+  fixedLimit          Int
+  stepUp              Int                     @default(1)
+  stepDown            Int                     @default(2)
+  highThreshold       Float                   @default(0.65)
+  lowThreshold        Float                   @default(0.35)
+  cooldownWindows     Int                     @default(2)
+  latencyThresholdMs  Float                   @default(1000)
+  errorThreshold      Float                   @default(0.05)
+  arrivalProfile      Json?
+  purchaseProbability Float?
+  abandonProbability  Float?
+  startedAt           DateTime                @default(now())
+  finishedAt          DateTime?
+  event               Event                   @relation(fields: [eventId], references: [id])
+  metricWindows       MetricWindow[]
+  telemetry           OperationalRequestLog[]
+
+  @@index([eventId, status])
+  @@index([scenario, controlMode, seed])
 }
 
 model MetricWindow {
-  id              String         @id @default(uuid())
-  runId           String
-  windowEnd       DateTime
-  arrivalRate     Float
-  arrivalTrend    Float
-  queueLength     Int
-  activeBuyers    Int
-  admissionLimit  Int
-  latencyP95Ms    Float
-  errorRate       Float
-  completionRate  Float
-  evaluable       Boolean        @default(true)
-  saturationLabel Boolean?
-  run             ExperimentRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
-  prediction      PredictionLog?
+  id                     String         @id @default(uuid())
+  runId                  String
+  windowEnd              DateTime
+  arrivalRate            Float
+  arrivalTrend           Float
+  queueLength            Int
+  activeBuyers           Int
+  admissionLimit         Int
+  latencyP95Ms           Float
+  latencyP50Ms           Float
+  latencyP99Ms           Float
+  errorRate              Float
+  completionRate         Float
+  criticalRequestCount   Int            @default(0)
+  technicalErrorCount    Int            @default(0)
+  completedPurchaseCount Int            @default(0)
+  schemaVersion          String         @default("1.0")
+  evaluable              Boolean        @default(true)
+  exclusionReason        String?
+  saturationLabel        Boolean?
+  run                    ExperimentRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
+  prediction             PredictionLog?
 
   @@unique([runId, windowEnd])
+  @@index([runId, windowEnd])
 }
 
 model PredictionLog {
-  id             String       @id @default(uuid())
-  metricWindowId String       @unique
-  riskScore      Float?
-  riskClass      String?
-  horizonSeconds Int?
-  modelVersion   String?
-  requestedAt    DateTime     @default(now())
-  responseMs     Int?
-  fallbackUsed   Boolean      @default(false)
-  appliedMode    ControlMode
-  appliedLimit   Int
-  failureReason  String?
-  metricWindow   MetricWindow @relation(fields: [metricWindowId], references: [id], onDelete: Cascade)
+  id              String       @id @default(uuid())
+  metricWindowId  String       @unique
+  riskScore       Float?
+  riskClass       String?
+  horizonSeconds  Int?
+  modelVersion    String?
+  requestedAt     DateTime     @default(now())
+  responseMs      Int?
+  predictionAgeMs Int?
+  fallbackUsed    Boolean      @default(false)
+  fallbackReason  String?
+  appliedMode     ControlMode
+  previousLimit   Int
+  appliedLimit    Int
+  failureReason   String?
+  metricWindow    MetricWindow @relation(fields: [metricWindowId], references: [id], onDelete: Cascade)
+}
+
+model OperationalRequestLog {
+  id                String               @id @default(uuid())
+  timestamp         DateTime             @default(now())
+  requestType       TelemetryRequestType
+  durationMs        Int
+  statusCode        Int
+  result            TelemetryResult
+  technicalError    Boolean              @default(false)
+  businessRejection Boolean              @default(false)
+  eventId           String
+  runId             String?
+  participantHash   String
+  errorCode         String?
+  event             Event                @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  run               ExperimentRun?       @relation(fields: [runId], references: [id], onDelete: SetNull)
+
+  @@index([runId, timestamp])
+  @@index([eventId, requestType, timestamp])
+  @@index([technicalError, timestamp])
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, UseGuards } from "@nestjs/common";
 import {
   ApiBearerAuth,
   ApiOkResponse,
@@ -15,6 +15,7 @@ import { Permission } from "@/modules/auth/enums/permission.enum";
 import { Permissions } from "@/modules/auth/decorators/permissions.decorator";
 import { AccessTokenGuard } from "@/modules/auth/guards/access-token.guard";
 import { PermissionsGuard } from "@/modules/auth/guards/permissions.guard";
+import { GetRunWindowsService } from "@/modules/metrics/services/get-run-windows.service";
 
 @ApiTags("metrics")
 @ApiBearerAuth("access-token")
@@ -22,7 +23,16 @@ import { PermissionsGuard } from "@/modules/auth/guards/permissions.guard";
 @Permissions(Permission.METRICS_READ)
 @Controller("metrics")
 export class MetricsController {
-  constructor(private readonly dashboard: GetDashboardService) {}
+  constructor(
+    private readonly dashboard: GetDashboardService,
+    private readonly windows: GetRunWindowsService,
+  ) {}
+
+  @Get("runs/:runId/windows")
+  @ApiOperation({ summary: "Exportar ventanas persistidas de una corrida" })
+  getRunWindows(@Param("runId") runId: string) {
+    return this.windows.execute(runId);
+  }
   @Get("dashboard")
   @ApiOperation({
     summary: "Consultar métricas de cola y última predicción ML",

@@ -26,4 +26,28 @@ describe("nextAdmissionLimit", () => {
       }),
     ).toBe(5);
   });
+
+  it("requires consecutive healthy windows before increasing predictive capacity", () => {
+    const base = {
+      currentLimit: 10,
+      minLimit: 2,
+      maxLimit: 30,
+      latencyP95Ms: 200,
+      errorRate: 0,
+      riskScore: 0.1,
+      cooldownWindows: 3,
+    };
+    expect(
+      nextAdmissionLimit(ControlMode.PREDICTIVE, {
+        ...base,
+        recoveryWindows: 2,
+      }),
+    ).toBe(10);
+    expect(
+      nextAdmissionLimit(ControlMode.PREDICTIVE, {
+        ...base,
+        recoveryWindows: 3,
+      }),
+    ).toBe(11);
+  });
 });
