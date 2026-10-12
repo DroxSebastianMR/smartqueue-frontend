@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Carousel } from '@/components/ui/carousel';
 import { UPCOMING_MOVIES } from '@/features/events/data/home.data';
 import { MovieCard } from '@/features/events/presentation/components/movie-card';
 
@@ -12,7 +13,9 @@ export function UpcomingMoviesSection() {
           <div><p className="text-[11px] font-semibold uppercase tracking-[.3em] text-sky-200/70">Lo que viene</p><h2 className="mt-2 text-3xl font-semibold tracking-[-.035em] text-white sm:text-4xl">Próximos estrenos</h2></div>
           <Button variant="ghost" className="text-zinc-400">Explorar próximos <ArrowRight className="size-4" /></Button>
         </div>
-        <div className="mt-9 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">{UPCOMING_MOVIES.map((movie) => <MovieCard key={movie.id} movie={movie} compact />)}</div>
+        <Carousel ariaLabel="Próximos estrenos" interval={5000} itemClassName="w-[78%] sm:w-[43%] lg:w-[29%] xl:w-[23%]" className="mt-9">
+          {UPCOMING_MOVIES.map((movie) => <MovieCard key={movie.id} movie={movie} compact />)}
+        </Carousel>
       </div>
     </section>
   );
