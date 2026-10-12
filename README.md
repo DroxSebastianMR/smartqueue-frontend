@@ -15,7 +15,7 @@ La raíz coordina documentación y ejecución local. Cada componente conserva de
 ## Puesta en marcha
 
 1. Instalar dependencias una vez: `npm install --prefix smartqueue-backend` y `npm install --prefix smartqueue-frontend`.
-2. Desde esta carpeta raíz, ejecutar `npm run dev`. El comando inicia NestJS y Vite juntos; `Ctrl+C` detiene ambos. No requiere instalar dependencias en la raíz.
+2. Crear `smartqueue-ai/.venv` e instalar `requirements-dev.txt`. Desde esta carpeta raíz, ejecutar `npm run dev`. El comando inicia NestJS, Vite y Flask juntos; `Ctrl+C` detiene los tres. Puede definirse `SMARTQUEUE_PYTHON` si el intérprete está en otra ruta.
 3. Configurar `smartqueue-backend/.env` con `DATABASE_URL` y `DIRECT_URL` de Supabase. El proxy `/api` conecta el frontend con NestJS; Home obtiene banners, películas, anuncios, promociones, cines y funciones de sus endpoints.
 4. Para reproducir la base desde cero, en backend ejecutar `npm run prisma:generate`, `npx prisma migrate deploy` y `npm run prisma:seed`. El frontend usa `VITE_USE_MOCKS=false`; la cola y la compra continúan siendo prototipos y no procesan pagos reales.
 5. Para predicciones ML, iniciar el servicio de `smartqueue-ai` según su README.
@@ -33,4 +33,5 @@ El usuario cliente demo local es `demo@cinetrux.test` con contraseña `CinetruxD
 - El caso visual se inspira en una preventa cinematográfica, sin afirmar integración oficial con Cineplanet.
 
 Consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para límites, flujo y convenciones.
+El protocolo de telemetría, experimentos, etiquetado, entrenamiento, inferencia y fallback está en [docs/ML_LIFECYCLE.md](docs/ML_LIFECYCLE.md).
 

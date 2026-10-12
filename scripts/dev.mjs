@@ -4,6 +4,10 @@ import path from 'node:path';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const npmCli = process.env.npm_execpath;
+const python = process.env.SMARTQUEUE_PYTHON
+  ?? (process.platform === 'win32'
+    ? path.join(root, 'smartqueue-ai', '.venv', 'Scripts', 'python.exe')
+    : path.join(root, 'smartqueue-ai', '.venv', 'bin', 'python'));
 
 if (!npmCli) {
   console.error('Ejecuta este lanzador con npm run dev desde la raíz del proyecto.');
@@ -11,8 +15,9 @@ if (!npmCli) {
 }
 
 const services = [
-  { name: 'backend', directory: 'smartqueue-backend', script: 'start:dev' },
-  { name: 'frontend', directory: 'smartqueue-frontend', script: 'dev' },
+  { name: 'backend', directory: 'smartqueue-backend', command: process.execPath, args: [npmCli, 'run', 'start:dev'] },
+  { name: 'frontend', directory: 'smartqueue-frontend', command: process.execPath, args: [npmCli, 'run', 'dev'] },
+  { name: 'ai', directory: 'smartqueue-ai', command: python, args: ['-m', 'flask', '--app', 'app.main', 'run', '--port', '5001'] },
 ];
 
 const children = [];
@@ -38,7 +43,7 @@ process.on('SIGINT', () => stop(130));
 process.on('SIGTERM', () => stop(143));
 
 for (const service of services) {
-  const child = spawn(process.execPath, [npmCli, 'run', service.script], {
+  const child = spawn(service.command, service.args, {
     cwd: path.join(root, service.directory),
     env: process.env,
     stdio: 'inherit',
