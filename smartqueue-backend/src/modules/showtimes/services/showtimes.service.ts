@@ -53,6 +53,10 @@ export class ShowtimesService {
       )
       .filter(
         (showtime) =>
+          !query.city || this.cinemas.detail(showtime.cinemaSlug, true).city.toLocaleLowerCase("es-PE") === query.city.toLocaleLowerCase("es-PE"),
+      )
+      .filter(
+        (showtime) =>
           !query.movieSlug || showtime.movieSlug === query.movieSlug,
       )
       .filter(

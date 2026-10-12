@@ -1,7 +1,7 @@
 import { QueueStatus } from '@/features/queue/enums/queue-status.enum';
 import type { QueueEntry, QueueSnapshot } from '@/features/queue/types/queue-entry.types';
-import { apiGet, apiPost, useMocks } from '@/services/api/client';
-import { API_ENDPOINTS } from '@/services/api/endpoints';
+import { apiGet, apiPost, useMocks } from '@/infrastructure/api/client/axios.instance';
+import { API_ENDPOINTS } from '@/infrastructure/api/endpoints';
 
 export const DEMO_EVENT_ID = '001f5a1b-9a0e-4cb4-8c76-8fe880bfe17d';
 

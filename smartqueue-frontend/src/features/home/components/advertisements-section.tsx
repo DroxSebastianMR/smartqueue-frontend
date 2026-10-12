@@ -1,16 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { Card } from '@/components/ui/card';
-import { homeService } from '@/features/home/services/home.service';
+import { useHomeAdvertisements } from '@/features/home/hooks/use-home-content';
 
 export function AdvertisementsSection() {
-  const { data: advertisements } = useQuery({
-    queryKey: ['advertisements'],
-    queryFn: homeService.advertisements,
-    retry: 1,
-  });
+  const { data: advertisements } = useHomeAdvertisements();
   if (!advertisements?.length) return null;
 
   return (

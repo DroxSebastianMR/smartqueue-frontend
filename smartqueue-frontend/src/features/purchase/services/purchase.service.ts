@@ -1,7 +1,7 @@
 import type { Purchase, Reservation } from '@/features/purchase/types/purchase.types';
 import { DEMO_EVENT_ID } from '@/features/queue/services/queue.service';
-import { apiPost, useMocks } from '@/services/api/client';
-import { API_ENDPOINTS } from '@/services/api/endpoints';
+import { apiPost, useMocks } from '@/infrastructure/api/client/axios.instance';
+import { API_ENDPOINTS } from '@/infrastructure/api/endpoints';
 
 export const purchaseService = {
   async reserve(quantity: number): Promise<Reservation> {

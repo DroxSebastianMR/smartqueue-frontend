@@ -16,13 +16,13 @@ La raíz coordina documentación y ejecución local. Cada componente conserva de
 
 1. Instalar dependencias una vez: `npm install --prefix smartqueue-backend` y `npm install --prefix smartqueue-frontend`.
 2. Desde esta carpeta raíz, ejecutar `npm run dev`. El comando inicia NestJS y Vite juntos; `Ctrl+C` detiene ambos. No requiere instalar dependencias en la raíz.
-3. Sin `.env`, el proxy `/api` conecta el frontend con NestJS y funcionan portada/login. Para cola y ventas sin PostgreSQL, copiar `smartqueue-frontend/.env.example` a `smartqueue-frontend/.env` y dejar `VITE_USE_MOCKS=true`.
-4. Para el flujo completo, iniciar PostgreSQL con `docker compose up -d postgres`; en backend ejecutar `npm run prisma:generate`, `npm run prisma:migrate:dev` y `npm run prisma:seed`, y en frontend poner `VITE_USE_MOCKS=false`.
+3. Configurar `smartqueue-backend/.env` con `DATABASE_URL` y `DIRECT_URL` de Supabase. El proxy `/api` conecta el frontend con NestJS; Home obtiene banners, películas, anuncios, promociones, cines y funciones de sus endpoints.
+4. Para reproducir la base desde cero, en backend ejecutar `npm run prisma:generate`, `npx prisma migrate deploy` y `npm run prisma:seed`. El frontend usa `VITE_USE_MOCKS=false`; la cola y la compra continúan siendo prototipos y no procesan pagos reales.
 5. Para predicciones ML, iniciar el servicio de `smartqueue-ai` según su README.
 
 La interfaz queda en `http://localhost:5173`, NestJS en `http://localhost:3000/api/v1` y Flask en `http://localhost:5001`.
 
-El usuario cliente demo local es `demo@cinetrux.test` con contraseña `CinetruxDemo2026!`; el administrador demo es `admin@cinetrux.test` con contraseña `CinetruxAdmin2026!`. Swagger se encuentra en `http://localhost:3000/api/docs`. No se ha publicado ni subido ningún cambio a GitHub.
+El usuario cliente demo local es `demo@cinetrux.test` con contraseña `CinetruxDemo2026!`; el administrador demo es `admin@cinetrux.test` con contraseña `CinetruxAdmin2026!`. Swagger se encuentra en `http://localhost:3000/api/docs`.
 
 ## Alcance protegido
 

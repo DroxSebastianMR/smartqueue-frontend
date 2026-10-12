@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { homeService } from '@/features/home/services/home.service';
+import { homeQueryKeys } from '@/features/home/constants/home-query-keys';
+import { homeService } from '@/infrastructure/api/home/services/home.service';
 
 export function useFeaturedMovie() {
-  return useQuery({ queryKey: ['home', 'featured'], queryFn: homeService.featured, retry: 1 });
+  return useQuery({ queryKey: homeQueryKeys.featured, queryFn: homeService.featured });
 }

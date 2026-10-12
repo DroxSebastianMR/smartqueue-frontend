@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 import { authStorage } from '@/features/auth/utils/auth.storage';
-import { apiClient } from '@/services/api/client';
-import { API_ENDPOINTS } from '@/services/api/endpoints';
+import { apiClient } from '@/infrastructure/api/client/axios.instance';
+import { API_ENDPOINTS } from '@/infrastructure/api/endpoints';
 
 export class ApiError extends Error {
   constructor(public readonly status: number, message: string) {

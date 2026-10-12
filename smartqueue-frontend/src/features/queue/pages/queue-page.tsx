@@ -9,7 +9,7 @@ import { QueueStatus } from '@/features/queue/enums/queue-status.enum';
 import { useQueue } from '@/features/queue/hooks/use-queue';
 import { useAuth } from '@/app/providers/auth/use-auth';
 import { UserRole } from '@/features/auth/enums/user-role.enum';
-import { useMocks } from '@/services/api/client';
+import { useMocks } from '@/infrastructure/api/client/axios.instance';
 
 export function QueuePage() {
   const navigate = useNavigate();

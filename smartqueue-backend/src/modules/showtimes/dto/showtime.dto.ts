@@ -61,6 +61,10 @@ export class ShowtimePageDto {
   @ApiProperty({ type: PageMetaDto }) meta!: PageMetaDto;
 }
 export class ShowtimeQueryDto extends ListQueryDto {
+  @ApiPropertyOptional({ example: "Lima" })
+  @IsOptional()
+  @IsString()
+  city?: string;
   @ApiPropertyOptional({ example: "cinetrux-centro" })
   @IsOptional()
   @IsString()

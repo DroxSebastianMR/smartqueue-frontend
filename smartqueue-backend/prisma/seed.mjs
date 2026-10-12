@@ -50,9 +50,14 @@ async function catalog() {
     for (const format of formats) await db.movieVersion.upsert({ where: { id: uid(`version:${slug}:${format}`) }, update: {}, create: { id: uid(`version:${slug}:${format}`), movieId: movie.id, format, audioLanguageCode: 'es-419' } });
   }
   const movie = await db.movie.findUniqueOrThrow({ where: { slug: 'avengers-doomsday' } });
+  const logoUrl = 'https://image.tmdb.org/t/p/original/veL7UArbDt2kgFTDME0DgJdRpxa.png';
+  const synopsis = 'El destino de los héroes converge en el próximo gran evento de Marvel Studios.';
+  await db.movie.updateMany({ where: { id: movie.id, synopsis: null }, data: { synopsis } });
   await db.movieRelease.upsert({ where: { movieId_countryCode: { movieId: movie.id, countryCode: 'PE' } }, update: { status: 'PRESALE' }, create: { movieId: movie.id, countryCode: 'PE', releaseDate: new Date('2026-12-17T00:00:00Z'), status: 'PRESALE' } });
   await db.movieAsset.upsert({ where: { id: uid('trailer:avengers') }, update: {}, create: { id: uid('trailer:avengers'), movieId: movie.id, kind: 'TRAILER', provider: 'YOUTUBE', url: 'https://www.youtube.com/watch?v=lAr_uspgHm8', locale: 'es-419' } });
-  await db.banner.upsert({ where: { id: uid('banner:avengers') }, update: {}, create: { id: uid('banner:avengers'), movieId: movie.id, title: movie.title, backdropUrl: 'https://i.ytimg.com/vi/lAr_uspgHm8/maxresdefault.jpg', videoUrl: 'https://www.youtube.com/watch?v=lAr_uspgHm8', videoProvider: 'YOUTUBE', ctaLabel: 'Ver funciones', ctaHref: '/purchase', status: 'ACTIVE', priority: 1 } });
+  await db.banner.upsert({ where: { id: uid('banner:avengers') }, update: {}, create: { id: uid('banner:avengers'), movieId: movie.id, title: movie.title, backdropUrl: 'https://i.ytimg.com/vi/lAr_uspgHm8/maxresdefault.jpg', videoUrl: 'https://www.youtube.com/watch?v=lAr_uspgHm8', videoProvider: 'YOUTUBE', ctaLabel: 'Ver funciones', ctaHref: '/#cinema-finder', status: 'ACTIVE', priority: 1 } });
+  await db.banner.updateMany({ where: { id: uid('banner:avengers'), logoUrl: null }, data: { logoUrl } });
+  await db.banner.updateMany({ where: { id: uid('banner:avengers'), ctaHref: '/purchase' }, data: { ctaHref: '/#cinema-finder' } });
   await db.advertisement.createMany({ data: [
     { id: uid('ad:combo'), title: 'Disfruta tu combo Canchas', description: 'Contenido de demostración.', ctaLabel: 'Ver combos', ctaHref: '/#promotions', status: 'ACTIVE', priority: 1 },
     { id: uid('ad:salas'), title: 'Una nueva forma de vivir el cine', description: 'Descubre nuestros formatos.', ctaLabel: 'Explorar', ctaHref: '/#now-playing', status: 'ACTIVE', priority: 2 },
@@ -60,7 +65,10 @@ async function catalog() {
     { id: uid('ad:familia'), title: 'Cine en familia', description: 'Historias para compartir.', ctaLabel: 'Ver películas', ctaHref: '/#now-playing', status: 'ACTIVE', priority: 4 },
     { id: uid('ad:proximamente'), title: 'Lo que viene a Cinetrux', description: 'Descubre los próximos estrenos.', ctaLabel: 'Descubrir', ctaHref: '/#upcoming', status: 'ACTIVE', priority: 5 },
   ], skipDuplicates: true });
-  await db.promotion.upsert({ where: { id: uid('promo:canchas') }, update: {}, create: { id: uid('promo:canchas'), title: 'Combo Canchas Demo', description: 'Sin precio ni vigencia comercial.', ctaLabel: 'Conocer más', ctaHref: '/purchase', status: 'ACTIVE' } });
+  await db.advertisement.updateMany({ where: { id: uid('ad:combo'), description: 'Contenido de demostración.' }, data: { description: 'Acompaña tu película con una selección de snacks.' } });
+  const promoImageUrl = 'https://images.unsplash.com/photo-1578849278619-e73505e9610f?auto=format&fit=crop&w=1400&q=88';
+  await db.promotion.upsert({ where: { id: uid('promo:canchas') }, update: {}, create: { id: uid('promo:canchas'), title: 'Combo Canchas', description: 'Acompaña tu función con canchita y bebidas.', imageUrl: promoImageUrl, ctaLabel: 'Conocer más', ctaHref: '/purchase', status: 'ACTIVE' } });
+  await db.promotion.updateMany({ where: { id: uid('promo:canchas'), title: 'Combo Canchas Demo' }, data: { title: 'Combo Canchas', description: 'Acompaña tu función con canchita y bebidas.', imageUrl: promoImageUrl } });
 }
 
 async function theatres() {

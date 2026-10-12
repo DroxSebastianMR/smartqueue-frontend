@@ -1,19 +1,9 @@
-import { ArrowRight } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
 import { Carousel } from '@/components/ui/carousel';
-import { UPCOMING_MOVIES } from '@/features/home/data/home.data';
 import { MovieCard } from '@/features/home/components/movie-card';
-import { useQuery } from '@tanstack/react-query';
-import { homeService } from '@/features/home/services/home.service';
+import { useUpcomingMovies } from '@/features/home/hooks/use-home-content';
 
 export function UpcomingMoviesSection() {
-  const { data } = useQuery({
-    queryKey: ['movies', 'upcoming'],
-    queryFn: homeService.upcoming,
-    retry: 1,
-  });
-  const movies = data ?? UPCOMING_MOVIES;
+  const { data: movies, isPending, isError } = useUpcomingMovies();
   return (
     <section
       id="upcoming"
@@ -29,20 +19,22 @@ export function UpcomingMoviesSection() {
               Próximos estrenos
             </h2>
           </div>
-          <Button variant="ghost" className="text-zinc-400">
-            Explorar próximos <ArrowRight className="size-4" />
-          </Button>
         </div>
+        {isPending && <p role="status" className="mt-8 text-sm text-zinc-400">Cargando próximos estrenos…</p>}
+        {isError && <p role="alert" className="mt-8 text-sm text-zinc-400">No pudimos cargar los próximos estrenos.</p>}
+        {!isPending && !isError && movies.length === 0 && <p className="mt-8 text-sm text-zinc-400">Aún no hay próximos estrenos.</p>}
+        {movies && movies.length > 0 && (
         <Carousel
           ariaLabel="Próximos estrenos"
           interval={5000}
-          itemClassName="w-[78%] sm:w-[43%] lg:w-[29%] xl:w-[23%]"
+          itemClassName="w-[72%] sm:w-[42%] lg:w-[26%] xl:w-[20%]"
           className="mt-9"
         >
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} compact />
           ))}
         </Carousel>
+        )}
       </div>
     </section>
   );

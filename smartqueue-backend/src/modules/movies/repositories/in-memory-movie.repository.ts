@@ -43,6 +43,8 @@ export class InMemoryMovieRepository extends DemoCatalogRepository implements On
   private banners: CatalogBanner[] | null = null;
   private advertisements: CatalogAdvertisement[] | null = null;
   private promotions: CatalogPromotion[] | null = null;
+  // External catalog edits are visible after a process restart; local admin writes call onModuleInit.
+  private hydrated = false;
 
   constructor(@Optional() private readonly db?: PrismaService) {
     super();
@@ -115,6 +117,7 @@ export class InMemoryMovieRepository extends DemoCatalogRepository implements On
       imageUrl: item.imageUrl, cta: { label: item.ctaLabel, href: item.ctaHref },
       startsAt: item.startsAt?.toISOString() ?? null, endsAt: item.endsAt?.toISOString() ?? null,
     }));
+    this.hydrated = true;
   }
 
   override listBanners(): readonly CatalogBanner[] { return this.banners ?? super.listBanners(); }
@@ -151,7 +154,7 @@ export class InMemoryMovieRepository extends DemoCatalogRepository implements On
         locale: asset.locale ?? "und",
         kind: asset.kind as "TRAILER" | "TEASER",
       }));
-    return this.db ? added : [...super.listTrailers(slug), ...added];
+    return this.hydrated ? added : [...super.listTrailers(slug), ...added];
   }
 
   listAll(): ManagedMovie[] {

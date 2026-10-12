@@ -1,23 +1,22 @@
-import { Clock3, Info, Ticket } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Clock3, Ticket } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import type { Movie } from '@/features/home/models/movie.model';
+import type { MovieCardView } from '@/features/home/types/home.types';
+import { useHomeSelectionStore } from '@/features/home/store/home-selection.store';
 
-export function MovieCard({ movie, compact = false }: { movie: Movie; compact?: boolean }) {
-  const navigate = useNavigate();
+export function MovieCard({ movie, compact = false }: { movie: MovieCardView; compact?: boolean }) {
+  const setMovieSlug = useHomeSelectionStore((state) => state.setMovieSlug);
   return (
     <article className="group h-full min-w-0">
       <Card className="flex h-full flex-col overflow-hidden rounded-[22px] border-white/[.09] bg-[#111318] shadow-[0_22px_50px_rgba(0,0,0,.28)] transition duration-500 group-hover:-translate-y-1 group-hover:border-sky-200/25 group-hover:shadow-[0_26px_70px_rgba(63,119,150,.12)]">
         <div className={`relative aspect-[2/3] overflow-hidden ${compact ? 'min-h-[360px]' : ''}`}>
           <img src={movie.poster} alt={`Arte promocional de ${movie.title}`} loading="lazy" referrerPolicy="no-referrer" className="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-[1.035]" />
-          <div className={`absolute inset-0 bg-gradient-to-t ${movie.palette} opacity-30 mix-blend-multiply`} />
           <div className="absolute inset-0 bg-gradient-to-t from-[#111318] via-transparent to-black/15" />
           {movie.releaseTag && <Badge className="absolute left-3 top-3 border-white/15 bg-black/60 text-white backdrop-blur-md">{movie.releaseTag}</Badge>}
           <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-            <div className="flex gap-2"><Button className="flex-1 rounded-full px-3 py-2" onClick={() => navigate('/purchase')}><Ticket className="size-3.5" /> Comprar</Button><Button variant="outline" size="icon" className="rounded-full bg-black/45" aria-label={`Ver detalles de ${movie.title}`}><Info className="size-4" /></Button></div>
+            <Button className="w-full rounded-full px-3 py-2" disabled={!movie.bookable} onClick={() => { setMovieSlug(movie.id); document.getElementById('cinema-finder')?.scrollIntoView({ behavior: 'smooth' }); }}><Ticket className="size-3.5" />{movie.bookable ? 'Ver funciones' : 'Próximamente'}</Button>
           </div>
         </div>
 

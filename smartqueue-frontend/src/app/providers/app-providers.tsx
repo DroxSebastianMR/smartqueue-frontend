@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { PropsWithChildren } from 'react';
 import { AuthProvider } from '@/app/providers/auth/auth-provider';
-import { setupInterceptors } from '@/services/api/interceptors';
+import { setupInterceptors } from '@/infrastructure/api/client/axios.interceptors';
 
 setupInterceptors();
 

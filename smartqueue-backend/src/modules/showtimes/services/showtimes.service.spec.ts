@@ -182,6 +182,8 @@ describe("gestión de cartelera, salas y funciones", () => {
       basePriceCents: 2500,
     });
     showtimes.onSale(created.id);
+    expect(showtimes.list({ city: "Lima", page: 1, limit: 10 }).meta.total).toBe(1);
+    expect(showtimes.list({ city: "Arequipa", page: 1, limit: 10 }).meta.total).toBe(0);
     const schedule = showtimes.movieSchedule("avengers-doomsday", {
       latitude: -12.101,
       longitude: -77.001,
