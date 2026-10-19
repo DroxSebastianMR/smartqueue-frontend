@@ -3,6 +3,7 @@ from pathlib import Path
 
 import joblib
 import numpy as np
+import pandas as pd
 
 from app.domain.features import FEATURE_NAMES, SaturationFeatures
 from app.domain.prediction import RiskClass, SaturationPrediction
@@ -17,6 +18,7 @@ class SklearnSaturationPredictor:
         self._threshold = threshold
         self._pipeline = None
         self._model_version = "unavailable"
+        self.data_sources = ['UNSPECIFIED']
 
         model_file = Path(model_path)
         metadata_file = Path(metadata_path)
@@ -30,6 +32,7 @@ class SklearnSaturationPredictor:
             if stored_features and stored_features != FEATURE_NAMES:
                 raise ValueError("The model feature contract does not match schema v1")
             self._model_version = str(metadata.get("model_version", "unknown"))
+            self.data_sources = metadata.get('data_sources', ['UNSPECIFIED'])
             self._threshold = float(metadata.get("selected_threshold", threshold))
 
     @property
@@ -40,7 +43,7 @@ class SklearnSaturationPredictor:
         if self._pipeline is None:
             raise ModelUnavailableError("No trained model artifact is available")
 
-        row = np.asarray([features.as_row()], dtype=float)
+        row = pd.DataFrame(np.asarray([features.as_row()], dtype=float), columns=FEATURE_NAMES)
         probability = float(self._pipeline.predict_proba(row)[0, 1])
         probability = min(1.0, max(0.0, probability))
         risk_class = RiskClass.SATURATION if probability >= self._threshold else RiskClass.HEALTHY

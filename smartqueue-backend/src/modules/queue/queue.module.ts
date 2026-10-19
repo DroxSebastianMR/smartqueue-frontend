@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { QueueLifecycleService } from "./services/queue-lifecycle.service";
 
 import { GetQueueStatusService } from "@/modules/queue/services/get-queue-status.service";
 import { JoinQueueService } from "@/modules/queue/services/join-queue.service";
@@ -13,6 +14,7 @@ import { MetricsModule } from "@/modules/metrics/metrics.module";
   imports: [AuthModule, MetricsModule],
   controllers: [QueueController],
   providers: [
+    QueueLifecycleService,
     JoinQueueService,
     GetQueueStatusService,
     QueueCacheService,

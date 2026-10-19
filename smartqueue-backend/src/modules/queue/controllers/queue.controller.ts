@@ -29,6 +29,7 @@ import {
   QueueStatusDto,
 } from "@/modules/queue/dto/queue-response.dto";
 import { AccessTokenGuard } from "@/modules/auth/guards/access-token.guard";
+import { QueueLifecycleService } from "../services/queue-lifecycle.service";
 
 @ApiTags("queue")
 @ApiBearerAuth("access-token")
@@ -38,6 +39,7 @@ export class QueueController {
   constructor(
     private readonly joinQueue: JoinQueueService,
     private readonly getStatus: GetQueueStatusService,
+    private readonly lifecycle: QueueLifecycleService,
   ) {}
 
   @Post("entries")
@@ -65,6 +67,15 @@ export class QueueController {
   )
   join(@Body() dto: JoinQueueDto) {
     return this.joinQueue.execute(dto.eventId, dto.participantToken);
+  }
+
+  @Post("entries/cancel")
+  @ApiOperation({
+    summary:
+      "Abandonar la cola y liberar una reserva activa; operación idempotente",
+  })
+  cancel(@Body() dto: JoinQueueDto) {
+    return this.lifecycle.cancel(dto.eventId, dto.participantToken);
   }
 
   @Get("events/:eventId/status")

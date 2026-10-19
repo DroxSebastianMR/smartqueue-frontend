@@ -2,6 +2,9 @@
 
 Servicio Flask para inferencia de saturación a 30 segundos y scripts de entrenamiento offline.
 
+Dataset bootstrap, fuentes investigadas, resultados y comandos: [DATASET.md](DATASET.md).
+El modelo bootstrap es sintético y se carga explícitamente; no reemplaza un modelo validado.
+
 ## Arquitectura
 
 ```text

@@ -34,6 +34,8 @@ def label_windows(
                 reason = str(row.get("exclusion_reason") or "NOT_EVALUABLE")
             elif len(future) < horizon_windows:
                 reason = "INCOMPLETE_FUTURE_HORIZON"
+            elif not future['evaluable'].eq(True).all():
+                reason = "FUTURE_NOT_EVALUABLE"
             elif any(
                 (future.iloc[offset]["window_end"] - row["window_end"]).total_seconds()
                 != (offset + 1) * 10

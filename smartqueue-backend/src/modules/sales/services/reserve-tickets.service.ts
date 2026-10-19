@@ -27,17 +27,34 @@ export class ReserveTicketsService {
       },
       () =>
         this.prisma.$transaction(async (tx) => {
+          await tx.$queryRaw`SELECT id FROM "Event" WHERE id = ${eventId} FOR UPDATE`;
           const existing = await tx.purchaseReservation.findUnique({
             where: { queueEntryId },
           });
-          if (existing) return existing;
+          if (existing) {
+            if (
+              existing.eventId !== eventId ||
+              existing.quantity !== quantity ||
+              existing.status !== ReservationStatus.ACTIVE ||
+              existing.expiresAt <= new Date()
+            ) {
+              throw new AppException(
+                CinemaErrorCode.RESERVATION_INVALID,
+                "Reserva incompatible o vencida",
+                HttpStatus.CONFLICT,
+              );
+            }
+            return existing;
+          }
           const entry = await tx.queueEntry.findUnique({
             where: { id: queueEntryId },
           });
           if (
             !entry ||
             entry.eventId !== eventId ||
-            entry.status !== QueueStatus.ADMITTED
+            entry.status !== QueueStatus.ADMITTED ||
+            !entry.accessExpiresAt ||
+            entry.accessExpiresAt <= new Date()
           ) {
             throw new AppException(
               CinemaErrorCode.QUEUE_ACCESS_DENIED,
@@ -67,7 +84,7 @@ export class ReserveTicketsService {
           });
           await tx.queueEntry.update({
             where: { id: queueEntryId },
-            data: { status: QueueStatus.RESERVED },
+            data: { status: QueueStatus.RESERVED, accessExpiresAt: expiresAt },
           });
           return reservation;
         }),

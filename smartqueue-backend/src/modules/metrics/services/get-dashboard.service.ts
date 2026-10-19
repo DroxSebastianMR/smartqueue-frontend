@@ -15,11 +15,14 @@ export class GetDashboardService {
     private readonly cache: CacheStoreService,
   ) {}
 
-  async execute() {
-    const cached = await this.cache.get(METRICS_DASHBOARD_CACHE_KEY);
+  async execute(runId?: string) {
+    const key = runId
+      ? `${METRICS_DASHBOARD_CACHE_KEY}:${runId}`
+      : METRICS_DASHBOARD_CACHE_KEY;
+    const cached = await this.cache.get(key);
     if (cached) return JSON.parse(cached);
     const run = await this.prisma.experimentRun.findFirst({
-      where: { status: "RUNNING" },
+      where: runId ? { id: runId } : {},
       orderBy: { startedAt: "desc" },
     });
     if (!run) {
@@ -29,7 +32,9 @@ export class GetDashboardService {
         prediction: null,
         history: [],
         comparison: [],
-        message: "No existe una corrida experimental activa.",
+        message: runId
+          ? "No se encontró esa corrida experimental."
+          : "Todavía no existen corridas experimentales.",
       };
     }
     const [waiting, activeBuyers, completed, latest, history, comparableRuns] =
@@ -53,11 +58,19 @@ export class GetDashboardService {
           where: { runId: run.id },
           orderBy: { windowEnd: "desc" },
           take: 60,
+          include: { prediction: true },
         }),
         this.prisma.experimentRun.findMany({
           where: {
-            eventId: run.eventId,
             scenario: run.scenario,
+            seed: run.seed,
+            generatorVersion: run.generatorVersion,
+            durationSeconds: run.durationSeconds,
+            minLimit: run.minLimit,
+            maxLimit: run.maxLimit,
+            fixedLimit: run.fixedLimit,
+            purchaseProbability: run.purchaseProbability,
+            abandonProbability: run.abandonProbability,
             status: "COMPLETED",
           },
           include: { metricWindows: true },
@@ -73,11 +86,18 @@ export class GetDashboardService {
         seed: run.seed,
         generatorVersion: run.generatorVersion,
         startedAt: run.startedAt,
+        status: run.status,
       },
       kpis: latest
         ? {
-            waiting,
-            activeBuyers,
+            waiting:
+              run.status === "RUNNING"
+                ? waiting
+                : latest.metricWindow.queueLength,
+            activeBuyers:
+              run.status === "RUNNING"
+                ? activeBuyers
+                : latest.metricWindow.activeBuyers,
             currentLimit: latest.appliedLimit,
             arrivalRate: latest.metricWindow.arrivalRate,
             latencyP50Ms: latest.metricWindow.latencyP50Ms,
@@ -100,6 +120,9 @@ export class GetDashboardService {
             fallbackReason: latest.fallbackReason,
             previousLimit: latest.previousLimit,
             appliedLimit: latest.appliedLimit,
+            appliedMode: latest.appliedMode,
+            windowEnd: latest.metricWindow.windowEnd,
+            evaluable: latest.metricWindow.evaluable,
           }
         : null,
       history: history.reverse(),
@@ -109,7 +132,7 @@ export class GetDashboardService {
         : "La corrida está activa, pero aún no cerró su primera ventana.",
     };
     await this.cache.set(
-      METRICS_DASHBOARD_CACHE_KEY,
+      key,
       JSON.stringify(response),
       METRICS_DASHBOARD_CACHE_TTL_SECONDS,
     );

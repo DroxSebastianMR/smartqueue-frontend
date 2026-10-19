@@ -12,6 +12,14 @@
 **/*.pyc
 smartqueue-ai/artifacts/*.joblib
 smartqueue-ai/artifacts/*.json
+smartqueue-ai/artifacts/bootstrap-v1/
 smartqueue-ai/data/generated/
 tmp/
+
+# Artefacto experimental mínimo necesario para el arranque Docker reproducible.
+!smartqueue-ai/artifacts/
+!smartqueue-ai/artifacts/bootstrap-v1/
+smartqueue-ai/artifacts/bootstrap-v1/*
+!smartqueue-ai/artifacts/bootstrap-v1/saturation_pipeline.joblib
+!smartqueue-ai/artifacts/bootstrap-v1/model_metadata.json
 

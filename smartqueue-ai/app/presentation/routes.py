@@ -1,4 +1,5 @@
 from datetime import datetime
+import math
 
 from flask import Blueprint, current_app, jsonify, request
 
@@ -18,6 +19,8 @@ def _number(
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"{name} must be numeric")
     parsed = float(value)
+    if not math.isfinite(parsed):
+        raise ValueError(f"{name} must be finite")
     if minimum is not None and parsed < minimum:
         raise ValueError(f"{name} must be greater than or equal to {minimum}")
     if maximum is not None and parsed > maximum:
@@ -32,6 +35,7 @@ def health():
         status="ok",
         service="smartqueue-ai",
         model_loaded=predictor.available,
+        data_sources=getattr(predictor, 'data_sources', ['UNSPECIFIED']),
     )
 
 

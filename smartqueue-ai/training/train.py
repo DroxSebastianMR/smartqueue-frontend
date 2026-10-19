@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import json
 import time
 from datetime import UTC, datetime
@@ -138,7 +139,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Train and freeze the SmartQueue saturation model")
     parser.add_argument("--input", required=True)
     parser.add_argument("--output", default="artifacts")
-    parser.add_argument("--minimum-precision", type=float, default=0.4)
+    parser.add_argument("--minimum-precision", type=float, default=0.7)
     parser.add_argument("--latency-threshold-ms", type=float, default=1_000)
     parser.add_argument("--error-threshold", type=float, default=0.05)
     parser.add_argument("--dataset-version", default="unversioned")
@@ -186,8 +187,7 @@ def main() -> None:
     )
     selected = candidates[winner]
     threshold = thresholds[winner]
-    final_train = pd.concat([train, validation], ignore_index=True)
-    selected.fit(final_train[list(FEATURE_NAMES)], final_train["saturation_label"])
+    # Keep the exact fitted model for which the validation threshold was selected.
     test_probability = selected.predict_proba(test[list(FEATURE_NAMES)])[:, 1]
     test_prediction = (test_probability >= threshold).astype(int)
     test_metrics = score(selected, test.reset_index(drop=True), threshold)
@@ -219,6 +219,9 @@ def main() -> None:
         "selected_threshold": threshold,
         "metrics": test_metrics,
         "training_dataset_version": args.dataset_version,
+        "dataset_sha256": hashlib.sha256(Path(args.input).read_bytes()).hexdigest(),
+        "data_sources": sorted(frame['source'].unique().tolist()) if 'source' in frame else ['UNSPECIFIED'],
+        "deployment_status": "EXPERIMENTAL_NOT_PRODUCTION_VALIDATED",
     }
     joblib.dump(selected, output / "saturation_pipeline.joblib")
     (output / "model_metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")

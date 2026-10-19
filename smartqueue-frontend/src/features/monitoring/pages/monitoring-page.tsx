@@ -3,21 +3,39 @@ import { Activity, BrainCircuit, Gauge, Server, ShieldAlert, UsersRound } from '
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { useMonitoringDashboard } from '@/features/monitoring/hooks/use-monitoring-dashboard';
+import { useMonitoringDashboard, useExperimentRuns } from '@/features/monitoring/hooks/use-monitoring-dashboard';
+import { useSearchParams } from 'react-router-dom';
 import type { MetricWindowPoint } from '@/features/monitoring/types/dashboard.types';
 
 const number = new Intl.NumberFormat('es-PE', { maximumFractionDigits: 2 });
 const percent = new Intl.NumberFormat('es-PE', { style: 'percent', maximumFractionDigits: 1 });
 
 export function MonitoringPage() {
-  const { data, isLoading, isError } = useMonitoringDashboard();
+  const [params, setParams] = useSearchParams();
+  const { data, isLoading, isError } = useMonitoringDashboard(params.get('runId') ?? undefined);
+  const runs = useExperimentRuns();
+  const selector = <label className="block text-sm text-zinc-400">Corrida experimental
+    <select className="mt-2 block w-full rounded-xl border border-white/15 bg-zinc-900 p-3 text-white" value={params.get('runId') ?? ''} onChange={event => setParams(event.target.value ? { runId: event.target.value } : {})}>
+      <option value="">Última corrida</option>
+      {runs.data?.map(item => <option key={item.id} value={item.id}>{item.controlMode} · {item.scenario} · {item.status} · {new Date(item.startedAt).toLocaleString('es-PE')}</option>)}
+    </select>
+  </label>;
   if (isLoading) return <EmptyState title="Cargando telemetría" message="Consultando ventanas persistidas en NestJS." />;
   if (isError) return <EmptyState title="No se pudo cargar el monitoreo" message="Verifica NestJS, la sesión de administrador y la conexión con PostgreSQL." />;
-  if (!data?.run) return <EmptyState title="Sin corrida activa" message={data?.message ?? 'Inicia un experimento para producir métricas reales.'} />;
+  if (!data?.run) return <div className="mx-auto max-w-3xl space-y-6 px-5 py-12">{selector}<EmptyState title="Sin datos de la corrida" message={data?.message ?? 'Inicia un experimento para producir métricas reales.'} /></div>;
 
   const { run, kpis, prediction, history, comparison } = data;
+  const validPredictions = history.filter(point => point.prediction?.modelVersion && !point.prediction.fallbackUsed);
+  const fallbackCount = history.filter(point => point.prediction?.fallbackUsed).length;
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-5 py-10 lg:px-8">
+      {selector}
+      <Card className="border-sky-300/20 p-5 text-sm text-zinc-300">
+        <p className="font-semibold text-white">{run.status === 'RUNNING' ? 'Experimento en ejecución' : `Registro histórico · ${run.status}`}</p>
+        <p className="mt-2">{run.controlMode === 'PREDICTIVE' ? `${validPredictions.length} inferencias ML registradas · ${fallbackCount} ventanas en respaldo` : 'Este controlador no usa inferencia ML.'}</p>
+        <p className="mt-2">Última ventana: {prediction?.fallbackUsed ? `respaldo ${prediction.fallbackReason}` : prediction?.modelVersion ? `modelo ${prediction.modelVersion}` : 'sin decisión registrada'}.</p>
+        <p className="mt-2 text-zinc-500">Una predicción registrada prueba la conexión, no la precisión del modelo. El modelo bootstrap utiliza datos sintéticos.</p>
+      </Card>
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div><p className="text-xs font-bold uppercase tracking-[.25em] text-sky-300">Panel experimental</p><h1 className="mt-2 text-4xl font-black tracking-tight">Control de saturación</h1><p className="mt-2 text-zinc-500">{run.id} · {run.scenario} · semilla {run.seed}</p></div>
         <Badge className="border-sky-500/20 bg-sky-500/10 px-3 py-2 text-sky-200"><BrainCircuit className="mr-2 size-4" /> {run.controlMode}</Badge>
@@ -38,6 +56,8 @@ export function MonitoringPage() {
             <dl className="mt-7 space-y-4 text-sm">
               <Row label="Clase" value={prediction?.riskClass ?? 'No disponible'} />
               <Row label="Modelo" value={prediction?.modelVersion ?? 'No disponible'} />
+              <Row label="Modo aplicado" value={prediction?.appliedMode ?? 'Pendiente'} />
+              <Row label="Ventana" value={prediction?.windowEnd ? new Date(prediction.windowEnd).toLocaleTimeString('es-PE') : 'Pendiente'} />
               <Row label="Edad" value={prediction?.predictionAgeMs == null ? 'No disponible' : `${number.format(prediction.predictionAgeMs)} ms`} />
               <Row label="Respuesta ML" value={prediction?.responseMs == null ? 'No disponible' : `${number.format(prediction.responseMs)} ms`} />
               <Row label="Fallback" value={prediction?.fallbackUsed ? prediction.fallbackReason ?? 'Activo' : 'No'} />
@@ -46,6 +66,10 @@ export function MonitoringPage() {
         </section>
         <section className="grid gap-6 lg:grid-cols-3"><Decision title="Límite anterior" value={prediction ? String(prediction.previousLimit) : 'N/D'} /><Decision title="Límite aplicado" value={String(kpis.currentLimit)} active /><Decision title="Throughput" value={`${number.format(kpis.throughput)} /s`} /></section>
       </>}
+      <Card className="overflow-hidden">
+        <div className="border-b border-white/8 p-6"><h2 className="font-bold">Decisiones por ventana</h2><p className="mt-1 text-sm text-zinc-500">Observaciones persistidas cada 10 segundos; una ventana no evaluable activa el respaldo.</p></div>
+        <div className="overflow-x-auto"><table className="w-full min-w-[760px] text-left text-sm"><thead className="text-xs uppercase tracking-wider text-zinc-500"><tr>{['Ventana', 'Datos', 'Riesgo', 'Modelo', 'Modo aplicado', 'Límite', 'Respaldo'].map(heading => <th key={heading} className="px-4 py-3">{heading}</th>)}</tr></thead><tbody className="divide-y divide-white/6">{history.map(point => <tr key={point.id}><td className="px-4 py-3">{new Date(point.windowEnd).toLocaleTimeString('es-PE')}</td><td className="px-4 py-3">{point.evaluable ? 'Evaluable' : 'Insuficientes'}</td><td className="px-4 py-3">{point.prediction?.riskScore == null ? 'N/D' : percent.format(point.prediction.riskScore)}</td><td className="px-4 py-3">{point.prediction?.modelVersion ?? '—'}</td><td className="px-4 py-3">{point.prediction?.appliedMode ?? 'Pendiente'}</td><td className="px-4 py-3">{point.prediction?.appliedLimit ?? '—'}</td><td className="px-4 py-3">{point.prediction?.fallbackUsed ? point.prediction.fallbackReason ?? 'Sí' : 'No'}</td></tr>)}</tbody></table></div>
+      </Card>
       <ComparisonTable comparison={comparison} />
     </div>
   );
@@ -57,7 +81,7 @@ function HistoryChart({ history }: { history: MetricWindowPoint[] }) {
 }
 
 function ComparisonTable({ comparison }: { comparison: Array<{ controlMode: string; runs: number; latencyP95Ms: number | null; errorRate: number | null; completed: number }> }) {
-  return <Card className="overflow-hidden"><div className="flex items-center justify-between border-b border-white/8 p-6"><div><h2 className="font-bold">Comparación A/B/C</h2><p className="mt-1 text-sm text-zinc-500">Solo corridas completadas del mismo escenario</p></div><Server className="size-5 text-zinc-500" /></div>{comparison.length === 0 ? <p className="p-6 text-sm text-zinc-500">Aún no hay corridas comparables. Completa FIXED, REACTIVE y PREDICTIVE con las mismas semillas.</p> : <div className="overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead className="text-xs uppercase tracking-wider text-zinc-600"><tr>{['Modo', 'Corridas', 'Latencia p95', 'Errores', 'Completadas'].map((heading) => <th key={heading} className="px-6 py-4">{heading}</th>)}</tr></thead><tbody className="divide-y divide-white/6">{comparison.map((item) => <tr key={item.controlMode}><td className="px-6 py-4 font-bold text-white">{item.controlMode}</td><td className="px-6 py-4 text-zinc-400">{item.runs}</td><td className="px-6 py-4 text-zinc-400">{item.latencyP95Ms == null ? 'N/D' : `${number.format(item.latencyP95Ms)} ms`}</td><td className="px-6 py-4 text-zinc-400">{item.errorRate == null ? 'N/D' : percent.format(item.errorRate)}</td><td className="px-6 py-4 text-zinc-400">{item.completed}</td></tr>)}</tbody></table></div>}</Card>;
+  return <Card className="overflow-hidden"><div className="flex items-center justify-between border-b border-white/8 p-6"><div><h2 className="font-bold">Comparación A/B/C exploratoria</h2><p className="mt-1 text-sm text-zinc-500">Corridas completadas con la misma traza, escenario, semilla y duración. No implica significación estadística.</p></div><Server className="size-5 text-zinc-500" /></div>{comparison.length === 0 ? <p className="p-6 text-sm text-zinc-500">Aún no hay corridas comparables. Completa FIXED, REACTIVE y PREDICTIVE con las mismas semillas.</p> : <div className="overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead className="text-xs uppercase tracking-wider text-zinc-600"><tr>{['Modo', 'Corridas', 'Latencia p95', 'Errores', 'Completadas'].map((heading) => <th key={heading} className="px-6 py-4">{heading}</th>)}</tr></thead><tbody className="divide-y divide-white/6">{comparison.map((item) => <tr key={item.controlMode}><td className="px-6 py-4 font-bold text-white">{item.controlMode}</td><td className="px-6 py-4 text-zinc-400">{item.runs}</td><td className="px-6 py-4 text-zinc-400">{item.latencyP95Ms == null ? 'N/D' : `${number.format(item.latencyP95Ms)} ms`}</td><td className="px-6 py-4 text-zinc-400">{item.errorRate == null ? 'N/D' : percent.format(item.errorRate)}</td><td className="px-6 py-4 text-zinc-400">{item.completed}</td></tr>)}</tbody></table></div>}</Card>;
 }
 
 function EmptyState({ title, message }: { title: string; message: string }) { return <div className="mx-auto max-w-3xl px-5 py-20"><Card className="p-10 text-center"><h1 className="text-2xl font-black">{title}</h1><p className="mt-3 text-zinc-500">{message}</p></Card></div>; }

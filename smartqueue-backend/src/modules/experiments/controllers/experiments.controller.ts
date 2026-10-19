@@ -43,6 +43,16 @@ export class ExperimentsController {
     return this.experiments.list();
   }
 
+  @Patch(":id/fail")
+  @Permissions(Permission.QUEUE_CONTROL)
+  @ApiOperation({
+    summary:
+      "Marcar una corrida interrumpida como fallida, conservando sus métricas",
+  })
+  fail(@Param("id") id: string) {
+    return this.experiments.fail(id);
+  }
+
   @Get(":id")
   @Permissions(Permission.METRICS_READ)
   find(@Param("id") id: string) {

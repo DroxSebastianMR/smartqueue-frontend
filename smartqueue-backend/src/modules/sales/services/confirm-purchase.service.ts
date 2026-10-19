@@ -41,6 +41,7 @@ export class ConfirmPurchaseService {
       },
       () =>
         this.prisma.$transaction(async (tx) => {
+          await tx.$queryRaw`SELECT id FROM "Event" WHERE id = ${reservationContext.eventId} FOR UPDATE`;
           const existing = await tx.purchase.findUnique({
             where: { reservationId },
           });

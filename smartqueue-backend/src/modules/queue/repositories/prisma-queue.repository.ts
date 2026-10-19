@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { estimateWaitMinutes } from '../services/estimate-wait';
 import { QueueStatus as PrismaQueueStatus } from "@prisma/client";
 
 import { PrismaService } from "@/common/prisma/prisma.service";
@@ -10,6 +11,8 @@ export class PrismaQueueRepository implements QueueRepository {
 
   async join(eventId: string, participantToken: string) {
     return this.prisma.$transaction(async (tx) => {
+      // Serialize turn allocation per event across API processes.
+      await tx.$queryRaw`SELECT id FROM "Event" WHERE id = ${eventId} FOR UPDATE`;
       const existing = await tx.queueEntry.findUnique({
         where: { eventId_participantToken: { eventId, participantToken } },
       });
@@ -40,10 +43,15 @@ export class PrismaQueueRepository implements QueueRepository {
         turnNumber: { lt: entry.turnNumber },
       },
     });
+    const admissions = entry.status === PrismaQueueStatus.WAITING
+      ? await this.prisma.queueEntry.count({ where: { eventId, admittedAt: { gte: new Date(Date.now() - 60_000) } } })
+      : 0;
     return {
       entry: entry as never,
       peopleAhead,
-      estimatedWaitMinutes: peopleAhead === 0 ? 0 : null,
+      estimatedWaitMinutes: entry.status === PrismaQueueStatus.WAITING
+        ? estimateWaitMinutes(peopleAhead, admissions)
+        : entry.admittedAt ? 0 : null,
     };
   }
 }

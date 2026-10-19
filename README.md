@@ -34,4 +34,5 @@ El usuario cliente demo local es `demo@cinetrux.test` con contraseña `CinetruxD
 
 Consulta [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) para límites, flujo y convenciones.
 El protocolo de telemetría, experimentos, etiquetado, entrenamiento, inferencia y fallback está en [docs/ML_LIFECYCLE.md](docs/ML_LIFECYCLE.md).
+Para ejecutar clientes simulados y revisar las decisiones del ML en el panel local, seguir [docs/EXPERIMENTOS-LOCALES.md](docs/EXPERIMENTOS-LOCALES.md).
 

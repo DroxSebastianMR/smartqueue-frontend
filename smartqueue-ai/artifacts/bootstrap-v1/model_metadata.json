@@ -1,0 +1,33 @@
+{
+  "model_version": "20261019-saturation-v1",
+  "schema_version": "1.0",
+  "features": [
+    "arrival_rate",
+    "arrival_trend",
+    "queue_length",
+    "active_buyers",
+    "admission_limit",
+    "latency_p95_ms",
+    "error_rate",
+    "completion_rate"
+  ],
+  "window_seconds": 10,
+  "horizon_seconds": 30,
+  "latency_threshold_ms": 1000,
+  "error_threshold": 0.05,
+  "selected_threshold": 0.21,
+  "metrics": {
+    "recall": 0.9590163934426229,
+    "precision": 0.850909090909091,
+    "f1": 0.9017341040462428,
+    "pr_auc": 0.9830085340928718,
+    "inference_ms_per_row": 0.0011345029676507353,
+    "run_recall_std": 0.4733667293342367
+  },
+  "training_dataset_version": "synthetic-bootstrap-v1",
+  "dataset_sha256": "3b0b2c330a2e739f91df4e7c38655bd00b0374426f3795cf83cb738d9b801132",
+  "data_sources": [
+    "SYNTHETIC_LOGICAL"
+  ],
+  "deployment_status": "EXPERIMENTAL_NOT_PRODUCTION_VALIDATED"
+}

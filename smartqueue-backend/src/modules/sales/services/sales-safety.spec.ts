@@ -15,13 +15,14 @@ describe("sales transaction safety", () => {
   it("uses an atomic stock guard so concurrent reservations cannot oversell", async () => {
     let stock = 1;
     const tx = {
+      $queryRaw: jest.fn().mockResolvedValue([]),
       purchaseReservation: {
         findUnique: jest.fn().mockResolvedValue(null),
         create: jest.fn(({ data }) => Promise.resolve({ id: data.queueEntryId, ...data })),
       },
       queueEntry: {
         findUnique: jest.fn(({ where }) =>
-          Promise.resolve({ id: where.id, eventId: "event-1", status: QueueStatus.ADMITTED }),
+          Promise.resolve({ id: where.id, eventId: "event-1", status: QueueStatus.ADMITTED, accessExpiresAt: new Date(Date.now() + 60_000) }),
         ),
         update: jest.fn().mockResolvedValue({}),
       },
@@ -56,6 +57,7 @@ describe("sales transaction safety", () => {
       return Promise.resolve(purchase);
     });
     const tx = {
+      $queryRaw: jest.fn().mockResolvedValue([]),
       purchase: { findUnique: jest.fn(() => Promise.resolve(purchase)), create },
       purchaseReservation: {
         findUnique: jest.fn().mockResolvedValue({

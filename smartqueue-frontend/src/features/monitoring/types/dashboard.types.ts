@@ -7,6 +7,7 @@ export interface ExperimentRunSummary {
   seed: number;
   generatorVersion: string;
   startedAt: string;
+  status: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
 }
 
 export interface MonitoringKpis {
@@ -23,6 +24,9 @@ export interface MonitoringKpis {
 }
 
 export interface MonitoringPrediction {
+  appliedMode: ControlMode;
+  windowEnd: string;
+  evaluable: boolean;
   riskScore: number | null;
   riskClass: 'HEALTHY' | 'SATURATION' | null;
   modelVersion: string | null;
@@ -44,6 +48,8 @@ export interface MetricWindowPoint {
   latencyP99Ms: number;
   errorRate: number;
   completionRate: number;
+  evaluable: boolean;
+  prediction: Omit<MonitoringPrediction, 'windowEnd' | 'evaluable'> | null;
 }
 
 export interface ModeComparison {

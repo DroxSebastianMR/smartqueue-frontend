@@ -1,9 +1,10 @@
-import { Controller, Get, Param, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Query, ParseUUIDPipe, UseGuards } from "@nestjs/common";
 import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiQuery,
 } from "@nestjs/swagger";
 
 import { ApiErrors } from "@/common/decorators/api-errors.decorator";
@@ -58,7 +59,8 @@ export class MetricsController {
       path: "/api/v1/metrics/dashboard",
     },
   )
-  getDashboard() {
-    return this.dashboard.execute();
+  @ApiQuery({ name: 'runId', required: false, type: String, format: 'uuid' })
+  getDashboard(@Query('runId', new ParseUUIDPipe({ optional: true })) runId?: string) {
+    return this.dashboard.execute(runId);
   }
 }

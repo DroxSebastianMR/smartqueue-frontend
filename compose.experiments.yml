@@ -1,0 +1,97 @@
+name: smartqueue-experiments
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: smartqueue_experiments
+      POSTGRES_USER: smartqueue
+      POSTGRES_PASSWORD: local-experiment-only
+    ports:
+      - "127.0.0.1:55432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartqueue -d smartqueue_experiments"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - experiment_postgres:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "127.0.0.1:56379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - experiment_redis:/data
+  ai:
+    build:
+      context: ./smartqueue-ai
+    environment:
+      MODEL_PATH: artifacts/bootstrap-v1/saturation_pipeline.joblib
+      MODEL_METADATA_PATH: artifacts/bootstrap-v1/model_metadata.json
+      PREDICTION_THRESHOLD: "0.65"
+    ports:
+      - "127.0.0.1:5001:5001"
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:5001/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+  backend:
+    build:
+      context: ./smartqueue-backend
+    environment:
+      NODE_ENV: development
+      PORT: "3001"
+      DATABASE_URL: postgresql://smartqueue:local-experiment-only@postgres:5432/smartqueue_experiments
+      DIRECT_URL: postgresql://smartqueue:local-experiment-only@postgres:5432/smartqueue_experiments
+      FRONTEND_ORIGIN: http://localhost:5175
+      AUTH_DEMO_EMAIL: demo@cinetrux.test
+      AUTH_DEMO_PASSWORD: CinetruxDemo2026!
+      AUTH_ADMIN_EMAIL: admin@cinetrux.test
+      AUTH_ADMIN_PASSWORD: CinetruxAdmin2026!
+      AUTH_TOKEN_SECRET: local-experiment-only-not-for-production
+      ALLOW_DEMO_SEED: "true"
+      CACHE_DRIVER: redis
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      REDIS_KEY_PREFIX: "smartqueue-experiment:"
+      ML_SERVICE_URL: http://ai:5001
+      ML_TIMEOUT_MS: "1000"
+      ML_MIN_CRITICAL_REQUESTS: "1"
+      QUEUE_ACCESS_TTL_SECONDS: "300"
+      RESERVATION_TTL_SECONDS: "300"
+    ports:
+      - "127.0.0.1:3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      ai:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/api/v1/health').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+  frontend:
+    build:
+      context: ./smartqueue-frontend
+    environment:
+      API_PROXY_TARGET: http://backend:3001
+      VITE_API_URL: /api/v1
+    ports:
+      - "127.0.0.1:5175:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
+volumes:
+  experiment_postgres:
+  experiment_redis:

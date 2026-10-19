@@ -16,10 +16,10 @@ const accountLinks = [
   { label: 'Mi cola', to: '/queue' },
 ];
 
-export function AppFooter() {
+export function AppFooter({ compact = false }: { compact?: boolean }) {
   return (
     <footer className="border-t border-white/[.08] bg-[#0d1015] text-zinc-400">
-      <div className="mx-auto grid max-w-[1600px] gap-12 px-5 pb-14 pt-16 sm:px-8 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.1fr] lg:px-14">
+      {!compact && <div className="mx-auto grid max-w-[1600px] gap-12 px-5 pb-14 pt-16 sm:px-8 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.1fr] lg:px-14">
         <div>
           <BrandLogo />
           <p className="mt-6 max-w-xs text-sm leading-7 text-zinc-400">El cine empieza aquí. Explora historias, descubre funciones y prepara tu próxima visita.</p>
@@ -32,7 +32,7 @@ export function AppFooter() {
           <p className="mt-5 text-sm leading-7 text-zinc-400">Encuentra un cine, filtra los horarios disponibles y elige cómo disfrutar la pantalla grande.</p>
           <Link to="/#cinema-finder" className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/[.06]"><MapPin className="size-4" /> Explorar sedes <ArrowUpRight className="size-3.5" /></Link>
         </div>
-      </div>
+      </div>}
       <div className="border-t border-white/[.08]">
         <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-3 px-5 py-6 text-xs text-zinc-600 sm:px-8 lg:px-14">
           <span>© {new Date().getFullYear()} Cinetrux</span>

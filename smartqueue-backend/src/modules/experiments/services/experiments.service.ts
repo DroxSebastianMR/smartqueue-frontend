@@ -54,10 +54,27 @@ export class ExperimentsService {
   }
 
   async finish(id: string) {
-    return this.prisma.experimentRun.update({
-      where: { id },
-      data: { status: "COMPLETED", finishedAt: new Date() },
+    return this.close(id, "COMPLETED");
+  }
+
+  async fail(id: string) {
+    return this.close(id, "FAILED");
+  }
+
+  private async close(id: string, status: "COMPLETED" | "FAILED") {
+    // Conditional update prevents a late retry from rewriting a terminal outcome.
+    const result = await this.prisma.experimentRun.updateMany({
+      where: { id, status: "RUNNING" },
+      data: { status, finishedAt: new Date() },
     });
+    const run = await this.prisma.experimentRun.findUnique({ where: { id } });
+    if (!run) throw new NotFoundException("Experiment not found");
+    if (!result.count && run.status !== status) {
+      throw new BadRequestException(
+        "Experiment already closed with a different outcome",
+      );
+    }
+    return run;
   }
 
   find(id: string) {

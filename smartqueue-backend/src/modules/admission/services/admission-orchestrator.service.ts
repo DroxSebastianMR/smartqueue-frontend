@@ -46,6 +46,7 @@ export class AdmissionOrchestratorService {
 
     if (run.controlMode === ControlMode.PREDICTIVE) {
       try {
+        if (!window.evaluable) throw new Error("INSUFFICIENT_TELEMETRY");
         const prediction = await this.ml.predict({
           schema_version: "1.0",
           window_end: window.windowEnd.toISOString(),
@@ -79,6 +80,7 @@ export class AdmissionOrchestratorService {
     const recoveryWindows = await this.countHealthyWindows(
       runId,
       run.lowThreshold,
+      appliedMode,
     );
     const proposed = nextAdmissionLimit(appliedMode as PolicyControlMode, {
       currentLimit: run.currentLimit,
@@ -114,8 +116,8 @@ export class AdmissionOrchestratorService {
           responseMs,
           predictionAgeMs,
           fallbackUsed,
-          fallbackReason,
-          failureReason: undefined,
+          fallbackReason: fallbackReason ?? null,
+          failureReason: null,
           appliedMode,
           appliedLimit,
         },
@@ -162,15 +164,31 @@ export class AdmissionOrchestratorService {
     }
   }
 
-  private async countHealthyWindows(runId: string, lowThreshold: number) {
+  private async countHealthyWindows(
+    runId: string,
+    lowThreshold: number,
+    mode: ControlMode,
+  ) {
     const recent = await this.prisma.predictionLog.findMany({
-      where: { metricWindow: { runId }, riskScore: { not: null } },
+      where: { metricWindow: { runId }, failureReason: null },
+      include: { metricWindow: true },
       orderBy: { requestedAt: "desc" },
       take: 20,
     });
     let count = 0;
     for (const prediction of recent) {
-      if ((prediction.riskScore ?? 1) > lowThreshold) break;
+      const metrics = prediction.metricWindow;
+      if (
+        !metrics.evaluable ||
+        metrics.latencyP95Ms >= 650 ||
+        metrics.errorRate >= 0.02
+      )
+        break;
+      if (
+        mode === ControlMode.PREDICTIVE &&
+        (prediction.fallbackUsed || (prediction.riskScore ?? 1) > lowThreshold)
+      )
+        break;
       count += 1;
     }
     return count;
@@ -180,7 +198,15 @@ export class AdmissionOrchestratorService {
     const message = error instanceof Error ? error.message : "ML_UNKNOWN_ERROR";
     if (/timeout/i.test(message)) return "ML_TIMEOUT";
     if (/503|MODEL_UNAVAILABLE/i.test(message)) return "MODEL_UNAVAILABLE";
+    if (
+      /ECONNREFUSED|ENOTFOUND|EHOSTUNREACH|ECONNRESET|Network Error/i.test(
+        message,
+      )
+    )
+      return "ML_SERVICE_UNAVAILABLE";
     if (/STALE_PREDICTION/i.test(message)) return "STALE_PREDICTION";
+    if (/INSUFFICIENT_TELEMETRY/i.test(message))
+      return "INSUFFICIENT_TELEMETRY";
     return "INVALID_ML_RESPONSE";
   }
 }

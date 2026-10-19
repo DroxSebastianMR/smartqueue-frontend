@@ -1,32 +1,45 @@
-import { AlertCircle, Check, Clock3, LoaderCircle, ShieldCheck, Ticket } from 'lucide-react';
-import { useState } from 'react';
-
-import { Badge } from '@/components/ui/badge';
+import { ArrowLeft, ArrowRight, Info, LoaderCircle, RefreshCw, ShieldCheck } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { TicketCheckout } from '@/features/purchase/components/ticket-checkout';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { usePurchase } from '@/features/purchase/hooks/use-purchase';
+import { BookingSteps } from '@/features/purchase/components/booking-steps';
+import { BookingSummary } from '@/features/purchase/components/booking-summary';
 import { SeatPicker } from '@/features/purchase/components/seat-picker';
+import { useSeatSelection } from '@/features/purchase/hooks/use-seat-selection';
 
 export function PurchasePage() {
-  const [selectedSeats, setSelectedSeats] = useState(['C5', 'C6']);
-  const purchase = usePurchase();
-  const quantity = selectedSeats.length;
-  if (purchase.data) return <Success quantity={quantity} confirmationCode={purchase.data.confirmationCode} />;
-  return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_50%_0%,rgba(125,190,255,.1),transparent_28%),#08090c] px-5 pb-20 pt-32 text-white lg:px-8">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4"><div><Badge className="border-emerald-200/15 bg-emerald-200/[.07] text-emerald-100">Preventa · Infinity Vision</Badge><h1 className="mt-4 text-4xl font-semibold tracking-[-.04em]">Elige dónde vivir la película</h1><p className="mt-3 text-zinc-500">Avengers: Doomsday · Sala Infinity Vision 01 · 21:30</p></div><div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[.04] px-4 py-2 text-sm font-semibold text-zinc-300"><Clock3 className="size-4 text-sky-200" /> 04:38 restantes</div></div>
-        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-          <Card className="border-white/[.08] bg-[#0d1015]/90 p-5 sm:p-9"><SeatPicker selectedSeats={selectedSeats} onChange={setSelectedSeats} /></Card>
-          <div className="space-y-6">
-            <Card className="border-white/[.08] bg-[#0d1015]/90 p-7"><p className="text-xs font-bold uppercase tracking-[.2em] text-zinc-600">Tu función</p><h2 className="mt-4 text-xl font-semibold">Avengers: Doomsday</h2><p className="mt-2 text-sm leading-6 text-zinc-500">Cinetrux Primavera · Infinity Vision<br />Preventa · 17 de diciembre · 21:30</p><div className="my-6 h-px bg-white/[.07]" /><div className="space-y-4 text-sm"><Summary label="Butacas" value={selectedSeats.length ? selectedSeats.join(', ') : 'Selecciona una'} /><Summary label={`${quantity} entrada${quantity === 1 ? '' : 's'}`} value={`S/ ${(quantity * 24.9).toFixed(2)}`} /><Summary label="Servicio" value="S/ 0.00" /><Summary label="Total simulado" value={`S/ ${(quantity * 24.9).toFixed(2)}`} strong /></div>{purchase.error && <p className="mt-5 flex gap-2 rounded-xl bg-red-500/10 p-3 text-xs text-red-300"><AlertCircle className="size-4 shrink-0" />{purchase.error.message}</p>}<Button className="mt-7 w-full" size="lg" disabled={purchase.isPending || quantity === 0} onClick={() => purchase.mutate(quantity)}>{purchase.isPending ? <LoaderCircle className="size-4 animate-spin" /> : <Ticket className="size-4" />} Continuar compra</Button></Card>
-            <div className="flex items-start gap-3 rounded-2xl border border-white/[.06] bg-white/[.025] p-4 text-sm leading-6 text-zinc-500"><ShieldCheck className="mt-0.5 size-5 shrink-0 text-sky-200/80" /> No se solicitarán datos de tarjeta ni se realizará ningún cobro real.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const [params] = useSearchParams();
+  const id = params.get('showtimeId');
+  if (!id) return <div className="min-h-[70vh] px-5 pb-20 pt-36 text-white"><Card className="mx-auto max-w-xl p-10 text-center"><h1 className="text-2xl font-semibold">Primero, elige tu función</h1><p className="mt-3 text-sm leading-6 text-zinc-400">Cada película y horario tiene su propia sala. Encuentra tu función para ver las butacas disponibles.</p><Link to="/#cinema-finder" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-zinc-100 px-6 py-3 text-sm font-semibold text-zinc-950">Ver funciones <ArrowRight className="size-4" /></Link></Card></div>;
+  return <SeatSelectionPage key={id} showtimeId={id} />;
 }
 
-function Summary({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) { return <div className={`flex justify-between gap-4 ${strong ? 'pt-2 text-base font-bold text-white' : 'text-zinc-500'}`}><span>{label}</span><span className="text-right">{value}</span></div>; }
-function Success({ quantity, confirmationCode }: { quantity: number; confirmationCode: string }) { return <div className="min-h-screen bg-[#08090c] px-5 pb-20 pt-32 text-white"><Card className="mx-auto my-16 max-w-xl border-sky-200/10 bg-[#0d1015] p-10 text-center"><span className="mx-auto grid size-16 place-items-center rounded-full bg-sky-200/10 text-sky-200"><Check className="size-8" /></span><h1 className="mt-6 text-3xl font-semibold">Simulación confirmada</h1><p className="mt-3 text-zinc-500">Se registró una compra ficticia de {quantity} entrada{quantity > 1 ? 's' : ''} y el cupo de admisión quedó libre.</p><div className="mx-auto mt-7 w-fit rounded-xl border border-dashed border-white/15 px-5 py-3 font-mono text-sm">{confirmationCode}</div></Card></div>; }
+function SeatSelectionPage({ showtimeId }: { showtimeId: string }) {
+  const { map: query, quote, selectedIds, toggle, selectionChanged, reviewing, edit } = useSeatSelection(showtimeId);
+  const [ticketTotal, setTicketTotal] = useState<number | null>(null);
+  const [payment, setPayment] = useState(false);
+  useEffect(() => { if (!reviewing) { setTicketTotal(null); setPayment(false); } }, [reviewing]);
+  const map = query.data;
+  const selected = map?.seats.filter((seat) => selectedIds.includes(seat.id)) ?? [];
+  return <div className="bg-[radial-gradient(ellipse_at_30%_10%,rgba(125,190,255,.05),transparent_50%)] px-4 pb-14 pt-8 text-white sm:px-7 lg:pt-10">
+    <div className="mx-auto max-w-[1600px]">
+      <div className="relative mb-9 border-b border-white/[.07] pb-7"><Link to="/#cinema-finder" className="mb-6 inline-flex items-center gap-2 text-xs text-zinc-400 hover:text-white lg:absolute lg:top-3 lg:mb-0"><ArrowLeft className="size-4" />Cambiar función</Link><BookingSteps current={reviewing ? payment ? 2 : 1 : 0} /></div>
+      {query.isPending ? <div role="status" className="grid min-h-96 place-items-center text-sm text-zinc-400"><span className="flex items-center gap-3"><LoaderCircle className="size-5 animate-spin" />Preparando tu sala…</span></div> : query.isError || !map ? <Card className="mx-auto max-w-lg p-9 text-center"><h1 className="text-xl font-semibold">No pudimos abrir esta sala</h1><p className="my-4 text-sm text-zinc-400">La función puede no estar disponible. Intenta de nuevo o elige otro horario.</p><Button variant="outline" onClick={() => void query.refetch()}><RefreshCw className="size-4" />Reintentar</Button></Card> : <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_340px] xl:gap-12">
+        <section className="min-w-0">
+          <div className="mb-8 flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-[.3em] text-sky-200/60">{map.auditoriumName} · Cinetrux</p><h1 className="mt-3 text-3xl font-semibold tracking-[-.04em] sm:text-4xl">{reviewing ? 'Tu próxima gran historia.' : 'Elige tu lugar favorito.'}</h1><p className="mt-3 max-w-md text-sm leading-6 text-zinc-500">{reviewing ? 'Revisa los detalles de tus entradas antes del siguiente paso.' : `Una gran película merece el mejor lugar. Selecciona hasta ${map.maxSelection} butacas.`}</p></div><span className="mt-1 rounded-full border border-white/10 px-3 py-1.5 text-[10px] text-zinc-400">{map.bookable ? 'Selección de butacas' : 'Venta no disponible'}</span></div>
+          {!map.bookable && <div role="status" className="mb-6 flex flex-wrap items-center justify-between gap-3 border-l-2 border-sky-200/30 pl-4"><div><p className="text-sm font-medium text-zinc-300">Descubre tu sala</p><p className="mt-1 text-xs text-zinc-500">Este horario ya no está a la venta. Puedes explorar las butacas.</p></div><Link to="/#cinema-finder" className="inline-flex items-center gap-2 text-xs font-medium text-sky-200 transition hover:text-white">Elegir otro horario <ArrowRight className="size-3.5" /></Link></div>}
+          {selectionChanged && <p role="alert" className="mb-4 text-sm text-amber-100">Cambió la disponibilidad de una butaca. Revisa tu selección.</p>}
+          {query.isRefetchError && <p role="alert" className="mb-4 text-sm text-amber-100">No se pudo actualizar la disponibilidad. Se comprobará de nuevo al continuar.</p>}
+          {reviewing ? <TicketCheckout showtimeId={showtimeId} seatIds={selectedIds} onEdit={edit} onQuote={setTicketTotal} onPayment={setPayment} /> : <Card className="overflow-hidden rounded-2xl border-white/[.06] bg-[#0d1015]/70 px-3 py-8 shadow-none sm:px-7 sm:py-10">{map.seats.length ? <SeatPicker seats={map.seats} selectedIds={selectedIds} onToggle={toggle} disabled={!map.bookable || quote.isPending} limit={map.maxSelection} /> : <p className="py-16 text-center text-sm text-zinc-400">Esta sala todavía no tiene butacas configuradas.</p>}</Card>}
+          <p className="mt-5 flex items-start gap-2 text-xs leading-5 text-zinc-500"><Info className="mt-0.5 size-4 shrink-0" />Las butacas accesibles están identificadas en el mapa. La selección no bloquea los asientos; su disponibilidad puede cambiar.</p>
+        </section>
+        <aside className="min-w-0 self-start"><BookingSummary map={map} seats={selected} totalCents={reviewing ? ticketTotal : null}>
+          {quote.isError && <p role="alert" className="mb-4 text-sm text-amber-100">No pudimos validar las butacas. Revisa la disponibilidad e inténtalo de nuevo.</p>}
+          {reviewing ? <div className="rounded-xl border border-sky-200/15 bg-sky-200/5 p-4"><p className="flex items-center gap-2 text-sm font-medium text-sky-100"><ShieldCheck className="size-4" />Resumen listo</p><p className="mt-2 text-xs leading-5 text-zinc-400">El pago y la reserva de estas butacas aún no están habilitados. No se ha realizado ningún cobro.</p></div> : <Button className="w-full rounded-xl py-3.5" disabled={!map.bookable || !selectedIds.length || quote.isPending} onClick={() => quote.mutate(selectedIds)}>{quote.isPending ? <LoaderCircle className="size-4 animate-spin" /> : null}{quote.isPending ? 'Verificando butacas…' : 'Continuar'}{!quote.isPending && <ArrowRight className="size-4" />}</Button>}
+        </BookingSummary><p className="mt-4 flex items-center justify-center gap-2 text-[11px] text-zinc-500"><ShieldCheck className="size-3.5" />Disponibilidad por función · Actualización automática</p></aside>
+      </div>}
+    </div>
+  </div>;
+}

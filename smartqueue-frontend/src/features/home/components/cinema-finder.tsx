@@ -1,5 +1,6 @@
 import { CalendarDays, Clapperboard, MapPin, Search, SlidersHorizontal } from 'lucide-react';
 import type { FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -84,7 +85,7 @@ export function CinemaFinder() {
                   const cinema = cinemas.find((item) => item.slug === showtime.cinemaSlug);
                   const movie = movies.find((item) => item.id === showtime.movieSlug);
                   const localTime = new Intl.DateTimeFormat('es-PE', { timeZone: cinema?.timeZone ?? 'America/Lima', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(showtime.startsAt));
-                  return <div key={showtime.id} className="rounded-xl border border-white/10 bg-white/[.05] px-4 py-3 text-sm text-zinc-200"><span className="font-semibold">{movie?.title ?? showtime.movieSlug}</span><span className="mx-2 text-zinc-500">·</span>{cinema?.name ?? showtime.cinemaSlug}<span className="mx-2 text-zinc-500">·</span>{localTime}</div>;
+                  return <Link to={`/purchase?showtimeId=${encodeURIComponent(showtime.id)}`} key={showtime.id} className="rounded-xl border border-white/10 bg-white/[.05] px-4 py-3 text-sm text-zinc-200 transition hover:border-sky-200/40 hover:bg-sky-200/10 focus-visible:outline focus-visible:outline-sky-200"><span className="font-semibold">{movie?.title ?? showtime.movieSlug}</span><span className="mx-2 text-zinc-500">·</span>{cinema?.name ?? showtime.cinemaSlug}<span className="mx-2 text-zinc-500">·</span>{localTime}<span className="ml-3 text-xs text-sky-200">Elegir butacas →</span></Link>;
                 })}
               </div>
             )}

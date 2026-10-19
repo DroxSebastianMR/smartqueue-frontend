@@ -7,6 +7,7 @@ describe("RunAdmissionService", () => {
       { id: "second", turnNumber: 2n },
     ]);
     const tx = {
+      $queryRaw: jest.fn().mockResolvedValue([]),
       queueEntry: { findMany, update: jest.fn().mockResolvedValue({}) },
     };
     const prisma = { $transaction: jest.fn((operation) => operation(tx)) };

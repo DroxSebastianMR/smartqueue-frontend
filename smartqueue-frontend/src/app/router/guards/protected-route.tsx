@@ -7,7 +7,7 @@ export function ProtectedRoute({ allowedRoles }: { allowedRoles?: UserRole[] }) 
   const { isAuthenticated, isLoading, user } = useAuth();
   const location = useLocation();
   if (isLoading) return <div className="min-h-screen bg-[#08090c]" aria-label="Validando sesión" />;
-  if (!isAuthenticated) return <Navigate to={PATHS.AUTH.LOGIN} state={{ from: location.pathname }} replace />;
+  if (!isAuthenticated) return <Navigate to={PATHS.AUTH.LOGIN} state={{ from: location.pathname + location.search }} replace />;
   if (allowedRoles && (!user || !allowedRoles.includes(user.role))) return <Navigate to={PATHS.FORBIDDEN} replace />;
   return <Outlet />;
 }

@@ -16,6 +16,7 @@ export class RunAdmissionService {
 
   async execute(eventId: string, slots: number) {
     const result = await this.prisma.$transaction(async (tx) => {
+      await tx.$queryRaw`SELECT id FROM "Event" WHERE id = ${eventId} FOR UPDATE`;
       const waiting = await tx.queueEntry.findMany({
         where: { eventId, status: QueueStatus.WAITING },
         orderBy: { turnNumber: "asc" },
