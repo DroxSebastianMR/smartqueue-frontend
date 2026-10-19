@@ -48,8 +48,10 @@ services:
     environment:
       NODE_ENV: development
       PORT: "3001"
-      DATABASE_URL: postgresql://smartqueue:local-experiment-only@postgres:5432/smartqueue_experiments
-      DIRECT_URL: postgresql://smartqueue:local-experiment-only@postgres:5432/smartqueue_experiments
+      # Por defecto usa el Postgres local del laboratorio. Para Supabase:
+      # docker compose --env-file smartqueue-backend/.env -f compose.experiments.yml up -d --wait
+      DATABASE_URL: ${DATABASE_URL:-postgresql://smartqueue:local-experiment-only@postgres:5432/smartqueue_experiments}
+      DIRECT_URL: ${DIRECT_URL:-postgresql://smartqueue:local-experiment-only@postgres:5432/smartqueue_experiments}
       FRONTEND_ORIGIN: http://localhost:5175
       AUTH_DEMO_EMAIL: demo@cinetrux.test
       AUTH_DEMO_PASSWORD: CinetruxDemo2026!
