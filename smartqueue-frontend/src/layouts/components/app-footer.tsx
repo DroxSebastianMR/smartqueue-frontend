@@ -2,10 +2,11 @@ import { ArrowUpRight, MapPin, Ticket } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { BrandLogo } from '@/shared/components/brand-logo';
+import { PATHS } from '@/app/router/constants/paths';
 
 const cinemaLinks = [
   { label: 'Cartelera', to: '/#now-playing' },
-  { label: 'Próximos estrenos', to: '/#upcoming' },
+  { label: 'Próximos estrenos', to: PATHS.UPCOMING },
   { label: 'Sedes y funciones', to: '/#cinema-finder' },
   { label: 'Promociones', to: '/#promotions' },
 ];

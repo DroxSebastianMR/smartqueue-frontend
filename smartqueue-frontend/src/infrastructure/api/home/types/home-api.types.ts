@@ -63,6 +63,7 @@ export interface ApiCinema {
   name: string;
   city: string;
   district?: string;
+  address: string;
   timeZone: string;
 }
 
@@ -74,4 +75,16 @@ export interface ApiShowtime {
   status: ShowtimeStatus;
   basePriceCents: number;
   currency: string;
+}
+
+export interface ApiMovieSchedule {
+  movieSlug: string;
+  cinemaSlug: string | null;
+  timeZone: string | null;
+  locationStatus: 'SELECTED' | 'NEARBY' | 'NO_GEOCODED_CINEMA';
+  distanceKm: number | null;
+  days: { date: string; weekday: string; groups: {
+    format: MovieProjectionFormat; audioLanguage: string; subtitleLanguage: string | null;
+    slots: { showtimeId: string; startsAt: string; localTime: string; status: ShowtimeStatus; bookable: boolean; basePriceCents: number; currency: string; seatAvailability: 'UNKNOWN' }[];
+  }[] }[];
 }

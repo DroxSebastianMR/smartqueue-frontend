@@ -10,6 +10,12 @@ export const useNowPlayingMovies = () =>
 export const useUpcomingMovies = () =>
   useQuery({ queryKey: homeQueryKeys.upcoming, queryFn: homeService.upcoming });
 
+export const useMovie = (slug: string) =>
+  useQuery({ queryKey: homeQueryKeys.movie(slug), queryFn: () => homeService.movie(slug), enabled: Boolean(slug) });
+
+export const useMovieSchedule = (slug: string, cinemaSlug: string) =>
+  useQuery({ queryKey: homeQueryKeys.schedule(slug, cinemaSlug), queryFn: () => homeService.movieSchedule(slug, cinemaSlug), enabled: Boolean(slug && cinemaSlug) });
+
 export const useHomeAdvertisements = () =>
   useQuery({ queryKey: homeQueryKeys.advertisements, queryFn: homeService.advertisements });
 

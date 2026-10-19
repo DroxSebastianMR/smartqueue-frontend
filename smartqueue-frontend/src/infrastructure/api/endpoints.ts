@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
     NOW_PLAYING: '/movies/now-playing',
     UPCOMING: '/movies/upcoming',
     DETAIL: (slug: string) => `/movies/${encodeURIComponent(slug)}`,
+    SCHEDULE: (slug: string) => `/movies/${encodeURIComponent(slug)}/schedule`,
   },
   ADVERTISEMENTS: { LIST: '/advertisements' },
   PROMOTIONS: { LIST: '/promotions' },

@@ -26,6 +26,17 @@ export interface FeaturedMovieView {
   media: { type: 'youtube' | 'video' | 'image'; src: string; poster?: string };
 }
 
+export interface MovieDetailView extends MovieCardView {
+  synopsis: string | null;
+  backdrop: string | null;
+  releaseDate: string | null;
+  genres: string[];
+  formats: string[];
+  languages: string[];
+  subtitles: string[];
+  presale: boolean;
+}
+
 export interface CinemaSearchFilters {
   movieSlug: string;
   city: string;

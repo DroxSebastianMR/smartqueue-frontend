@@ -183,7 +183,18 @@ const upcoming: CatalogMovie[] = [
   releaseDate: slug === "avengers-doomsday" ? "2026-12-17" : null,
   durationMinutes: null,
   ageRating: null,
-  genres: [],
+  genres: ({
+    "avengers-doomsday": ["Acción", "Aventura", "Ciencia ficción"],
+    "street-fighter-2026": ["Acción", "Aventura"],
+    "clayface-2026": ["Drama", "Terror"],
+    "whalefall-2026": ["Drama", "Suspenso"],
+    "wildwood-2026": ["Animación", "Aventura", "Familiar"],
+    "sunrise-on-the-reaping": ["Acción", "Aventura", "Drama"],
+    "cat-in-the-hat-2026": ["Animación", "Comedia", "Familiar"],
+    "the-odyssey-2026": ["Aventura", "Drama"],
+    "godzilla-minus-zero": ["Acción", "Ciencia ficción"],
+    "dune-part-three": ["Aventura", "Ciencia ficción", "Drama"],
+  } as Record<string, string[]>)[slug] ?? [],
   versions:
     slug === "avengers-doomsday"
       ? [version("INFINITY_VISION"), version("THREE_D"), version("TWO_D")]

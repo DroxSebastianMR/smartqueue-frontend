@@ -1,0 +1,490 @@
+$ nest start --watch
+[2J[3J[H[[90m2:49:44 p. m.[0m] Starting compilation in watch mode...
+
+[[90m2:50:16 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m2:50:17 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m2:50:17 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [NestFactory] Starting Nest application...
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] AppModule dependencies initialized +25ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] PrismaModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] ConfigHostModule dependencies initialized +171ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] HttpModule dependencies initialized +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] HealthModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] ConfigModule dependencies initialized +93ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] CacheStoreModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] MlClientModule dependencies initialized +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] CatalogModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] EventsModule dependencies initialized +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] BannersModule dependencies initialized +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] AdvertisementsModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] PromotionsModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] PaymentsModule dependencies initialized +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] CinemasModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] MetricsModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] QueueModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] MoviesModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] SalesModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] ShowtimesModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] AdmissionModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] AuthController {/api/v1/auth}: +124ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/login, POST} route +4ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/register, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/refresh, POST} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/me, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/permissions, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/logout, POST} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/logout-all, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/sessions, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/sessions/:id, DELETE} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/password/change, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/password/forgot, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/password/reset, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] BannersController {/api/v1/banners}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/banners, GET} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] MoviesController {/api/v1/movies}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/rankings/top-selling, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/now-playing, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/upcoming, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug, GET} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug/trailers, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] AdminMoviesController {/api/v1/admin/movies}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies, POST} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug, PATCH} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug, DELETE} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/publish, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/unpublish, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/placements/:section, PUT} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/placements/:section, DELETE} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/versions, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/versions, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/versions/:id, DELETE} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/assets, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/assets, POST} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/assets/:id, DELETE} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] AdvertisementsController {/api/v1/advertisements}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/advertisements, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] PromotionsController {/api/v1/promotions}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/promotions, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] CinemasController {/api/v1/cinemas}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas, GET} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/nearby, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/:slug, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/:slug/auditoriums, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] AuditoriumsController {/api/v1/auditoriums}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auditoriums/:id/seats, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] AdminCinemasController {/api/v1/admin/cinemas}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas, GET} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug, PATCH} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug, DELETE} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug/auditoriums, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug/auditoriums, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] AdminAuditoriumsController {/api/v1/admin/auditoriums}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id, PATCH} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id, DELETE} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id/seats, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id/seats/:seatId, DELETE} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] ShowtimesController {/api/v1/showtimes}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/showtimes, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/showtimes/:id, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/showtimes/:id/availability, GET} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] CinemaShowtimesController {/api/v1/cinemas}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/:slug/showtimes, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] MovieShowtimesController {/api/v1/movies}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug/schedule, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug/showtimes, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] AdminShowtimesController {/api/v1/admin/showtimes}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes, GET} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes/:id, PATCH} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes/:id/on-sale, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes/:id/cancel, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] PaymentsController {/api/v1/payments}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/payments/methods, GET} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/payments/intents, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] ReceiptsController {/api/v1/receipts}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/receipts/types, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/receipts/requests, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] EventsController {/api/v1/events}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/events/:slug, GET} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] QueueController {/api/v1/queue}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/queue/entries, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/queue/events/:eventId/status, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] SalesController {/api/v1/sales}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/sales/reservations, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/sales/reservations/:reservationId/confirm, POST} route +1ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] MetricsController {/api/v1/metrics}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/metrics/dashboard, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] AdmissionController {/api/v1/admission}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admission/events/:eventId/run, POST} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RoutesResolver] HealthController {/api/v1/health}: +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [RouterExplorer] Mapped {/api/v1/health, GET} route +0ms
+[Nest] 20440  - 14/10/2026, 2:50:50 p. m.     LOG [NestApplication] Nest application successfully started +5ms
+[2J[3J[H[[90m3:03:47 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:03:48 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m3:04:12 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:04:13 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [NestFactory] Starting Nest application...
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] AppModule dependencies initialized +24ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] PrismaModule dependencies initialized +1ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] ConfigHostModule dependencies initialized +152ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] HttpModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] HealthModule dependencies initialized +1ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] ConfigModule dependencies initialized +83ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] CacheStoreModule dependencies initialized +1ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] MlClientModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] CatalogModule dependencies initialized +1ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] EventsModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] BannersModule dependencies initialized +1ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] AdvertisementsModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] PromotionsModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] PaymentsModule dependencies initialized +1ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] CinemasModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] MetricsModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] QueueModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] MoviesModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] SalesModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] ShowtimesModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] AdmissionModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:18 p. m.     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] AuthController {/api/v1/auth}: +115ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/login, POST} route +4ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/register, POST} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/refresh, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/me, GET} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/permissions, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/logout, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/logout-all, POST} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/sessions, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/sessions/:id, DELETE} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/password/change, POST} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/password/forgot, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/password/reset, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] BannersController {/api/v1/banners}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/banners, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] MoviesController {/api/v1/movies}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/rankings/top-selling, GET} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/now-playing, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/upcoming, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug/trailers, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] AdminMoviesController {/api/v1/admin/movies}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug, GET} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug, PATCH} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug, DELETE} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/publish, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/unpublish, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/placements/:section, PUT} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/placements/:section, DELETE} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/versions, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/versions, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/versions/:id, DELETE} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/assets, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/assets, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/assets/:id, DELETE} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] AdvertisementsController {/api/v1/advertisements}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/advertisements, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] PromotionsController {/api/v1/promotions}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/promotions, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] CinemasController {/api/v1/cinemas}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/nearby, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/:slug, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/:slug/auditoriums, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] AuditoriumsController {/api/v1/auditoriums}: +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auditoriums/:id/seats, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] AdminCinemasController {/api/v1/admin/cinemas}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug, PATCH} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug, DELETE} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug/auditoriums, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug/auditoriums, POST} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] AdminAuditoriumsController {/api/v1/admin/auditoriums}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id, PATCH} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id, DELETE} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id/seats, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id/seats/:seatId, DELETE} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] ShowtimesController {/api/v1/showtimes}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/showtimes, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/showtimes/:id, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/showtimes/:id/availability, GET} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] CinemaShowtimesController {/api/v1/cinemas}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/:slug/showtimes, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] MovieShowtimesController {/api/v1/movies}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug/schedule, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug/showtimes, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] AdminShowtimesController {/api/v1/admin/showtimes}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes, POST} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes/:id, PATCH} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes/:id/on-sale, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes/:id/cancel, POST} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] PaymentsController {/api/v1/payments}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/payments/methods, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/payments/intents, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] ReceiptsController {/api/v1/receipts}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/receipts/types, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/receipts/requests, POST} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] EventsController {/api/v1/events}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/events/:slug, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] QueueController {/api/v1/queue}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/queue/entries, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/queue/events/:eventId/status, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] SalesController {/api/v1/sales}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/sales/reservations, POST} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/sales/reservations/:reservationId/confirm, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] MetricsController {/api/v1/metrics}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/metrics/dashboard, GET} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] AdmissionController {/api/v1/admission}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admission/events/:eventId/run, POST} route +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RoutesResolver] HealthController {/api/v1/health}: +0ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [RouterExplorer] Mapped {/api/v1/health, GET} route +1ms
+[Nest] 13540  - 14/10/2026, 3:04:19 p. m.     LOG [NestApplication] Nest application successfully started +4ms
+[2J[3J[H[[90m3:57:01 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:57:03 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m3:57:03 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:57:03 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m3:57:04 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:57:04 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m3:57:06 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:57:06 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m3:57:11 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:57:11 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m3:57:16 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:57:16 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m3:57:18 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:57:18 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m3:57:20 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:57:20 p. m.[0m] Found 0 errors. Watching for file changes.
+
+node:internal/modules/cjs/loader:1459
+  throw err;
+  ^
+
+Error: Cannot find module 'C:\Users\luis\smartqueue-frontend\smartqueue-backend\dist\main'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1456:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v24.14.1
+[2J[3J[H[[90m3:57:21 p. m.[0m] File change detected. Starting incremental compilation...
+
+[2J[3J[H[[90m3:57:31 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m3:57:33 p. m.[0m] Found 0 errors. Watching for file changes.
+
+node:internal/modules/cjs/loader:1459
+  throw err;
+  ^
+
+Error: Cannot find module 'C:\Users\luis\smartqueue-frontend\smartqueue-backend\dist\main'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1456:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v24.14.1
+[2J[3J[H[[90m4:01:23 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:23 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:01:24 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:24 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:01:26 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:27 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:01:28 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:28 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:01:29 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:29 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:01:30 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:30 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:01:30 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:30 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:01:32 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:32 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:01:34 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:34 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[2J[3J[H[[90m4:01:39 p. m.[0m] File change detected. Starting incremental compilation...
+
+[[90m4:01:39 p. m.[0m] Found 0 errors. Watching for file changes.
+
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [NestFactory] Starting Nest application...
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] AppModule dependencies initialized +25ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] PrismaModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] ConfigHostModule dependencies initialized +91ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] HttpModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] HealthModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] ConfigModule dependencies initialized +90ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] CacheStoreModule dependencies initialized +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] MlClientModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] CatalogModule dependencies initialized +2ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] EventsModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] BannersModule dependencies initialized +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] AdvertisementsModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] PromotionsModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] PaymentsModule dependencies initialized +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] CinemasModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] MetricsModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] QueueModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] MoviesModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] SalesModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] ShowtimesModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] AdmissionModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] AuthController {/api/v1/auth}: +106ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/login, POST} route +2ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/register, POST} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/refresh, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/me, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/permissions, GET} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/logout, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/logout-all, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/sessions, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/sessions/:id, DELETE} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/password/change, POST} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/password/forgot, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auth/password/reset, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] BannersController {/api/v1/banners}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/banners, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] MoviesController {/api/v1/movies}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/rankings/top-selling, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/now-playing, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/upcoming, GET} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug/trailers, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] AdminMoviesController {/api/v1/admin/movies}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug, PATCH} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug, DELETE} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/publish, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/unpublish, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/placements/:section, PUT} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/placements/:section, DELETE} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/versions, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/versions, POST} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/versions/:id, DELETE} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/assets, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/assets, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/movies/:slug/assets/:id, DELETE} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] AdvertisementsController {/api/v1/advertisements}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/advertisements, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] PromotionsController {/api/v1/promotions}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/promotions, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] CinemasController {/api/v1/cinemas}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas, GET} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/nearby, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/:slug, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/:slug/auditoriums, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] AuditoriumsController {/api/v1/auditoriums}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/auditoriums/:id/seats, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] AdminCinemasController {/api/v1/admin/cinemas}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug, PATCH} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug, DELETE} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug/auditoriums, GET} route +5ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/cinemas/:slug/auditoriums, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] AdminAuditoriumsController {/api/v1/admin/auditoriums}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id, PATCH} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id, DELETE} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id/seats, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/auditoriums/:id/seats/:seatId, DELETE} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] ShowtimesController {/api/v1/showtimes}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/showtimes, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/showtimes/:id, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/showtimes/:id/availability, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] CinemaShowtimesController {/api/v1/cinemas}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/cinemas/:slug/showtimes, GET} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] MovieShowtimesController {/api/v1/movies}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug/schedule, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/movies/:slug/showtimes, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] AdminShowtimesController {/api/v1/admin/showtimes}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes, POST} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes/:id, PATCH} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes/:id/on-sale, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admin/showtimes/:id/cancel, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] PaymentsController {/api/v1/payments}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/payments/methods, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/payments/intents, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] ReceiptsController {/api/v1/receipts}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/receipts/types, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/receipts/requests, POST} route +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] EventsController {/api/v1/events}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/events/:slug, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] QueueController {/api/v1/queue}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/queue/entries, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/queue/events/:eventId/status, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] SalesController {/api/v1/sales}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/sales/reservations, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/sales/reservations/:reservationId/confirm, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] MetricsController {/api/v1/metrics}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/metrics/dashboard, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] AdmissionController {/api/v1/admission}: +1ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/admission/events/:eventId/run, POST} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RoutesResolver] HealthController {/api/v1/health}: +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [RouterExplorer] Mapped {/api/v1/health, GET} route +0ms
+[Nest] 19756  - 14/10/2026, 4:01:43 p. m.     LOG [NestApplication] Nest application successfully started +3ms
+[ELIFECYCLE] Command failed with exit code 4294967295.

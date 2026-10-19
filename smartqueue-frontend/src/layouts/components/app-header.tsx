@@ -12,7 +12,7 @@ import { UserRole } from '@/features/auth/enums/user-role.enum';
 const navItems = [
   { to: '/', label: 'Inicio' },
   { to: '/#now-playing', label: 'Cartelera' },
-  { to: '/#upcoming', label: 'Próximos estrenos' },
+  { to: PATHS.UPCOMING, label: 'Próximos estrenos' },
   { to: '/#cinema-finder', label: 'Sedes' },
   { to: PATHS.AUTH.REGISTER, label: 'SocioTrux' },
   { to: '/monitoring', label: 'Experiencia ML', adminOnly: true },

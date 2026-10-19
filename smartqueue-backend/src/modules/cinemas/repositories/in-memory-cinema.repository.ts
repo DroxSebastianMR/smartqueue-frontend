@@ -49,7 +49,9 @@ export class InMemoryCinemaRepository implements OnModuleInit {
         name,
         city: "Lima",
         countryCode: "PE",
-        address: "Por definir (demo)",
+        address: slug === "cinetrux-centro"
+          ? "Av. America Oeste 750 Urb. El Ingenio Trujillo"
+          : "Por definir (demo)",
         timeZone: "America/Lima",
         status: CinemaStatus.ACTIVE,
       });

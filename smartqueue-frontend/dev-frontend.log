@@ -1,0 +1,9 @@
+$ vite --host 0.0.0.0
+6:00:22 p. m. [vite] (client) Re-optimizing dependencies because vite config has changed
+
+  VITE v7.3.7  ready in 7368 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.56.1:5173/
+  ➜  Network: http://172.20.10.8:5173/
+  ➜  press h + enter to show help
