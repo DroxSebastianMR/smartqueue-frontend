@@ -1,6 +1,8 @@
 import { Carousel } from '@/components/ui/carousel';
 import { MovieCard } from '@/features/home/components/movie-card';
 import { useUpcomingMovies } from '@/features/home/hooks/use-home-content';
+import { Link } from 'react-router-dom';
+import { PATHS } from '@/app/router/constants/paths';
 
 export function UpcomingMoviesSection() {
   const { data: movies, isPending, isError } = useUpcomingMovies();
@@ -19,6 +21,7 @@ export function UpcomingMoviesSection() {
               Próximos estrenos
             </h2>
           </div>
+          <Link to={PATHS.UPCOMING} className="text-sm font-semibold text-zinc-400 transition hover:text-white">Ver todos</Link>
         </div>
         {isPending && <p role="status" className="mt-8 text-sm text-zinc-400">Cargando próximos estrenos…</p>}
         {isError && <p role="alert" className="mt-8 text-sm text-zinc-400">No pudimos cargar los próximos estrenos.</p>}

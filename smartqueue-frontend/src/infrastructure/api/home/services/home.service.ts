@@ -1,18 +1,27 @@
 import { apiClient } from '@/infrastructure/api/client/axios.instance';
 import { API_ENDPOINTS } from '@/infrastructure/api/endpoints';
 import type { CinemaSearchFilters } from '@/features/home/types/home.types';
-import { mapFeaturedMovie, mapMovieCard } from '@/infrastructure/api/home/mappers/home.mapper';
+import { mapFeaturedMovie, mapMovieCard, mapMovieDetail } from '@/infrastructure/api/home/mappers/home.mapper';
 import type {
   ApiAdvertisement,
   ApiBanner,
   ApiCinema,
   ApiMovie,
+  ApiMovieSchedule,
   ApiPage,
   ApiPromotion,
   ApiShowtime,
 } from '@/infrastructure/api/home/types/home-api.types';
 
 export const homeService = {
+  async movie(slug: string) {
+    const { data } = await apiClient.get<ApiMovie>(API_ENDPOINTS.MOVIES.DETAIL(slug));
+    return mapMovieDetail(data);
+  },
+  async movieSchedule(slug: string, cinemaSlug: string) {
+    const { data } = await apiClient.get<ApiMovieSchedule>(API_ENDPOINTS.MOVIES.SCHEDULE(slug), { params: { cinemaSlug, days: 5 } });
+    return data;
+  },
   async featured() {
     const { data: banners } = await apiClient.get<ApiPage<ApiBanner>>(API_ENDPOINTS.BANNERS.LIST, { params: { limit: 10 } });
     const movies = await Promise.allSettled(banners.data.map(async (banner) => {

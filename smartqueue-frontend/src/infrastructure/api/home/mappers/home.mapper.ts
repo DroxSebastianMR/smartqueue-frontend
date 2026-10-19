@@ -1,6 +1,6 @@
 import { MovieProjectionFormat } from '@/features/home/enums/movie-projection-format.enum';
 import { MovieMediaProvider } from '@/features/home/enums/movie-media-provider.enum';
-import type { FeaturedMovieView, MovieCardView } from '@/features/home/types/home.types';
+import type { FeaturedMovieView, MovieCardView, MovieDetailView } from '@/features/home/types/home.types';
 import type { ApiBanner, ApiMovie } from '@/infrastructure/api/home/types/home-api.types';
 
 const FORMAT_LABELS: Record<MovieProjectionFormat, string> = {
@@ -43,5 +43,27 @@ export function mapFeaturedMovie(banner: ApiBanner, movie: ApiMovie): FeaturedMo
     media: banner.video
       ? { type: banner.video.provider === MovieMediaProvider.YOUTUBE ? 'youtube' : 'video', src: banner.video.url, poster: banner.backdropUrl }
       : { type: 'image', src: banner.backdropUrl },
+  };
+}
+
+const languageName = (code: string) => {
+  if (code.toLowerCase().startsWith('es')) return 'Español latino';
+  if (code.toLowerCase().startsWith('en')) return 'Inglés';
+  if (code.toLowerCase().startsWith('ja')) return 'Japonés';
+  return code;
+};
+
+export function mapMovieDetail(movie: ApiMovie): MovieDetailView {
+  const card = mapMovieCard(movie, false);
+  return {
+    ...card,
+    synopsis: movie.synopsis,
+    backdrop: movie.backdropUrl,
+    releaseDate: movie.releaseDate,
+    genres: movie.genres,
+    formats: [...new Set(movie.versions.map((version) => FORMAT_LABELS[version.format] ?? version.format))],
+    languages: [...new Set(movie.versions.map((version) => languageName(version.audioLanguage)))],
+    subtitles: [...new Set(movie.versions.flatMap((version) => version.subtitleLanguage ? [languageName(version.subtitleLanguage)] : []))],
+    presale: movie.presale,
   };
 }
