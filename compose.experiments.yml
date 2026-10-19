@@ -50,7 +50,10 @@ services:
       PORT: "3001"
       # Por defecto usa el Postgres local del laboratorio. Para Supabase:
       # docker compose --env-file smartqueue-backend/.env -f compose.experiments.yml up -d --wait
-      DATABASE_URL: ${DATABASE_URL:-postgresql://smartqueue:local-experiment-only@postgres:5432/smartqueue_experiments}
+      # El pool transaccional de Supabase (6543) no está disponible desde esta
+      # red Docker. Para el laboratorio se usa DIRECT_URL (pool de sesión 5432)
+      # también en runtime; Redis conserva la capa de caché del backend.
+      DATABASE_URL: ${DIRECT_URL:-postgresql://smartqueue:local-experiment-only@postgres:5432/smartqueue_experiments}
       DIRECT_URL: ${DIRECT_URL:-postgresql://smartqueue:local-experiment-only@postgres:5432/smartqueue_experiments}
       FRONTEND_ORIGIN: http://localhost:5175
       AUTH_DEMO_EMAIL: demo@cinetrux.test

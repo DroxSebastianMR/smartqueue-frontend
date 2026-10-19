@@ -217,6 +217,7 @@ async function theatres() {
     ['avengers-doomsday', 'THREE_D'],
     ['avengers-doomsday', 'INFINITY_VISION'],
   ];
+  const showtimesToCreate = [];
   for (const [slug, name, district, latitude, longitude] of locations) {
     const city = slug === 'cinetrux-trujillo' ? 'Trujillo' : 'Lima';
     const cinema = await db.cinema.upsert({ where: { slug }, update: { city, district, latitude, longitude }, create: { id: uid(`cinema:${slug}`), slug, name, city, region: city === 'Lima' ? 'Lima' : 'La Libertad', district, countryCode: 'PE', address: 'Ubicación aproximada de demostración; no existe sede comercial', timeZone: 'America/Lima', latitude, longitude } });
@@ -251,20 +252,21 @@ async function theatres() {
             : playingRotation;
         for (const [slot, hour] of [13, 16, 19, 22].entries()) {
           const [movieSlug, format] = candidates[(offset + slot + roomIndex) % candidates.length];
-          const version = await db.movieVersion.findUniqueOrThrow({ where: { id: uid(`version:${movieSlug}:${format}`) } });
           const duration = movieProfiles[movieSlug].durationMin;
           const startsAt = new Date(`${date}T${String(hour).padStart(2, '0')}:00:00-05:00`);
           if (startsAt <= new Date()) continue;
           const showId = uid(`show:v2:${slug}:${room.id}:${date}:${hour}`);
-          await db.showtime.upsert({
-            where: { id: showId },
-            update: { movieVersionId: version.id, startsAt, endsAt: new Date(startsAt.getTime() + duration * 60_000), status: 'ON_SALE', basePriceCents: roomIndex === 2 ? 3800 : roomIndex === 1 ? 3200 : 2500, bookingOpensAt: new Date(startsAt.getTime() - 14 * 86_400_000) },
-            create: { id: showId, auditoriumId: room.id, movieVersionId: version.id, startsAt, endsAt: new Date(startsAt.getTime() + duration * 60_000), status: 'ON_SALE', basePriceCents: roomIndex === 2 ? 3800 : roomIndex === 1 ? 3200 : 2500, currency: 'PEN', bookingOpensAt: new Date(startsAt.getTime() - 14 * 86_400_000) },
+          showtimesToCreate.push({
+            id: showId, auditoriumId: room.id, movieVersionId: uid(`version:${movieSlug}:${format}`),
+            startsAt, endsAt: new Date(startsAt.getTime() + duration * 60_000), status: 'ON_SALE',
+            basePriceCents: roomIndex === 2 ? 3800 : roomIndex === 1 ? 3200 : 2500,
+            currency: 'PEN', bookingOpensAt: new Date(startsAt.getTime() - 14 * 86_400_000),
           });
         }
       }
     }
   }
+  await db.showtime.createMany({ data: showtimesToCreate, skipDuplicates: true });
 }
 
 async function operations() {
