@@ -1,7 +1,9 @@
 export const homeQueryKeys = {
   featured: ['home', 'featured'] as const,
   nowPlaying: ['home', 'now-playing'] as const,
+  nowPlayingPage: (page: number, limit: number) => ['home', 'now-playing', page, limit] as const,
   upcoming: ['home', 'upcoming'] as const,
+  upcomingPage: (page: number, limit: number) => ['home', 'upcoming', page, limit] as const,
   movie: (slug: string) => ['movies', 'detail', slug] as const,
   schedule: (slug: string, cinemaSlug: string) => ['movies', 'schedule', slug, cinemaSlug] as const,
   advertisements: ['home', 'advertisements'] as const,

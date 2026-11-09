@@ -1,0 +1,29 @@
+{
+  "model_version": "20261109-saturation-v1",
+  "schema_version": "1.0",
+  "features": [
+    "arrival_rate",
+    "arrival_trend",
+    "latency_p95_ms",
+    "completion_rate"
+  ],
+  "window_seconds": 10,
+  "horizon_seconds": 30,
+  "latency_threshold_ms": 1000.0,
+  "error_threshold": 0.05,
+  "selected_threshold": 0.79,
+  "metrics": {
+    "recall": 0.7450348899624262,
+    "precision": 0.8937540244687702,
+    "f1": 0.8126463700234192,
+    "pr_auc": 0.8513154703299016,
+    "inference_ms_per_row": 0.00011132190347816109,
+    "run_recall_std": 0.47595360479770743
+  },
+  "training_dataset_version": "azure-functions-invocation-trace-2021-v1",
+  "dataset_sha256": "b600002e2aa5afb8eab1a9810f8fabe1b4c646cde0119de2649686ed91d7791d",
+  "data_sources": [
+    "AZURE_FUNCTIONS_2021_REAL"
+  ],
+  "deployment_status": "EXPERIMENTAL_NOT_PRODUCTION_VALIDATED"
+}

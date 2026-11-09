@@ -17,7 +17,11 @@ export const protectedRoutes: RouteObject[] = [
   ] },
   { element: <ProtectedRoute allowedRoles={[UserRole.ADMIN]} />, children: [
     { element: <AdminLayout />, children: [
-      { path: PATHS.MONITORING, element: <MonitoringPage /> },
+      { path: PATHS.MONITORING, element: <MonitoringPage view="summary" /> },
+      { path: PATHS.MONITORING_SATURATION, element: <MonitoringPage view="saturation" /> },
+      { path: PATHS.MONITORING_ANALYTICS, element: <MonitoringPage view="analytics" /> },
+      { path: PATHS.MONITORING_DECISIONS, element: <MonitoringPage view="decisions" /> },
+      { path: PATHS.MONITORING_EXPERIMENTS, element: <MonitoringPage view="experiments" /> },
     ] },
   ] },
 ];

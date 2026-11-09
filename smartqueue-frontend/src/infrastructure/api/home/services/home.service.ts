@@ -1,6 +1,6 @@
 import { apiClient } from '@/infrastructure/api/client/axios.instance';
 import { API_ENDPOINTS } from '@/infrastructure/api/endpoints';
-import type { CinemaSearchFilters } from '@/features/home/types/home.types';
+import type { CinemaSearchFilters, PaginatedMovieCards } from '@/features/home/types/home.types';
 import { mapFeaturedMovie, mapMovieCard, mapMovieDetail } from '@/infrastructure/api/home/mappers/home.mapper';
 import type {
   ApiAdvertisement,
@@ -36,9 +36,17 @@ export const homeService = {
     const { data } = await apiClient.get<ApiPage<ApiMovie>>(API_ENDPOINTS.MOVIES.NOW_PLAYING, { params: { limit: 10 } });
     return data.data.map((movie) => mapMovieCard(movie, false));
   },
+  async nowPlayingPage(page = 1, limit = 15): Promise<PaginatedMovieCards> {
+    const { data } = await apiClient.get<ApiPage<ApiMovie>>(API_ENDPOINTS.MOVIES.NOW_PLAYING, { params: { page, limit } });
+    return { items: data.data.map((movie) => mapMovieCard(movie, false)), meta: data.meta };
+  },
   async upcoming() {
     const { data } = await apiClient.get<ApiPage<ApiMovie>>(API_ENDPOINTS.MOVIES.UPCOMING, { params: { limit: 10 } });
     return data.data.map((movie) => mapMovieCard(movie, true));
+  },
+  async upcomingPage(page = 1, limit = 15): Promise<PaginatedMovieCards> {
+    const { data } = await apiClient.get<ApiPage<ApiMovie>>(API_ENDPOINTS.MOVIES.UPCOMING, { params: { page, limit } });
+    return { items: data.data.map((movie) => mapMovieCard(movie, true)), meta: data.meta };
   },
   async advertisements() {
     const { data } = await apiClient.get<ApiPage<ApiAdvertisement>>(API_ENDPOINTS.ADVERTISEMENTS.LIST);

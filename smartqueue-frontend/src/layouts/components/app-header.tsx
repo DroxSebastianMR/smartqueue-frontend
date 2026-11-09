@@ -11,9 +11,10 @@ import { UserRole } from '@/features/auth/enums/user-role.enum';
 
 const navItems = [
   { to: '/', label: 'Inicio' },
-  { to: '/#now-playing', label: 'Cartelera' },
+  { to: PATHS.NOW_PLAYING, label: 'Cartelera' },
   { to: PATHS.UPCOMING, label: 'Próximos estrenos' },
-  { to: '/#cinema-finder', label: 'Sedes' },
+  { to: PATHS.CINEMAS, label: 'Sedes' },
+  { to: PATHS.CONCESSIONS, label: 'Dulcería' },
   { to: PATHS.AUTH.REGISTER, label: 'SocioTrux' },
   { to: '/monitoring', label: 'Experiencia ML', adminOnly: true },
 ];

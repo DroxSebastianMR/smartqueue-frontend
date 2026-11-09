@@ -19,6 +19,7 @@ import {
 } from "@/modules/movies/dto/manage-movie.dto";
 import { InMemoryMovieRepository } from "@/modules/movies/repositories/in-memory-movie.repository";
 import { MoviePublicationStatus } from "@/modules/movies/enums/movie-catalog.enum";
+import { UpcomingMoviesQueryDto } from "@/modules/movies/dto/upcoming-movies-query.dto";
 
 @Injectable()
 export class MoviesService {
@@ -33,7 +34,7 @@ export class MoviesService {
       () => paginate(this.repository.listNowPlaying(), query),
     );
   }
-  upcoming(query: ListQueryDto): Promise<Page<CatalogMovie>> {
+  upcoming(query: UpcomingMoviesQueryDto): Promise<Page<CatalogMovie>> {
     return this.cache.remember(
       `movies:upcoming:${query.page}:${query.limit}`,
       () => paginate(this.repository.listUpcoming(), query),

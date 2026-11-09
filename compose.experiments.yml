@@ -31,8 +31,10 @@ services:
     build:
       context: ./smartqueue-ai
     environment:
-      MODEL_PATH: artifacts/bootstrap-v1/saturation_pipeline.joblib
-      MODEL_METADATA_PATH: artifacts/bootstrap-v1/model_metadata.json
+      # bootstrap-v1 is the reproducible default.  The Azure real-trace model is
+      # selected explicitly through AI_MODEL_PATH / AI_MODEL_METADATA_PATH.
+      MODEL_PATH: ${AI_MODEL_PATH:-artifacts/bootstrap-v1/saturation_pipeline.joblib}
+      MODEL_METADATA_PATH: ${AI_MODEL_METADATA_PATH:-artifacts/bootstrap-v1/model_metadata.json}
       PREDICTION_THRESHOLD: "0.65"
     ports:
       - "127.0.0.1:5001:5001"

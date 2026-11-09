@@ -24,6 +24,7 @@ import {
   MovieRankingDto,
   MovieSearchQueryDto,
 } from "@/modules/movies/dto/manage-movie.dto";
+import { UpcomingMoviesQueryDto } from "@/modules/movies/dto/upcoming-movies-query.dto";
 
 @ApiTags("movies")
 @Controller("movies")
@@ -67,7 +68,7 @@ export class MoviesController {
 
   @Get("upcoming")
   @ApiOperation({
-    summary: "Próximos estrenos; máximo 10 por página",
+    summary: "Próximos estrenos; máximo 15 por página",
     description:
       "La selección de demostración no valida calendarios de estreno reales.",
   })
@@ -78,7 +79,7 @@ export class MoviesController {
     message: "Paginación inválida",
     path: "/api/v1/movies/upcoming",
   })
-  upcoming(@Query() query: ListQueryDto): Promise<Page<CatalogMovie>> {
+  upcoming(@Query() query: UpcomingMoviesQueryDto): Promise<Page<CatalogMovie>> {
     return this.movies.upcoming(query);
   }
 

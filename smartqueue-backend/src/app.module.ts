@@ -19,6 +19,7 @@ import { ExperimentsModule } from "@/modules/experiments/experiments.module";
 import { MetricsModule } from "@/modules/metrics/metrics.module";
 import { QueueModule } from "@/modules/queue/queue.module";
 import { SalesModule } from "@/modules/sales/sales.module";
+import { ConcessionsModule } from "@/modules/concessions/concessions.module";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { SalesModule } from "@/modules/sales/sales.module";
     MoviesModule,
     AdvertisementsModule,
     PromotionsModule,
+    ConcessionsModule,
     CinemasModule,
     ShowtimesModule,
     PaymentsModule,

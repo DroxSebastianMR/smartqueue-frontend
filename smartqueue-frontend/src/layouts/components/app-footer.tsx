@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { BrandLogo } from '@/shared/components/brand-logo';
 
 const cinemaLinks = [
-  { label: 'Cartelera', to: '/#now-playing' },
-  { label: 'Próximos estrenos', to: '/#upcoming' },
-  { label: 'Sedes y funciones', to: '/#cinema-finder' },
+  { label: 'Cartelera', to: '/cartelera' },
+  { label: 'Próximos estrenos', to: '/proximos-estrenos' },
+  { label: 'Sedes y funciones', to: '/sedes' },
+  { label: 'Dulcería', to: '/dulceria' },
   { label: 'Promociones', to: '/#promotions' },
 ];
 
@@ -30,7 +31,7 @@ export function AppFooter({ compact = false }: { compact?: boolean }) {
         <div>
           <h2 className="text-sm font-semibold text-white">Tu próxima función</h2>
           <p className="mt-5 text-sm leading-7 text-zinc-400">Encuentra un cine, filtra los horarios disponibles y elige cómo disfrutar la pantalla grande.</p>
-          <Link to="/#cinema-finder" className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/[.06]"><MapPin className="size-4" /> Explorar sedes <ArrowUpRight className="size-3.5" /></Link>
+          <Link to="/sedes" className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/[.06]"><MapPin className="size-4" /> Explorar sedes <ArrowUpRight className="size-3.5" /></Link>
         </div>
       </div>}
       <div className="border-t border-white/[.08]">

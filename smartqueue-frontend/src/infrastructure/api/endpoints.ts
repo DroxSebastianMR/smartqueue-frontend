@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
   },
   ADVERTISEMENTS: { LIST: '/advertisements' },
   PROMOTIONS: { LIST: '/promotions' },
+  CONCESSIONS: { CATALOG: '/concessions/catalog' },
   CINEMAS: { LIST: '/cinemas' },
   PAYMENTS: { METHODS: '/payments/methods' },
   SHOWTIMES: {

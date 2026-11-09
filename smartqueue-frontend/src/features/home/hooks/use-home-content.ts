@@ -7,8 +7,14 @@ import { homeService } from '@/infrastructure/api/home/services/home.service';
 export const useNowPlayingMovies = () =>
   useQuery({ queryKey: homeQueryKeys.nowPlaying, queryFn: homeService.nowPlaying });
 
+export const useNowPlayingMoviesPage = (page: number, limit = 15) =>
+  useQuery({ queryKey: homeQueryKeys.nowPlayingPage(page, limit), queryFn: () => homeService.nowPlayingPage(page, limit) });
+
 export const useUpcomingMovies = () =>
   useQuery({ queryKey: homeQueryKeys.upcoming, queryFn: homeService.upcoming });
+
+export const useUpcomingMoviesPage = (page: number, limit = 15) =>
+  useQuery({ queryKey: homeQueryKeys.upcomingPage(page, limit), queryFn: () => homeService.upcomingPage(page, limit) });
 
 export const useMovie = (slug: string) =>
   useQuery({ queryKey: homeQueryKeys.movie(slug), queryFn: () => homeService.movie(slug), enabled: Boolean(slug) });

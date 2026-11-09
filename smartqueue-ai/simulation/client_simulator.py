@@ -43,8 +43,8 @@ def main():
     target = urlparse(args.base_url)
     if target.hostname not in ('127.0.0.1', 'localhost') or target.port != 3001:
         parser.error('Only isolated localhost API on 3001 is permitted')
-    if not 1 <= args.clients <= 500 or not 30 <= args.duration <= 600:
-        parser.error('clients: 1..500; duration: 30..600 seconds')
+    if not 1 <= args.clients <= 1000 or not 30 <= args.duration <= 600:
+        parser.error('clients: 1..1000; duration: 30..600 seconds')
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
     trace = make_trace(args.seed, args.clients, args.duration, args.scenario)

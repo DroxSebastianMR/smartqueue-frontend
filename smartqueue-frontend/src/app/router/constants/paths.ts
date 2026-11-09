@@ -1,11 +1,18 @@
 export const PATHS = {
   HOME: '/',
+  NOW_PLAYING: '/cartelera',
   UPCOMING: '/proximos-estrenos',
+  CONCESSIONS: '/dulceria',
+  CINEMAS: '/sedes',
   MOVIE: (slug: string) => `/peliculas/${encodeURIComponent(slug)}`,
   MOVIE_DETAIL: '/peliculas/:slug',
   AUTH: { LOGIN: '/login', RECOVER: '/recover', REGISTER: '/register' },
   QUEUE: '/queue',
   PURCHASE: '/purchase',
   MONITORING: '/monitoring',
+  MONITORING_SATURATION: '/monitoring/saturacion',
+  MONITORING_ANALYTICS: '/monitoring/analitica',
+  MONITORING_DECISIONS: '/monitoring/decisiones',
+  MONITORING_EXPERIMENTS: '/monitoring/experimentos',
   FORBIDDEN: '/forbidden',
 } as const;

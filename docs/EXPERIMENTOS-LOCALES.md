@@ -12,6 +12,34 @@ comprueba la integración, pero no acredita precisión en tráfico real ni super
 
 ## Preparación (PowerShell)
 
+### Demostración guiada para el profesor
+
+El lanzador siguiente inicia un laboratorio **aislado** en Docker, verifica que el
+modelo esté cargado y simula usuarios concurrentes que ingresan, esperan, abandonan
+o completan la compra ficticia. NestJS cierra ventanas de diez segundos, persiste la
+telemetría y consulta al modelo para cada ventana evaluable. No utiliza Supabase ni
+procesa pagos reales.
+
+Desde la raíz del repositorio, con Docker Desktop iniciado:
+
+```powershell
+.\scripts\run-ml-demo.ps1 -Clients 200 -DurationSeconds 60 -Scenario BURST -Modes PREDICTIVE -Seed 42
+```
+
+Durante o después de la ejecución abre `http://127.0.0.1:5175/monitoring` e inicia
+sesión con `admin@cinetrux.test` / `CinetruxAdmin2026!`. La consola imprime además
+la URL con el `runId` de cada corrida para abrir exactamente su historial. Para una
+comparación exploratoria de los tres controladores, usa:
+
+```powershell
+.\scripts\run-ml-demo.ps1 -Clients 200 -DurationSeconds 60 -Scenario BURST -Modes 'FIXED,REACTIVE,PREDICTIVE' -Seed 42
+```
+
+El número máximo admitido por el simulador es 1,000 clientes. Una corrida `BURST` con
+200 clientes concentra 70 % de los ingresos en una ventana corta; representa carga
+de laboratorio, no una prueba de capacidad de producción. Para detener el entorno
+sin borrar evidencias, usa `docker compose -f compose.experiments.yml stop`.
+
 Desde la raíz del repositorio, con Docker Desktop iniciado:
 
 ```powershell

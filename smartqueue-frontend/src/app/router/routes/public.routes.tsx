@@ -8,6 +8,9 @@ import { ForbiddenPage } from '@/features/auth/pages/forbidden-page';
 import { HomePage } from '@/features/home/pages/home-page';
 import { MovieDetailPage } from '@/features/movies/pages/movie-detail-page';
 import { UpcomingMoviesPage } from '@/features/movies/pages/upcoming-movies-page';
+import { NowPlayingMoviesPage } from '@/features/movies/pages/now-playing-movies-page';
+import { ConcessionsPage } from '@/features/concessions/pages/concessions-page';
+import { CinemasPage } from '@/features/cinemas/pages/cinemas-page';
 import { LandingLayout } from '@/layouts/landing/landing-layout';
 import { AuthLayout } from '@/layouts/auth/auth-layout';
 
@@ -15,6 +18,9 @@ export const publicRoutes: RouteObject[] = [
   { element: <LandingLayout />, children: [
     { path: PATHS.HOME, element: <HomePage /> },
     { path: PATHS.UPCOMING, element: <UpcomingMoviesPage /> },
+    { path: PATHS.NOW_PLAYING, element: <NowPlayingMoviesPage /> },
+    { path: PATHS.CONCESSIONS, element: <ConcessionsPage /> },
+    { path: PATHS.CINEMAS, element: <CinemasPage /> },
     { path: PATHS.MOVIE_DETAIL, element: <MovieDetailPage /> },
     { path: PATHS.FORBIDDEN, element: <ForbiddenPage /> },
   ] },

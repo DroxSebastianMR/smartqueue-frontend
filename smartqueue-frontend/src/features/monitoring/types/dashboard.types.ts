@@ -1,13 +1,16 @@
 import type { ControlMode } from '@/features/monitoring/enums/control-mode.enum';
+import type { ExperimentScenario } from '@/features/monitoring/enums/experiment-scenario.enum';
+import type { ExperimentStatus } from '@/features/monitoring/enums/experiment-status.enum';
+import type { RiskClass } from '@/features/monitoring/enums/risk-class.enum';
 
 export interface ExperimentRunSummary {
   id: string;
-  scenario: 'NORMAL' | 'BURST' | 'SUSTAINED_PEAK' | 'STEPPED';
+  scenario: ExperimentScenario;
   controlMode: ControlMode;
   seed: number;
   generatorVersion: string;
   startedAt: string;
-  status: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
+  status: ExperimentStatus;
 }
 
 export interface MonitoringKpis {
@@ -28,7 +31,7 @@ export interface MonitoringPrediction {
   windowEnd: string;
   evaluable: boolean;
   riskScore: number | null;
-  riskClass: 'HEALTHY' | 'SATURATION' | null;
+  riskClass: RiskClass | null;
   modelVersion: string | null;
   horizonSeconds: number | null;
   predictionAgeMs: number | null;

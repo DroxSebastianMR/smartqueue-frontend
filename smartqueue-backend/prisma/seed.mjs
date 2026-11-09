@@ -185,20 +185,70 @@ async function catalog() {
   await db.movie.updateMany({ where: { id: movie.id, synopsis: null }, data: { synopsis } });
   await db.movieRelease.upsert({ where: { movieId_countryCode: { movieId: movie.id, countryCode: 'PE' } }, update: { status: 'PRESALE' }, create: { movieId: movie.id, countryCode: 'PE', releaseDate: new Date('2026-12-17T00:00:00Z'), status: 'PRESALE' } });
   await db.movieAsset.upsert({ where: { id: uid('trailer:avengers') }, update: {}, create: { id: uid('trailer:avengers'), movieId: movie.id, kind: 'TRAILER', provider: 'YOUTUBE', url: 'https://www.youtube.com/watch?v=lAr_uspgHm8', locale: 'es-419' } });
-  await db.banner.upsert({ where: { id: uid('banner:avengers') }, update: {}, create: { id: uid('banner:avengers'), movieId: movie.id, title: movie.title, backdropUrl: 'https://i.ytimg.com/vi/lAr_uspgHm8/maxresdefault.jpg', videoUrl: 'https://www.youtube.com/watch?v=lAr_uspgHm8', videoProvider: 'YOUTUBE', ctaLabel: 'Ver funciones', ctaHref: '/#cinema-finder', status: 'ACTIVE', priority: 1 } });
-  await db.banner.updateMany({ where: { id: uid('banner:avengers'), logoUrl: null }, data: { logoUrl } });
-  await db.banner.updateMany({ where: { id: uid('banner:avengers'), ctaHref: '/purchase' }, data: { ctaHref: '/#cinema-finder' } });
-  await db.advertisement.createMany({ data: [
-    { id: uid('ad:combo'), title: 'Disfruta tu combo Canchas', description: 'Contenido de demostración.', ctaLabel: 'Ver combos', ctaHref: '/#promotions', status: 'ACTIVE', priority: 1 },
-    { id: uid('ad:salas'), title: 'Una nueva forma de vivir el cine', description: 'Descubre nuestros formatos.', ctaLabel: 'Explorar', ctaHref: '/#now-playing', status: 'ACTIVE', priority: 2 },
-    { id: uid('ad:anticipada'), title: 'Planea tu próxima función', description: 'Consulta horarios y disponibilidad.', ctaLabel: 'Ver cartelera', ctaHref: '/#now-playing', status: 'ACTIVE', priority: 3 },
-    { id: uid('ad:familia'), title: 'Cine en familia', description: 'Historias para compartir.', ctaLabel: 'Ver películas', ctaHref: '/#now-playing', status: 'ACTIVE', priority: 4 },
-    { id: uid('ad:proximamente'), title: 'Lo que viene a Cinetrux', description: 'Descubre los próximos estrenos.', ctaLabel: 'Descubrir', ctaHref: '/#upcoming', status: 'ACTIVE', priority: 5 },
-  ], skipDuplicates: true });
-  await db.advertisement.updateMany({ where: { id: uid('ad:combo'), description: 'Contenido de demostración.' }, data: { description: 'Acompaña tu película con una selección de snacks.' } });
-  const promoImageUrl = 'https://images.unsplash.com/photo-1578849278619-e73505e9610f?auto=format&fit=crop&w=1400&q=88';
-  await db.promotion.upsert({ where: { id: uid('promo:canchas') }, update: {}, create: { id: uid('promo:canchas'), title: 'Combo Canchas', description: 'Acompaña tu función con canchita y bebidas.', imageUrl: promoImageUrl, ctaLabel: 'Conocer más', ctaHref: '/purchase', status: 'ACTIVE' } });
-  await db.promotion.updateMany({ where: { id: uid('promo:canchas'), title: 'Combo Canchas Demo' }, data: { title: 'Combo Canchas', description: 'Acompaña tu función con canchita y bebidas.', imageUrl: promoImageUrl } });
+  const bannerDefinitions = [
+    { key: 'avengers', movieSlug: 'avengers-doomsday', title: 'Avengers: Doomsday', logoUrl, backdropUrl: 'https://i.ytimg.com/vi/lAr_uspgHm8/maxresdefault.jpg', videoUrl: 'https://www.youtube.com/watch?v=lAr_uspgHm8', videoProvider: 'YOUTUBE', ctaLabel: 'Ver funciones', ctaHref: '/#cinema-finder', priority: 1 },
+    { key: 'street-fighter', movieSlug: 'street-fighter-2026', title: 'Street Fighter', logoUrl: null, backdropUrl: 'https://cdn.kinocheck.com/i/w%3D1200/9hgzyq4ym3.jpg', videoUrl: null, videoProvider: null, ctaLabel: 'Conocer estreno', ctaHref: '/peliculas/street-fighter-2026', priority: 2 },
+    { key: 'whalefall', movieSlug: 'whalefall-2026', title: 'Whalefall', logoUrl: null, backdropUrl: 'https://cdn.moviefone.com/admin-uploads/highlights/images/whalefall-official-teaser-poster_1781031419.webp', videoUrl: null, videoProvider: null, ctaLabel: 'Conocer estreno', ctaHref: '/peliculas/whalefall-2026', priority: 3 },
+    { key: 'odyssey', movieSlug: 'the-odyssey-2026', title: 'The Odyssey', logoUrl: null, backdropUrl: 'https://cdn.posteritati.com/posters/000/000/079/359/the-odyssey-md-web.jpg', videoUrl: null, videoProvider: null, ctaLabel: 'Conocer estreno', ctaHref: '/peliculas/the-odyssey-2026', priority: 4 },
+  ];
+  for (const banner of bannerDefinitions) {
+    const bannerMovie = await db.movie.findUniqueOrThrow({ where: { slug: banner.movieSlug } });
+    await db.banner.upsert({
+      where: { id: uid(`banner:${banner.key}`) },
+      update: { movieId: bannerMovie.id, title: banner.title, logoUrl: banner.logoUrl, backdropUrl: banner.backdropUrl, videoUrl: banner.videoUrl, videoProvider: banner.videoProvider, ctaLabel: banner.ctaLabel, ctaHref: banner.ctaHref, status: 'ACTIVE', priority: banner.priority },
+      create: { id: uid(`banner:${banner.key}`), movieId: bannerMovie.id, title: banner.title, logoUrl: banner.logoUrl, backdropUrl: banner.backdropUrl, videoUrl: banner.videoUrl, videoProvider: banner.videoProvider, ctaLabel: banner.ctaLabel, ctaHref: banner.ctaHref, status: 'ACTIVE', priority: banner.priority },
+    });
+  }
+
+  const advertisements = [
+    { key: 'combo', title: 'Combos para tu función', description: 'Canchita, bebida y snacks para disfrutar antes de que se apaguen las luces.', ctaLabel: 'Ver dulcería', ctaHref: '/#promotions', imageUrl: 'https://images.unsplash.com/photo-1578849278619-e73505e9610f?auto=format&fit=crop&w=900&q=85', priority: 1 },
+    { key: 'salas', title: 'Pantalla a tu manera', description: 'Elige 2D, 3D o Infinity Vision según la función disponible.', ctaLabel: 'Explorar formatos', ctaHref: '/#now-playing', imageUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=85', priority: 2 },
+    { key: 'anticipada', title: 'Compra con anticipación', description: 'Consulta horarios, selecciona tus butacas y llega con todo listo.', ctaLabel: 'Ver cartelera', ctaHref: '/#now-playing', imageUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=85', priority: 3 },
+    { key: 'familia', title: 'Plan para compartir', description: 'Encuentra funciones familiares y arma una salida para todos.', ctaLabel: 'Ver películas', ctaHref: '/#now-playing', imageUrl: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=900&q=85', priority: 4 },
+    { key: 'proximamente', title: 'Muy pronto en Cinetrux', description: 'Guarda tus próximos estrenos favoritos y revisa sus preventas.', ctaLabel: 'Descubrir estrenos', ctaHref: '/proximos-estrenos', imageUrl: 'https://images.unsplash.com/photo-1485095329183-d0797cdc5676?auto=format&fit=crop&w=900&q=85', priority: 5 },
+  ];
+  for (const ad of advertisements) {
+    const { key, ...content } = ad;
+    await db.advertisement.upsert({
+      where: { id: uid(`ad:${key}`) },
+      update: { ...content, placement: 'HOME', status: 'ACTIVE' },
+      create: { id: uid(`ad:${key}`), ...content, placement: 'HOME', status: 'ACTIVE' },
+    });
+  }
+
+  const promotions = [
+    { key: 'canchas', title: 'Combo Canchas', description: 'Canchita grande, dos bebidas y una experiencia lista para compartir.', imageUrl: 'https://images.unsplash.com/photo-1578849278619-e73505e9610f?auto=format&fit=crop&w=1400&q=88', ctaLabel: 'Elegir mi combo', ctaHref: '/purchase', terms: 'Contenido demostrativo. Precios y disponibilidad se confirman durante la compra.' },
+    { key: 'pareja', title: 'Combo Pareja', description: 'Dos bebidas, canchita mediana y snack dulce para tu próxima función.', imageUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1400&q=88', ctaLabel: 'Ver opciones', ctaHref: '/purchase', terms: 'Contenido demostrativo.' },
+    { key: 'familia', title: 'Combo Familiar', description: 'Una alternativa pensada para compartir: canchita grande, bebidas y dulces.', imageUrl: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1400&q=88', ctaLabel: 'Ver opciones', ctaHref: '/purchase', terms: 'Contenido demostrativo.' },
+    { key: 'nachos', title: 'Nachos + bebida', description: 'Un snack salado con bebida fría para complementar tu entrada.', imageUrl: 'https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?auto=format&fit=crop&w=1400&q=88', ctaLabel: 'Ver opciones', ctaHref: '/purchase', terms: 'Contenido demostrativo.' },
+    { key: 'dulce', title: 'Dulce para la función', description: 'Elige golosinas y bebidas para llevar a tu butaca.', imageUrl: 'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&w=1400&q=88', ctaLabel: 'Ver opciones', ctaHref: '/purchase', terms: 'Contenido demostrativo.' },
+  ];
+  for (const promotion of promotions) {
+    const { key, ...content } = promotion;
+    await db.promotion.upsert({
+      where: { id: uid(`promo:${key}`) },
+      update: { ...content, status: 'ACTIVE' },
+      create: { id: uid(`promo:${key}`), ...content, status: 'ACTIVE' },
+    });
+  }
+
+  const concessionProducts = [
+    { slug: 'combo-canchas', name: 'Combo Canchas', description: 'Canchita grande y dos bebidas medianas.', category: 'COMBO', priceCents: 2990, featured: true, priority: 1, imageUrl: 'https://images.unsplash.com/photo-1578849278619-e73505e9610f?auto=format&fit=crop&w=900&q=85' },
+    { slug: 'combo-pareja', name: 'Combo Pareja', description: 'Canchita mediana, dos bebidas y snack dulce.', category: 'COMBO', priceCents: 2490, featured: true, priority: 2, imageUrl: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=900&q=85' },
+    { slug: 'combo-familiar', name: 'Combo Familiar', description: 'Canchita grande, cuatro bebidas y dulces para compartir.', category: 'COMBO', priceCents: 4590, featured: true, priority: 3, imageUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=85' },
+    { slug: 'canchita-grande', name: 'Canchita grande', description: 'Preparada al momento para compartir.', category: 'POPCORN', priceCents: 1390, featured: false, priority: 4, imageUrl: 'https://images.unsplash.com/photo-1578849278619-e73505e9610f?auto=format&fit=crop&w=900&q=85' },
+    { slug: 'gaseosa-mediana', name: 'Bebida mediana', description: 'Bebida fría de 22 oz.', category: 'BEVERAGE', priceCents: 750, featured: false, priority: 5, imageUrl: 'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?auto=format&fit=crop&w=900&q=85' },
+    { slug: 'agua-mineral', name: 'Agua mineral', description: 'Agua sin gas de 625 ml.', category: 'BEVERAGE', priceCents: 500, featured: false, priority: 6, imageUrl: 'https://images.unsplash.com/photo-1564419320461-6870880221ad?auto=format&fit=crop&w=900&q=85' },
+    { slug: 'nachos-queso', name: 'Nachos con queso', description: 'Nachos crocantes acompañados de salsa de queso.', category: 'SNACK', priceCents: 1190, featured: true, priority: 7, imageUrl: 'https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?auto=format&fit=crop&w=900&q=85' },
+    { slug: 'chocolate-clasico', name: 'Chocolate clásico', description: 'Tableta de chocolate para la función.', category: 'CANDY', priceCents: 650, featured: false, priority: 8, imageUrl: 'https://images.unsplash.com/photo-1548907040-4d42f6a8f4d2?auto=format&fit=crop&w=900&q=85' },
+  ];
+  for (const product of concessionProducts) {
+    await db.concessionProduct.upsert({
+      where: { slug: product.slug },
+      update: { ...product, available: true, currency: 'PEN' },
+      create: { id: uid(`concession:${product.slug}`), ...product, available: true, currency: 'PEN' },
+    });
+  }
 }
 
 async function theatres() {
@@ -283,6 +333,6 @@ try {
   if (process.env.NODE_ENV === 'production' && process.env.ALLOW_DEMO_SEED !== 'true') throw new Error('Demo seed disabled in production');
   await users(); await catalog(); await theatres(); await operations();
   await expandDemoAuditoriums(db);
-  const counts = await Promise.all([db.user.count(), db.movie.count(), db.cinema.count(), db.showtime.count(), db.ticket.count()]);
-  console.log(`Demo seed complete: users=${counts[0]}, movies=${counts[1]}, cinemas=${counts[2]}, showtimes=${counts[3]}, tickets=${counts[4]}. Accounts are disabled; no charges created.`);
+  const counts = await Promise.all([db.user.count(), db.movie.count(), db.cinema.count(), db.showtime.count(), db.ticket.count(), db.banner.count(), db.promotion.count(), db.concessionProduct.count()]);
+  console.log(`Demo seed complete: users=${counts[0]}, movies=${counts[1]}, cinemas=${counts[2]}, showtimes=${counts[3]}, tickets=${counts[4]}, banners=${counts[5]}, promotions=${counts[6]}, concessions=${counts[7]}. Accounts are disabled; no charges created.`);
 } finally { await db.$disconnect(); }

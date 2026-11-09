@@ -1,4 +1,81 @@
-# Dataset y primeros modelos — 19 de octubre de 2026
+# Dataset y primeros modelos — 9 de noviembre de 2026
+
+## Dataset real incorporado: Azure Functions Invocation Trace 2021
+
+Se incorporó una fuente pública y real para la fase de predicción de saturación:
+
+- **Origen:** [Microsoft Azure Functions Invocation Trace 2021](https://github.com/Azure/AzurePublicDataset/blob/master/AzureFunctionsInvocationTrace2021.md).
+- **Proveedor:** Microsoft Azure Public Dataset.
+- **Cobertura:** dos semanas de invocaciones reales de Azure Functions desde el 31 de enero de 2021.
+- **Licencia:** CC-BY; la fuente se mantiene con atribución en el reporte de calidad generado.
+- **Archivo bruto local:** `data/raw/azure-functions-2021/AzureFunctionsInvocationTraceForTwoWeeksJan2021.txt`.
+- **Dataset limpio generado:** `data/processed/azure-functions-2021/azure_windows_labeled.csv`.
+- **Trazabilidad y calidad:** `data/processed/azure-functions-2021/quality_report.json`.
+- **Artefacto entrenado:** `artifacts/azure-real-v1/`.
+
+El bruto **no se versiona** por licencia, tamaño y reproducibilidad; se descarga
+desde la URL oficial y la preparación deja hash SHA-256, URL, licencia, reglas de
+exclusión, variables y distribución de clases en `quality_report.json`.
+
+### Limpieza y transformación aplicadas
+
+1. Se leen `app`, `func`, `end_timestamp` y `duration` de la traza oficial.
+2. Se descartan filas con duración o timestamp no numéricos/negativos.
+3. Para una ejecución reproducible se seleccionan las 100 funciones con más
+   observaciones y se agregan invocaciones por `app + función` en ventanas de 10 s.
+4. Se calculan únicamente variables observables de esa fuente: `arrival_rate`,
+   `arrival_trend`, `latency_p95_ms` y `completion_rate`.
+5. Se excluyen ventanas con menos de cinco observaciones, discontinuidades y
+   horizontes futuros incompletos.
+6. La etiqueta es **riesgo de saturación en los 30 segundos siguientes**: positiva
+   cuando alguna de las tres ventanas futuras alcanza p95 de duración >= 1,000 ms.
+
+No se inventan las variables `queue_length`, `active_buyers`, `admission_limit`
+ni `error_rate`: Azure no las publica. Esas cuatro siguen llegando de la
+telemetría propia de CineTrux durante los pilotos HTTP. Por eso `azure-real-v1`
+usa el subconjunto observable y el contrato del servicio conserva las ocho para
+permitir el siguiente modelo híbrido de CineTrux.
+
+### Resultados reproducibles de la primera ejecución
+
+- 1,951,587 invocaciones aceptadas.
+- 52,101 ventanas limpias y etiquetadas.
+- 46,556 sin riesgo y 5,545 con riesgo futuro.
+- Modelo seleccionado: regresión logística.
+- Test separado por `run_id`: precision **0.8938**, recall **0.7450**, F1
+  **0.8126** y PR-AUC **0.8513**.
+
+Estas métricas corresponden a una traza de infraestructura real, no prueban aún
+el comportamiento de compradores de cine. El estado del artefacto permanece
+`EXPERIMENTAL_NOT_PRODUCTION_VALIDATED` hasta completar los pilotos CineTrux.
+
+### Reproducir e iniciar el perfil Azure real
+
+Desde `smartqueue-ai`, tras descargar la fuente oficial:
+
+```powershell
+.venv\Scripts\python.exe -m training.prepare_azure_functions_trace `
+  --input data/raw/azure-functions-2021/AzureFunctionsInvocationTraceForTwoWeeksJan2021.txt `
+  --output data/processed/azure-functions-2021 `
+  --top-functions 100 --window-seconds 10 --min-samples 5 `
+  --latency-threshold-ms 1000 --horizon-windows 3
+
+.venv\Scripts\python.exe -m training.train `
+  --input data/processed/azure-functions-2021/azure_windows_labeled.csv `
+  --output artifacts/azure-real-v1 `
+  --dataset-version azure-functions-invocation-trace-2021-v1 `
+  --features arrival_rate,arrival_trend,latency_p95_ms,completion_rate `
+  --minimum-precision 0.70 --latency-threshold-ms 1000
+```
+
+Desde la raíz del proyecto, para iniciar el laboratorio local con este perfil:
+
+```powershell
+.\scripts\run-ml-demo.ps1 -ModelProfile AZURE_REAL -Clients 200 -DurationSeconds 60 -Scenario BURST
+```
+
+El comando reconstruye únicamente la imagen local de IA con `azure-real-v1`; no
+sube ni escribe datos en Supabase.
 
 ## Decisión de datos
 

@@ -86,12 +86,12 @@ def select_threshold(labels, probability, minimum_precision: float) -> tuple[flo
     return best["threshold"], best
 
 
-def score(pipeline, frame: pd.DataFrame, threshold: float) -> dict[str, float]:
+def score(pipeline, frame: pd.DataFrame, threshold: float, features: tuple[str, ...]) -> dict[str, float]:
     frame = frame.reset_index(drop=True)
-    features = frame[list(FEATURE_NAMES)]
+    feature_frame = frame[list(features)]
     labels = frame["saturation_label"]
     started = time.perf_counter()
-    probability = pipeline.predict_proba(features)[:, 1]
+    probability = pipeline.predict_proba(feature_frame)[:, 1]
     latency_ms = (time.perf_counter() - started) * 1_000 / max(len(frame), 1)
     prediction = (probability >= threshold).astype(int)
     per_run = [
@@ -143,10 +143,18 @@ def main() -> None:
     parser.add_argument("--latency-threshold-ms", type=float, default=1_000)
     parser.add_argument("--error-threshold", type=float, default=0.05)
     parser.add_argument("--dataset-version", default="unversioned")
+    parser.add_argument(
+        "--features",
+        default=",".join(FEATURE_NAMES),
+        help="Comma-separated subset of the v1 feature contract used by this artifact",
+    )
     args = parser.parse_args()
 
     frame = pd.read_csv(args.input)
-    required = set(FEATURE_NAMES) | {"run_id", "saturation_label"}
+    features = tuple(item.strip() for item in args.features.split(",") if item.strip())
+    if not features or not set(features).issubset(FEATURE_NAMES):
+        raise ValueError(f"features must be a non-empty subset of {list(FEATURE_NAMES)}")
+    required = set(features) | {"run_id", "saturation_label"}
     missing = required - set(frame.columns)
     if missing:
         raise ValueError(f"Missing columns: {sorted(missing)}")
@@ -161,14 +169,14 @@ def main() -> None:
     validation_scores = {}
     thresholds = {}
     for name, pipeline in candidates.items():
-        pipeline.fit(train[list(FEATURE_NAMES)], train["saturation_label"])
-        probability = pipeline.predict_proba(validation[list(FEATURE_NAMES)])[:, 1]
+        pipeline.fit(train[list(features)], train["saturation_label"])
+        probability = pipeline.predict_proba(validation[list(features)])[:, 1]
         threshold, threshold_metrics = select_threshold(
             validation["saturation_label"], probability, args.minimum_precision
         )
         thresholds[name] = threshold
         validation_scores[name] = {
-            **score(pipeline, validation, threshold),
+            **score(pipeline, validation, threshold, features),
             "threshold_selection": threshold_metrics,
         }
     eligible_models = [
@@ -188,9 +196,9 @@ def main() -> None:
     selected = candidates[winner]
     threshold = thresholds[winner]
     # Keep the exact fitted model for which the validation threshold was selected.
-    test_probability = selected.predict_proba(test[list(FEATURE_NAMES)])[:, 1]
+    test_probability = selected.predict_proba(test[list(features)])[:, 1]
     test_prediction = (test_probability >= threshold).astype(int)
-    test_metrics = score(selected, test.reset_index(drop=True), threshold)
+    test_metrics = score(selected, test.reset_index(drop=True), threshold, features)
 
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
@@ -211,7 +219,7 @@ def main() -> None:
     metadata = {
         "model_version": version,
         "schema_version": "1.0",
-        "features": list(FEATURE_NAMES),
+        "features": list(features),
         "window_seconds": 10,
         "horizon_seconds": 30,
         "latency_threshold_ms": args.latency_threshold_ms,

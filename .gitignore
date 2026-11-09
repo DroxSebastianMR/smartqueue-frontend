@@ -14,6 +14,8 @@ smartqueue-ai/artifacts/*.joblib
 smartqueue-ai/artifacts/*.json
 smartqueue-ai/artifacts/bootstrap-v1/
 smartqueue-ai/data/generated/
+smartqueue-ai/data/raw/
+smartqueue-ai/data/processed/
 tmp/
 
 # Artefacto experimental mínimo necesario para el arranque Docker reproducible.

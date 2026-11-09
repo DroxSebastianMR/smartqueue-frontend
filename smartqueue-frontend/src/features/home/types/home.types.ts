@@ -12,6 +12,17 @@ export interface MovieCardView {
   bookable: boolean;
 }
 
+export interface PaginatedMovieCards {
+  items: MovieCardView[];
+  meta: {
+    page: number;
+    limit: number;
+    count: number;
+    total: number;
+    hasNextPage: boolean;
+  };
+}
+
 export interface FeaturedMovieView {
   movieId: string;
   title: string;

@@ -25,3 +25,6 @@ class SaturationFeatures:
 
     def as_row(self) -> list[float]:
         return [float(getattr(self, name)) for name in FEATURE_NAMES]
+
+    def as_mapping(self) -> dict[str, float]:
+        return {name: float(getattr(self, name)) for name in FEATURE_NAMES}
