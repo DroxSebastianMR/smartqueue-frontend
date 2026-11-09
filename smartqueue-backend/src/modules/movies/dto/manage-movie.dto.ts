@@ -189,6 +189,11 @@ export class AdminMovieQueryDto extends ListQueryDto {
   @IsEnum(MoviePublicationStatus)
   status?: MoviePublicationStatus;
 
+  @ApiPropertyOptional({ enum: MovieCatalogSection })
+  @IsOptional()
+  @IsEnum(MovieCatalogSection)
+  section?: MovieCatalogSection;
+
   @ApiPropertyOptional({ example: "aventura" })
   @IsOptional()
   @IsString()

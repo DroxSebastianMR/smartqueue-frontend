@@ -9,6 +9,8 @@ export const PATHS = {
   AUTH: { LOGIN: '/login', RECOVER: '/recover', REGISTER: '/register' },
   QUEUE: '/queue',
   PURCHASE: '/purchase',
+  ADMIN: '/admin',
+  ADMIN_MOVIES: '/admin/peliculas',
   MONITORING: '/monitoring',
   MONITORING_SATURATION: '/monitoring/saturacion',
   MONITORING_ANALYTICS: '/monitoring/analitica',

@@ -2,6 +2,8 @@ import type { RouteObject } from 'react-router-dom';
 import { PATHS } from '@/app/router/constants/paths';
 import { ProtectedRoute } from '@/app/router/guards/protected-route';
 import { MonitoringPage } from '@/features/monitoring/pages/monitoring-page';
+import { AdminOverviewPage } from '@/features/admin/pages/admin-overview-page';
+import { AdminMoviesPage } from '@/features/admin/pages/admin-movies-page';
 import { PurchasePage } from '@/features/purchase/pages/purchase-page';
 import { QueuePage } from '@/features/queue/pages/queue-page';
 import { BookingLayout } from '@/layouts/booking/booking-layout';
@@ -17,6 +19,8 @@ export const protectedRoutes: RouteObject[] = [
   ] },
   { element: <ProtectedRoute allowedRoles={[UserRole.ADMIN]} />, children: [
     { element: <AdminLayout />, children: [
+      { path: PATHS.ADMIN, element: <AdminOverviewPage /> },
+      { path: PATHS.ADMIN_MOVIES, element: <AdminMoviesPage /> },
       { path: PATHS.MONITORING, element: <MonitoringPage view="summary" /> },
       { path: PATHS.MONITORING_SATURATION, element: <MonitoringPage view="saturation" /> },
       { path: PATHS.MONITORING_ANALYTICS, element: <MonitoringPage view="analytics" /> },

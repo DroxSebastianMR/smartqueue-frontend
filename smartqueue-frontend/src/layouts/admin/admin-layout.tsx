@@ -1,5 +1,5 @@
-import { ArrowLeft, BrainCircuit, LayoutDashboard, ListChecks, ShieldCheck, SlidersHorizontal, TicketCheck } from 'lucide-react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { ArrowLeft, BrainCircuit, Clapperboard, FileArchive, Film, LayoutDashboard, ListChecks, Search, ShieldCheck, SlidersHorizontal, TicketCheck } from 'lucide-react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 import { BrandLogo } from '@/shared/components/brand-logo';
 import { PATHS } from '@/app/router/constants/paths';
@@ -11,9 +11,17 @@ export function AdminLayout() {
         <aside className="hidden border-r border-white/8 bg-[#081321]/90 p-5 lg:flex lg:flex-col">
           <BrandLogo />
           <div className="mt-9">
-            <p className="px-3 text-[10px] font-bold uppercase tracking-[.22em] text-slate-500">Centro de operaciones</p>
+            <p className="px-3 text-[10px] font-bold uppercase tracking-[.22em] text-slate-500">Catálogo y contenido</p>
             <nav className="mt-3 space-y-1">
-              <SideLink icon={<LayoutDashboard />} label="Resumen operativo" to={PATHS.MONITORING} end />
+              <SideLink icon={<LayoutDashboard />} label="Resumen administrativo" to={PATHS.ADMIN} end />
+              <SideLink icon={<Clapperboard />} label="Gestión de películas" to={PATHS.ADMIN_MOVIES} />
+              <SideLink icon={<Film />} label="Cartelera y estrenos" to={`${PATHS.ADMIN_MOVIES}?view=NOW_PLAYING`} />
+              <SideLink icon={<FileArchive />} label="Borradores y archivo" to={`${PATHS.ADMIN_MOVIES}?view=DRAFT`} />
+            </nav>
+          </div>
+          <div className="mt-8">
+            <p className="px-3 text-[10px] font-bold uppercase tracking-[.22em] text-slate-500">Operación del cine</p>
+            <nav className="mt-3 space-y-1">
               <SideLink icon={<TicketCheck />} label="Operación de entradas" to={PATHS.MONITORING_ANALYTICS} />
               <SideLink icon={<BrainCircuit />} label="Saturación y capacidad" to={PATHS.MONITORING_SATURATION} />
               <SideLink icon={<ListChecks />} label="Decisiones registradas" to={PATHS.MONITORING_DECISIONS} />
@@ -35,9 +43,10 @@ export function AdminLayout() {
             <div className="flex h-[72px] items-center gap-4 px-5 lg:px-8">
               <div className="lg:hidden"><BrandLogo compact /></div>
               <div className="min-w-0">
-                <p className="flex items-center gap-2 text-sm font-semibold text-white"><BrainCircuit className="size-4 text-sky-300" /> Monitor CineTrux</p>
-                <p className="hidden text-xs text-slate-400 sm:block">Consola de saturación y capacidad operativa</p>
+                <p className="flex items-center gap-2 text-sm font-semibold text-white"><ShieldCheck className="size-4 text-sky-300" /> Panel de administración</p>
+                <p className="hidden text-xs text-slate-400 sm:block">Contenido, operación y analítica de CineTrux</p>
               </div>
+              <label className="relative ml-3 hidden w-full max-w-xl lg:block"><Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-500" /><input className="h-10 w-full rounded-lg border border-slate-700 bg-[#161d29] pl-10 pr-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-sky-400/60 focus:ring-2 focus:ring-sky-400/10" placeholder="Buscar película por título, ID o distribuidora…" /></label>
               <span className="ml-auto hidden items-center gap-2 rounded-full border border-emerald-300/15 bg-emerald-300/10 px-3 py-1.5 text-xs font-semibold text-emerald-200 md:flex"><ShieldCheck className="size-3.5" /> Laboratorio</span>
               <Link to="/" className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm font-medium text-slate-300 transition hover:border-sky-200/40 hover:bg-sky-200/10 hover:text-white"><ArrowLeft className="size-4" /> <span className="hidden sm:inline">Volver a Cinetrux</span></Link>
             </div>
@@ -51,5 +60,11 @@ export function AdminLayout() {
 }
 
 function SideLink({ icon, label, to, end = false }: { icon: React.ReactNode; label: string; to: string; end?: boolean }) {
-  return <NavLink end={end} to={to} className={({ isActive }) => `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${isActive ? 'bg-sky-400/10 font-semibold text-sky-100 shadow-[inset_2px_0_0_#38bdf8]' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}><span className="[&>svg]:size-4">{icon}</span>{label}</NavLink>;
+  const location = useLocation();
+  const target = new URL(to, window.location.origin);
+  const isActive = end
+    ? location.pathname === target.pathname && location.search === target.search
+    : location.pathname === target.pathname && location.search === target.search;
+
+  return <Link to={to} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${isActive ? 'bg-sky-400/10 font-semibold text-sky-100 shadow-[inset_2px_0_0_#38bdf8]' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}><span className="[&>svg]:size-4">{icon}</span>{label}</Link>;
 }

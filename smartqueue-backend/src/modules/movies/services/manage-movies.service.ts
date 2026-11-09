@@ -45,6 +45,9 @@ export class ManageMoviesService {
           (movie) => !query.status || movie.publicationStatus === query.status,
         )
         .filter(
+          (movie) => !query.section || movie.sections.includes(query.section),
+        )
+        .filter(
           (movie) =>
             !term || movie.title.toLocaleLowerCase("es-PE").includes(term),
         ),
